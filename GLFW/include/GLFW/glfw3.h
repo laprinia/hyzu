@@ -65,7 +65,7 @@ extern "C" {
  *  the library, version management and error handling.  For more task-oriented
  *  information, see the @ref intro_guide.
  */
-/*! @defgroup input Input reference
+/*! @defgroup input InputManager reference
  *  @brief Functions and types related to input handling.
  *
  *  This is the reference documentation for input related functions and types.
@@ -761,9 +761,9 @@ extern "C" {
 
 /*! @addtogroup window
  *  @{ */
-/*! @brief Input focus window hint and attribute
+/*! @brief InputManager focus window hint and attribute
  *
- *  Input focus [window hint](@ref GLFW_FOCUSED_hint) or
+ *  InputManager focus [window hint](@ref GLFW_FOCUSED_hint) or
  *  [window attribute](@ref GLFW_FOCUSED_attrib).
  */
 #define GLFW_FOCUSED                0x00020001
@@ -825,9 +825,9 @@ extern "C" {
  *  Mouse cursor hover [window attribute](@ref GLFW_HOVERED_attrib).
  */
 #define GLFW_HOVERED                0x0002000B
-/*! @brief Input focus on calling show window hint and attribute
+/*! @brief InputManager focus on calling show window hint and attribute
  *
- *  Input focus [window hint](@ref GLFW_FOCUS_ON_SHOW_hint) or
+ *  InputManager focus [window hint](@ref GLFW_FOCUS_ON_SHOW_hint) or
  *  [window attribute](@ref GLFW_FOCUS_ON_SHOW_attrib).
  */
 #define GLFW_FOCUS_ON_SHOW          0x0002000C

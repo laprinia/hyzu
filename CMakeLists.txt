@@ -1,10 +1,3 @@
-#cmake_minimum_required(VERSION 3.17)
-#project(hyzu)
-#
-#set(CMAKE_CXX_STANDARD 20)
-#
-#add_executable(hyzu main.cpp)
-#target_link_libraries(hyzu -lOpenGL32 -lglfw3)
 
 cmake_minimum_required(VERSION 3.17)
 project(hyzu)
@@ -15,12 +8,12 @@ if (NOT WIN32)
     set(CMAKE_PREFIX_PATH /usr/local/lib/cmake/glfw)
 endif (NOT WIN32)
 
-#find_package (PkgConfig REQUIRED)
+
 find_package (OpenGL REQUIRED)
 if (WIN32)
 
-    include_directories(${PROJECT_SOURCE_DIR}/GLFW/include "C:/glm" "C:/glew/include")
-    link_directories("C:/glew/lib/Release/x64" "${PROJECT_SOURCE_DIR}/GLFW/lib-mingw" )
+    include_directories( ${PROJECT_SOURCE_DIR}/GLFW/include ${PROJECT_SOURCE_DIR}/GLEW/include  "C:/glm")
+    link_directories("${PROJECT_SOURCE_DIR}/GLEW/lib/Release/Win32" "${PROJECT_SOURCE_DIR}/GLFW/lib-mingw" )
 else (WIN32)
     find_package (glfw3 REQUIRED)
     find_package (GLM REQUIRED)
@@ -33,7 +26,7 @@ if (APPLE)
     find_library(COREVID_LIBRARY CoreVideo REQUIRED)
 endif (APPLE)
 
-set(SOURCE_FILES main.cpp )
+set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h)
 
 ## "hyzu" is the name of the executable
 add_executable(hyzu ${SOURCE_FILES})

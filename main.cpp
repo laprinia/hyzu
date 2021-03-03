@@ -1,22 +1,8 @@
-#undef GLFW_DLL
-#include <GLFW/glfw3.h>
-#include <cstdlib>
-#include <iostream>
+#define GLEW_STATIC
 
+#include "window/SampleWindow.h"
 
 int main() {
-    if (!glfwInit()) {
-        std::cerr << "Can't initialize GLFW" << std::endl;
-        exit (EXIT_FAILURE);
-    }
-
-    GLFWwindow *win;
-    win = glfwCreateWindow (450, 300, "Hello", NULL, NULL);
-    glfwMakeContextCurrent(win);
-    while (!glfwWindowShouldClose(win)) {
-        glfwWaitEvents();
-    }
-    glfwDestroyWindow(win);
-    glfwTerminate();
+    SampleWindow sampleWindow = SampleWindow(800, 600, "hyzu");
     return 0;
 }

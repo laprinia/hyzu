@@ -4,15 +4,17 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "E:/Projects/hyzu/input/InputManager.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/input/InputManager.cpp.obj"
   "E:/Projects/hyzu/main.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/main.cpp.obj"
+  "E:/Projects/hyzu/window/SampleWindow.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../GLFW/include"
+  "../GLEW/include"
   "C:/glm"
-  "C:/glew/include"
   )
 
 # Targets to which this target links.

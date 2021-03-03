@@ -142,6 +142,33 @@ hyzu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/build
 .PHONY : hyzu/fast
 
+input/InputManager.obj: input/InputManager.cpp.obj
+
+.PHONY : input/InputManager.obj
+
+# target to build an object file
+input/InputManager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/input/InputManager.cpp.obj
+.PHONY : input/InputManager.cpp.obj
+
+input/InputManager.i: input/InputManager.cpp.i
+
+.PHONY : input/InputManager.i
+
+# target to preprocess a source file
+input/InputManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/input/InputManager.cpp.i
+.PHONY : input/InputManager.cpp.i
+
+input/InputManager.s: input/InputManager.cpp.s
+
+.PHONY : input/InputManager.s
+
+# target to generate assembly for a file
+input/InputManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/input/InputManager.cpp.s
+.PHONY : input/InputManager.cpp.s
+
 main.obj: main.cpp.obj
 
 .PHONY : main.obj
@@ -169,6 +196,33 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+window/SampleWindow.obj: window/SampleWindow.cpp.obj
+
+.PHONY : window/SampleWindow.obj
+
+# target to build an object file
+window/SampleWindow.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
+.PHONY : window/SampleWindow.cpp.obj
+
+window/SampleWindow.i: window/SampleWindow.cpp.i
+
+.PHONY : window/SampleWindow.i
+
+# target to preprocess a source file
+window/SampleWindow.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/window/SampleWindow.cpp.i
+.PHONY : window/SampleWindow.cpp.i
+
+window/SampleWindow.s: window/SampleWindow.cpp.s
+
+.PHONY : window/SampleWindow.s
+
+# target to generate assembly for a file
+window/SampleWindow.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/window/SampleWindow.cpp.s
+.PHONY : window/SampleWindow.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -178,9 +232,15 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... hyzu
+	@echo ... input/InputManager.obj
+	@echo ... input/InputManager.i
+	@echo ... input/InputManager.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... window/SampleWindow.obj
+	@echo ... window/SampleWindow.i
+	@echo ... window/SampleWindow.s
 .PHONY : help
 
 

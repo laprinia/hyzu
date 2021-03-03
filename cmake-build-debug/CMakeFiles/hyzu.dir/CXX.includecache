@@ -50,10 +50,12 @@ GL/glext.h
 GL/glu.h
 -
 
-E:/Projects/hyzu/main.cpp
+E:/Projects/hyzu/input/InputManager.cpp
+InputManager.h
+E:/Projects/hyzu/input/InputManager.h
+
+E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
--
-cstdlib
 -
 iostream
 -

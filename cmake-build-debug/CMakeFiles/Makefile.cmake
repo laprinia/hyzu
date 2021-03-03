@@ -27,7 +27,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/FindPackageHandleStandardArgs.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/FindPackageMessage.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake"
-  "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-C-ABI.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-C.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-CXX-ABI.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-CXX.cmake"
@@ -37,10 +36,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/WindowsPaths.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/ProcessorCount.cmake"
   "../CMakeLists.txt"
-  "CMakeFiles/3.17.3/CMakeCCompiler.cmake"
-  "CMakeFiles/3.17.3/CMakeCXXCompiler.cmake"
-  "CMakeFiles/3.17.3/CMakeRCCompiler.cmake"
-  "CMakeFiles/3.17.3/CMakeSystem.cmake"
+  "CMakeFiles/3.17.5/CMakeCCompiler.cmake"
+  "CMakeFiles/3.17.5/CMakeCXXCompiler.cmake"
+  "CMakeFiles/3.17.5/CMakeRCCompiler.cmake"
+  "CMakeFiles/3.17.5/CMakeSystem.cmake"
   )
 
 # The corresponding makefile is:
