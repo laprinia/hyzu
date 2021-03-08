@@ -8,6 +8,11 @@ InputManager::InputManager() = default;
 
 GLFWwindow *InputManager::windowContext = nullptr;
 
+InputManager &InputManager::GetInstance() {
+    static InputManager instance;
+    return instance;
+}
+
 void InputManager::SetWindowContext(GLFWwindow *window) {
     InputManager::windowContext = window;
     glfwSetKeyCallback(window, OnKeyPress);
@@ -20,10 +25,6 @@ void InputManager::OnKeyPress(GLFWwindow *window, int key, int scancode, int act
 
 }
 
-InputManager &InputManager::GetInstance() {
-    static InputManager instance;
-    return instance;
-}
 
 
 

@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "../input/InputManager.h"
+#include <iostream>
 
 class SampleWindow {
 private:

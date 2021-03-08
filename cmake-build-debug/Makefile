@@ -196,6 +196,60 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+render/RenderableObject.obj: render/RenderableObject.cpp.obj
+
+.PHONY : render/RenderableObject.obj
+
+# target to build an object file
+render/RenderableObject.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj
+.PHONY : render/RenderableObject.cpp.obj
+
+render/RenderableObject.i: render/RenderableObject.cpp.i
+
+.PHONY : render/RenderableObject.i
+
+# target to preprocess a source file
+render/RenderableObject.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.i
+.PHONY : render/RenderableObject.cpp.i
+
+render/RenderableObject.s: render/RenderableObject.cpp.s
+
+.PHONY : render/RenderableObject.s
+
+# target to generate assembly for a file
+render/RenderableObject.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.s
+.PHONY : render/RenderableObject.cpp.s
+
+shaders/ShaderManager.obj: shaders/ShaderManager.cpp.obj
+
+.PHONY : shaders/ShaderManager.obj
+
+# target to build an object file
+shaders/ShaderManager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj
+.PHONY : shaders/ShaderManager.cpp.obj
+
+shaders/ShaderManager.i: shaders/ShaderManager.cpp.i
+
+.PHONY : shaders/ShaderManager.i
+
+# target to preprocess a source file
+shaders/ShaderManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.i
+.PHONY : shaders/ShaderManager.cpp.i
+
+shaders/ShaderManager.s: shaders/ShaderManager.cpp.s
+
+.PHONY : shaders/ShaderManager.s
+
+# target to generate assembly for a file
+shaders/ShaderManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.s
+.PHONY : shaders/ShaderManager.cpp.s
+
 window/SampleWindow.obj: window/SampleWindow.cpp.obj
 
 .PHONY : window/SampleWindow.obj
@@ -238,6 +292,12 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... render/RenderableObject.obj
+	@echo ... render/RenderableObject.i
+	@echo ... render/RenderableObject.s
+	@echo ... shaders/ShaderManager.obj
+	@echo ... shaders/ShaderManager.i
+	@echo ... shaders/ShaderManager.s
 	@echo ... window/SampleWindow.obj
 	@echo ... window/SampleWindow.i
 	@echo ... window/SampleWindow.s

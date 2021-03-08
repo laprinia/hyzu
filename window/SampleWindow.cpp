@@ -18,13 +18,15 @@ SampleWindow::SampleWindow(int width, int height, std::string title) {
     }
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
-    inputManager.SetWindowContext(window);
+    InputManager::SetWindowContext(window);
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
     glViewport(0, 0, 800, 600);
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
+        glClearColor(0.3f,0.1f,0.1f,1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
         glfwSwapBuffers(window);
     }
     glfwTerminate();

@@ -95,6 +95,18 @@
 		<Unit filename="E:/Projects/hyzu/main.cpp">
 			<Option target="hyzu"/>
 		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/RenderableObject.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/RenderableObject.h">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/shaders/ShaderManager.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/shaders/ShaderManager.h">
+			<Option target="hyzu"/>
+		</Unit>
 		<Unit filename="E:/Projects/hyzu/window/SampleWindow.cpp">
 			<Option target="hyzu"/>
 		</Unit>

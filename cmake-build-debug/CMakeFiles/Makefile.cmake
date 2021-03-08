@@ -27,6 +27,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/FindPackageHandleStandardArgs.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/FindPackageMessage.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Internal/CMakeCheckCompilerFlag.cmake"
+  "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-C-ABI.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-C.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-CXX-ABI.cmake"
   "C:/Program Files/JetBrains/CLion/bin/cmake/win/share/cmake-3.17/Modules/Platform/Windows-GNU-CXX.cmake"

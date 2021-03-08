@@ -26,7 +26,7 @@ if (APPLE)
     find_library(COREVID_LIBRARY CoreVideo REQUIRED)
 endif (APPLE)
 
-set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h)
+set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h render/RenderableObject.cpp render/RenderableObject.h shaders/ShaderManager.cpp shaders/ShaderManager.h)
 
 ## "hyzu" is the name of the executable
 add_executable(hyzu ${SOURCE_FILES})
