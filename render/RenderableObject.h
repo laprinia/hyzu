@@ -4,18 +4,18 @@
 
 #ifndef HYZU_RENDERABLEOBJECT_H
 #define HYZU_RENDERABLEOBJECT_H
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <iostream>
 
 class RenderableObject {
-private:
-    GLuint VBO;
-
 
 public:
-    RenderableObject(GLfloat* vertices);
+    GLuint VAO,VBO;
+    RenderableObject()=default;
+    void RenderObject();
     ~RenderableObject();
 };
 

@@ -10,13 +10,22 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include "../input/InputManager.h"
+#include "../shaders/ShaderManager.h"
+#include "../render/RenderableObject.h"
 #include <iostream>
 
 class SampleWindow {
 private:
     InputManager inputManager = InputManager::GetInstance();
+    ShaderManager shaderManager = ShaderManager::GetInstance();
+
     GLFWwindow *window;
+    RenderableObject renderableObject;
     int width, height;
+
+    static void CompileShaders();
+
+
 public:
     SampleWindow(int width, int height, std::string title);
 
@@ -29,4 +38,5 @@ public:
     int GetWindowWidth();
 
 };
+
 #endif //HYZU_SAMPLEWINDOW_H

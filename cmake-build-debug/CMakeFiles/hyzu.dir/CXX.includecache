@@ -692,17 +692,33 @@ C:/GLM/glm/vector_relational.hpp
 detail/func_vector_relational.hpp
 C:/GLM/glm/detail/func_vector_relational.hpp
 
-E:/Projects/hyzu/input/InputManager.cpp
-InputManager.h
-E:/Projects/hyzu/input/InputManager.h
-
 E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
 
-E:/Projects/hyzu/main.cpp
-window/SampleWindow.h
-E:/Projects/hyzu/window/SampleWindow.h
+E:/Projects/hyzu/render/RenderableObject.h
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+iostream
+-
+
+E:/Projects/hyzu/shaders/ShaderManager.h
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+iostream
+-
+map
+-
+fstream
+-
 
 E:/Projects/hyzu/window/SampleWindow.cpp
 SampleWindow.h
@@ -717,6 +733,10 @@ glm/glm.hpp
 -
 ../input/InputManager.h
 E:/Projects/hyzu/input/InputManager.h
+../shaders/ShaderManager.h
+E:/Projects/hyzu/shaders/ShaderManager.h
+../render/RenderableObject.h
+E:/Projects/hyzu/render/RenderableObject.h
 iostream
 -
 
