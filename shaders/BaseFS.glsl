@@ -1,7 +1,8 @@
 #version 460 core
+in vec4 vertexColor;
 out vec4 fragmentColor;
-
+uniform vec4 uniformColor;
 void main() {
 
-    fragmentColor = vec4(0.67f,0.99f,0.2f,0.57f);
+    fragmentColor = vertexColor;
 }

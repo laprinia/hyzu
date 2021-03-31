@@ -13,7 +13,7 @@
 class RenderableObject {
 
 public:
-    GLuint VAO,VBO;
+    GLuint VAO,VBO,EBO;
     RenderableObject()=default;
     void RenderObject();
     ~RenderableObject();

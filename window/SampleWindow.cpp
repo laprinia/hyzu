@@ -5,6 +5,7 @@
 #include "SampleWindow.h"
 
 SampleWindow::SampleWindow(int width, int height, std::string title) {
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -25,14 +26,18 @@ SampleWindow::SampleWindow(int width, int height, std::string title) {
     glViewport(0, 0, 800, 600);
     SampleWindow::CompileShaders();
     SampleWindow::renderableObject.RenderObject();
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
         glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
+        GLfloat timeValue=glfwGetTime();
+        GLfloat greenValue=sin(timeValue)/2+0.5;
         glUseProgram(ShaderManager::shaderProgram);
+        glUniform4f(glGetUniformLocation(ShaderManager::shaderProgram,"uniformColor"),0.0f,greenValue,0.0f,1.0f);
+
         glBindVertexArray(renderableObject.VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);

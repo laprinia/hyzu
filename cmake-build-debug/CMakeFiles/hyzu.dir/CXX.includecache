@@ -696,6 +696,10 @@ E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
 
+E:/Projects/hyzu/render/RenderableObject.cpp
+RenderableObject.h
+E:/Projects/hyzu/render/RenderableObject.h
+
 E:/Projects/hyzu/render/RenderableObject.h
 GL/glew.h
 -
