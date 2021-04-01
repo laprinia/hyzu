@@ -98,9 +98,10 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  E:/Projects/hyzu/input/InputManager.h
  E:/Projects/hyzu/main.cpp
  E:/Projects/hyzu/render/RenderableObject.h
+ E:/Projects/hyzu/render/RenderableWithVertexColor.h
  E:/Projects/hyzu/shaders/ShaderManager.h
  E:/Projects/hyzu/window/SampleWindow.h
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
  ../GLEW/include/GL/glew.h
  ../GLFW/include/GLFW/glfw3.h
  C:/GLM/glm/common.hpp
@@ -182,8 +183,9 @@ CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj
  C:/GLM/glm/vec3.hpp
  C:/GLM/glm/vec4.hpp
  C:/GLM/glm/vector_relational.hpp
- E:/Projects/hyzu/render/RenderableObject.cpp
  E:/Projects/hyzu/render/RenderableObject.h
+ E:/Projects/hyzu/render/RenderableWithVertexColor.cpp
+ E:/Projects/hyzu/render/RenderableWithVertexColor.h
 CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj
  ../GLEW/include/GL/glew.h
  ../GLFW/include/GLFW/glfw3.h
@@ -360,6 +362,7 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
  C:/GLM/glm/vector_relational.hpp
  E:/Projects/hyzu/input/InputManager.h
  E:/Projects/hyzu/render/RenderableObject.h
+ E:/Projects/hyzu/render/RenderableWithVertexColor.h
  E:/Projects/hyzu/shaders/ShaderManager.h
  E:/Projects/hyzu/window/SampleWindow.cpp
  E:/Projects/hyzu/window/SampleWindow.h

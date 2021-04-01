@@ -13,8 +13,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "../input/InputManager.h"
 #include "../shaders/ShaderManager.h"
-#include "../render/RenderableObject.h"
+#include "../render/RenderableWithVertexColor.h"
 #include <iostream>
+#include <vector>
+#include <unordered_map>
 
 class SampleWindow {
 private:
@@ -22,9 +24,8 @@ private:
     ShaderManager shaderManager = ShaderManager::GetInstance();
 
     GLFWwindow *window;
-    RenderableObject renderableObject;
     int width, height;
-
+    std::unordered_map<std::string, RenderableObject*> renderables;
     static void CompileShaders();
 
 
@@ -33,14 +34,16 @@ public:
 
     ~SampleWindow();
 
-    void Update() const;
-
+    void Update();
+    void Init();
+    void RenderMeshFromData(const std::string& meshName, const glm::mat4& modelMatrix );
     GLFWwindow *GetWindowContext();
 
     int GetWindowHeight();
 
     int GetWindowWidth();
 
+    void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix);
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

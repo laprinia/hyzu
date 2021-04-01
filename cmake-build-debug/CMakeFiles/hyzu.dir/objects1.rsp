@@ -1,1 +1,1 @@
-CMakeFiles/hyzu.dir/main.cpp.obj CMakeFiles/hyzu.dir/input/InputManager.cpp.obj CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj
+CMakeFiles/hyzu.dir/main.cpp.obj CMakeFiles/hyzu.dir/input/InputManager.cpp.obj CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj

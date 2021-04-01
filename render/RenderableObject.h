@@ -1,22 +1,22 @@
 //
-// Created by Lavinia on 3/8/2021.
+// Created by Lavinia on 4/1/2021.
 //
 
 #ifndef HYZU_RENDERABLEOBJECT_H
 #define HYZU_RENDERABLEOBJECT_H
-#define GLEW_STATIC
+
+#include <iostream>
+#include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <iostream>
-
 class RenderableObject {
-
 public:
-    GLuint VAO,VBO,EBO;
-    RenderableObject()=default;
-    void DefineObject();
-    ~RenderableObject();
+    GLuint VAO, VBO, EBO;
+
+    virtual ~RenderableObject() = default;
+
+    virtual void DefineObject(std::vector<GLfloat> vertices, std::vector<unsigned int> indices) = 0;
 };
 
 

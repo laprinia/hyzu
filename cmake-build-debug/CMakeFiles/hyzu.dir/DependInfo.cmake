@@ -6,7 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "E:/Projects/hyzu/input/InputManager.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/input/InputManager.cpp.obj"
   "E:/Projects/hyzu/main.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/main.cpp.obj"
-  "E:/Projects/hyzu/render/RenderableObject.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj"
+  "E:/Projects/hyzu/render/RenderableWithVertexColor.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj"
   "E:/Projects/hyzu/shaders/ShaderManager.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj"
   "E:/Projects/hyzu/window/SampleWindow.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj"
   )

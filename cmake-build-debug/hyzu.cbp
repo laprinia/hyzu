@@ -95,10 +95,13 @@
 		<Unit filename="E:/Projects/hyzu/main.cpp">
 			<Option target="hyzu"/>
 		</Unit>
-		<Unit filename="E:/Projects/hyzu/render/RenderableObject.cpp">
+		<Unit filename="E:/Projects/hyzu/render/RenderableObject.h">
 			<Option target="hyzu"/>
 		</Unit>
-		<Unit filename="E:/Projects/hyzu/render/RenderableObject.h">
+		<Unit filename="E:/Projects/hyzu/render/RenderableWithVertexColor.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/RenderableWithVertexColor.h">
 			<Option target="hyzu"/>
 		</Unit>
 		<Unit filename="E:/Projects/hyzu/shaders/ShaderManager.cpp">

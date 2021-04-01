@@ -118,19 +118,19 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hyzu.dir/window/SampleWindow.cpp.s"
 	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\hyzu\window\SampleWindow.cpp -o CMakeFiles\hyzu.dir\window\SampleWindow.cpp.s
 
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj: CMakeFiles/hyzu.dir/flags.make
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj: CMakeFiles/hyzu.dir/includes_CXX.rsp
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj: ../render/RenderableObject.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\hyzu\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj"
-	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\hyzu.dir\render\RenderableObject.cpp.obj -c E:\Projects\hyzu\render\RenderableObject.cpp
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj: CMakeFiles/hyzu.dir/flags.make
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj: CMakeFiles/hyzu.dir/includes_CXX.rsp
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj: ../render/RenderableWithVertexColor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=E:\Projects\hyzu\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj"
+	C:\MinGW\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\hyzu.dir\render\RenderableWithVertexColor.cpp.obj -c E:\Projects\hyzu\render\RenderableWithVertexColor.cpp
 
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hyzu.dir/render/RenderableObject.cpp.i"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\hyzu\render\RenderableObject.cpp > CMakeFiles\hyzu.dir\render\RenderableObject.cpp.i
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.i"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E E:\Projects\hyzu\render\RenderableWithVertexColor.cpp > CMakeFiles\hyzu.dir\render\RenderableWithVertexColor.cpp.i
 
-CMakeFiles/hyzu.dir/render/RenderableObject.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hyzu.dir/render/RenderableObject.cpp.s"
-	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\hyzu\render\RenderableObject.cpp -o CMakeFiles\hyzu.dir\render\RenderableObject.cpp.s
+CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.s"
+	C:\MinGW\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S E:\Projects\hyzu\render\RenderableWithVertexColor.cpp -o CMakeFiles\hyzu.dir\render\RenderableWithVertexColor.cpp.s
 
 CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj: CMakeFiles/hyzu.dir/flags.make
 CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj: CMakeFiles/hyzu.dir/includes_CXX.rsp
@@ -151,7 +151,7 @@ hyzu_OBJECTS = \
 "CMakeFiles/hyzu.dir/main.cpp.obj" \
 "CMakeFiles/hyzu.dir/input/InputManager.cpp.obj" \
 "CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj" \
-"CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj" \
+"CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj" \
 "CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj"
 
 # External object files for target hyzu
@@ -160,7 +160,7 @@ hyzu_EXTERNAL_OBJECTS =
 hyzu.exe: CMakeFiles/hyzu.dir/main.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/input/InputManager.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
-hyzu.exe: CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj
+hyzu.exe: CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/build.make
 hyzu.exe: CMakeFiles/hyzu.dir/linklibs.rsp

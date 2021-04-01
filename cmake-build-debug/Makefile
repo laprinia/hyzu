@@ -196,32 +196,32 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-render/RenderableObject.obj: render/RenderableObject.cpp.obj
+render/RenderableWithVertexColor.obj: render/RenderableWithVertexColor.cpp.obj
 
-.PHONY : render/RenderableObject.obj
+.PHONY : render/RenderableWithVertexColor.obj
 
 # target to build an object file
-render/RenderableObject.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.obj
-.PHONY : render/RenderableObject.cpp.obj
+render/RenderableWithVertexColor.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
+.PHONY : render/RenderableWithVertexColor.cpp.obj
 
-render/RenderableObject.i: render/RenderableObject.cpp.i
+render/RenderableWithVertexColor.i: render/RenderableWithVertexColor.cpp.i
 
-.PHONY : render/RenderableObject.i
+.PHONY : render/RenderableWithVertexColor.i
 
 # target to preprocess a source file
-render/RenderableObject.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.i
-.PHONY : render/RenderableObject.cpp.i
+render/RenderableWithVertexColor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.i
+.PHONY : render/RenderableWithVertexColor.cpp.i
 
-render/RenderableObject.s: render/RenderableObject.cpp.s
+render/RenderableWithVertexColor.s: render/RenderableWithVertexColor.cpp.s
 
-.PHONY : render/RenderableObject.s
+.PHONY : render/RenderableWithVertexColor.s
 
 # target to generate assembly for a file
-render/RenderableObject.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableObject.cpp.s
-.PHONY : render/RenderableObject.cpp.s
+render/RenderableWithVertexColor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.s
+.PHONY : render/RenderableWithVertexColor.cpp.s
 
 shaders/ShaderManager.obj: shaders/ShaderManager.cpp.obj
 
@@ -292,9 +292,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
-	@echo ... render/RenderableObject.obj
-	@echo ... render/RenderableObject.i
-	@echo ... render/RenderableObject.s
+	@echo ... render/RenderableWithVertexColor.obj
+	@echo ... render/RenderableWithVertexColor.i
+	@echo ... render/RenderableWithVertexColor.s
 	@echo ... shaders/ShaderManager.obj
 	@echo ... shaders/ShaderManager.i
 	@echo ... shaders/ShaderManager.s

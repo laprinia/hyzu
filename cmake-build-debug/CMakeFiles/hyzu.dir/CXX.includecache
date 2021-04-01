@@ -788,16 +788,20 @@ E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
 
-E:/Projects/hyzu/main.cpp
-window/SampleWindow.h
-E:/Projects/hyzu/window/SampleWindow.h
-shaders/ShaderManager.h
-E:/Projects/hyzu/shaders/ShaderManager.h
-
-E:/Projects/hyzu/render/RenderableObject.cpp
-RenderableObject.h
 E:/Projects/hyzu/render/RenderableObject.h
+iostream
+-
+vector
+-
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
 
+E:/Projects/hyzu/render/RenderableWithVertexColor.h
+RenderableObject.h
 E:/Projects/hyzu/render/RenderableObject.h
 GL/glew.h
 -
@@ -806,6 +810,8 @@ GLFW/glfw3.h
 glm/glm.hpp
 -
 iostream
+-
+vector
 -
 
 E:/Projects/hyzu/shaders/ShaderManager.h
@@ -841,8 +847,12 @@ glm/gtc/type_ptr.hpp
 E:/Projects/hyzu/input/InputManager.h
 ../shaders/ShaderManager.h
 E:/Projects/hyzu/shaders/ShaderManager.h
-../render/RenderableObject.h
-E:/Projects/hyzu/render/RenderableObject.h
+../render/RenderableWithVertexColor.h
+E:/Projects/hyzu/render/RenderableWithVertexColor.h
 iostream
+-
+vector
+-
+unordered_map
 -
 
