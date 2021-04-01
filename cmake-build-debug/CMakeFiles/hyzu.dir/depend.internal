@@ -70,6 +70,14 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  C:/GLM/glm/fwd.hpp
  C:/GLM/glm/geometric.hpp
  C:/GLM/glm/glm.hpp
+ C:/GLM/glm/gtc/constants.hpp
+ C:/GLM/glm/gtc/constants.inl
+ C:/GLM/glm/gtc/matrix_transform.hpp
+ C:/GLM/glm/gtc/matrix_transform.inl
+ C:/GLM/glm/gtc/quaternion.hpp
+ C:/GLM/glm/gtc/quaternion.inl
+ C:/GLM/glm/gtc/type_ptr.hpp
+ C:/GLM/glm/gtc/type_ptr.inl
  C:/GLM/glm/integer.hpp
  C:/GLM/glm/mat2x2.hpp
  C:/GLM/glm/mat2x3.hpp
@@ -325,6 +333,14 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
  C:/GLM/glm/fwd.hpp
  C:/GLM/glm/geometric.hpp
  C:/GLM/glm/glm.hpp
+ C:/GLM/glm/gtc/constants.hpp
+ C:/GLM/glm/gtc/constants.inl
+ C:/GLM/glm/gtc/matrix_transform.hpp
+ C:/GLM/glm/gtc/matrix_transform.inl
+ C:/GLM/glm/gtc/quaternion.hpp
+ C:/GLM/glm/gtc/quaternion.inl
+ C:/GLM/glm/gtc/type_ptr.hpp
+ C:/GLM/glm/gtc/type_ptr.inl
  C:/GLM/glm/integer.hpp
  C:/GLM/glm/mat2x2.hpp
  C:/GLM/glm/mat2x3.hpp

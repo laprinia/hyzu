@@ -9,6 +9,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../input/InputManager.h"
 #include "../shaders/ShaderManager.h"
 #include "../render/RenderableObject.h"
@@ -30,6 +32,8 @@ public:
     SampleWindow(int width, int height, std::string title);
 
     ~SampleWindow();
+
+    void Update() const;
 
     GLFWwindow *GetWindowContext();
 

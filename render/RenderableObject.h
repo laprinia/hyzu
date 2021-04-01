@@ -15,7 +15,7 @@ class RenderableObject {
 public:
     GLuint VAO,VBO,EBO;
     RenderableObject()=default;
-    void RenderObject();
+    void DefineObject();
     ~RenderableObject();
 };
 
