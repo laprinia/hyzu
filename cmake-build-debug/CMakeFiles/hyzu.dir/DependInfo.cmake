@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "E:/Projects/hyzu/camera/Camera.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/camera/Camera.cpp.obj"
   "E:/Projects/hyzu/input/InputManager.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/input/InputManager.cpp.obj"
   "E:/Projects/hyzu/main.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/main.cpp.obj"
   "E:/Projects/hyzu/render/RenderableWithVertexColor.cpp" "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj"

@@ -13,8 +13,6 @@ private:
 public:
     static GLFWwindow *windowContext;
     static InputManager& GetInstance();
-    static void SetWindowContext(GLFWwindow *window);
-    void static OnKeyPress(GLFWwindow *key, int scanCode, int action, int mode, int i);
-
+    static void SetWindowContext(GLFWwindow *window, void (*function)(GLFWwindow *, int, int, int, int));
 };
 #endif

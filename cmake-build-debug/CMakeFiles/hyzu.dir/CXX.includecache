@@ -784,6 +784,10 @@ C:/GLM/glm/vector_relational.hpp
 detail/func_vector_relational.hpp
 C:/GLM/glm/detail/func_vector_relational.hpp
 
+E:/Projects/hyzu/camera/Camera.h
+glm/glm.hpp
+-
+
 E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
@@ -849,6 +853,8 @@ E:/Projects/hyzu/input/InputManager.h
 E:/Projects/hyzu/shaders/ShaderManager.h
 ../render/RenderableWithVertexColor.h
 E:/Projects/hyzu/render/RenderableWithVertexColor.h
+../camera/Camera.h
+E:/Projects/hyzu/camera/Camera.h
 iostream
 -
 vector

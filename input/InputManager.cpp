@@ -13,17 +13,11 @@ InputManager &InputManager::GetInstance() {
     return instance;
 }
 
-void InputManager::SetWindowContext(GLFWwindow *window) {
+void InputManager::SetWindowContext(GLFWwindow *window,void (*function)(GLFWwindow*,int,int,int,int)) {
     InputManager::windowContext = window;
-    glfwSetKeyCallback(window, OnKeyPress);
+    glfwSetKeyCallback(window, function);
 }
 
-void InputManager::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
-
-}
 
 
 

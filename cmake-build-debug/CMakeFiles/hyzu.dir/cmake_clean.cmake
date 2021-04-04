@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/hyzu.dir/camera/Camera.cpp.obj"
   "CMakeFiles/hyzu.dir/input/InputManager.cpp.obj"
   "CMakeFiles/hyzu.dir/main.cpp.obj"
   "CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj"

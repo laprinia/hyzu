@@ -86,6 +86,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="E:/Projects/hyzu/camera/Camera.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/camera/Camera.h">
+			<Option target="hyzu"/>
+		</Unit>
 		<Unit filename="E:/Projects/hyzu/input/InputManager.cpp">
 			<Option target="hyzu"/>
 		</Unit>

@@ -142,6 +142,33 @@ hyzu/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/build
 .PHONY : hyzu/fast
 
+camera/Camera.obj: camera/Camera.cpp.obj
+
+.PHONY : camera/Camera.obj
+
+# target to build an object file
+camera/Camera.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/camera/Camera.cpp.obj
+.PHONY : camera/Camera.cpp.obj
+
+camera/Camera.i: camera/Camera.cpp.i
+
+.PHONY : camera/Camera.i
+
+# target to preprocess a source file
+camera/Camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/camera/Camera.cpp.i
+.PHONY : camera/Camera.cpp.i
+
+camera/Camera.s: camera/Camera.cpp.s
+
+.PHONY : camera/Camera.s
+
+# target to generate assembly for a file
+camera/Camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/camera/Camera.cpp.s
+.PHONY : camera/Camera.cpp.s
+
 input/InputManager.obj: input/InputManager.cpp.obj
 
 .PHONY : input/InputManager.obj
@@ -286,6 +313,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... hyzu
+	@echo ... camera/Camera.obj
+	@echo ... camera/Camera.i
+	@echo ... camera/Camera.s
 	@echo ... input/InputManager.obj
 	@echo ... input/InputManager.i
 	@echo ... input/InputManager.s

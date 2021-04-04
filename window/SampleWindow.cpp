@@ -5,7 +5,12 @@
 
 #include "SampleWindow.h"
 
-SampleWindow::SampleWindow(int width, int height, std::string title) {
+Camera* SampleWindow::camera= nullptr;
+float SampleWindow::cameraSpeed=2.0f;
+float SampleWindow::deltaTime=0.0f;
+float SampleWindow::lastFrame=0.0f;
+
+SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -20,11 +25,12 @@ SampleWindow::SampleWindow(int width, int height, std::string title) {
     }
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
-    InputManager::SetWindowContext(window);
+    InputManager::SetWindowContext(window, OnKeyPress);
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
     glViewport(0, 0, 800, 600);
+    //glEnable(GL_DEPTH_TEST);
     SampleWindow::CompileShaders();
     SampleWindow::Init();
 
@@ -50,39 +56,47 @@ void SampleWindow::Init() {
             0, 1, 3,
             1, 2, 3
     };
-    RenderableObject* renderableObject=new RenderableWithVertexColor();
+
+    camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+    RenderableObject *renderableObject = new RenderableWithVertexColor();
     renderableObject->DefineObject(vertices, indices);
-    renderables["plane"]=renderableObject;
+    renderables["plane"] = renderableObject;
 }
 
-void SampleWindow::Update()  {
+void SampleWindow::Update() {
     glfwPollEvents();
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
+    glClear(GL_COLOR_BUFFER_BIT);
 
     glUseProgram(ShaderManager::shaderProgram);
     glm::mat4 model = glm::mat4(1.0f);
 
     model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    SampleWindow::RenderMeshFromData("plane",model);
-    model=glm::mat4(1.0f);
-    model = glm::translate(model,glm::vec3(2.0f,0.0f,0.0f));
-    SampleWindow::RenderMeshFromData("plane",model);
+    SampleWindow::RenderMeshFromData("plane", model);
+    model = glm::mat4(1.0f);
+
 }
 
 void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix) {
 
+    const float radius = 3.0f;
+    float camX = sin(glfwGetTime()) * radius;
+    float camZ = cos(glfwGetTime()) * radius;
     glm::mat4 view = glm::mat4(1.0f);
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
+                       camera->getCameraUp());
 
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 0.1f, 100.0f);
 
 
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE,
+                       glm::value_ptr(modelMatrix));
     glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "projection"), 1, GL_FALSE,
+                       glm::value_ptr(projection));
 
     glBindVertexArray(renderables[meshName]->VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -101,13 +115,36 @@ void SampleWindow::CompileShaders() {
     ShaderManager::CheckShaderLink();
 }
 
+void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
+    float currentTime=glfwGetTime();
+    deltaTime=currentTime-lastFrame;
+    lastFrame=currentTime;
+    float actualSpeed=cameraSpeed*deltaTime;
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, true);
+    }
+    if(key==GLFW_KEY_W && action==GLFW_PRESS){
+        camera->setCameraPosition(camera->getCameraPosition()+(actualSpeed*camera->getCameraFront()));
+    }
+    if(key==GLFW_KEY_S && action==GLFW_PRESS){
+        camera->setCameraPosition(camera->getCameraPosition()-(actualSpeed*camera->getCameraFront()));
+    }
+    if(key==GLFW_KEY_A && action==GLFW_PRESS){
+        camera->setCameraPosition(camera->getCameraPosition()-(actualSpeed*(glm::normalize(glm::cross(camera->getCameraFront(),camera->getCameraUp())))));
+    }
+    if(key==GLFW_KEY_D && action==GLFW_PRESS){
+        camera->setCameraPosition(camera->getCameraPosition()+(actualSpeed*(glm::normalize(glm::cross(camera->getCameraFront(),camera->getCameraUp())))));
+    }
+
+}
+
 
 SampleWindow::~SampleWindow() {
-    for (auto const& renderable : renderables)
-    {
+    for (auto const &renderable : renderables) {
         delete renderable.second;
     }
     renderables.clear();
+    delete camera;
 }
 
 GLFWwindow *SampleWindow::GetWindowContext() {
@@ -121,6 +158,7 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
 
 
 
