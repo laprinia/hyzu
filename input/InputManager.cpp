@@ -23,6 +23,14 @@ void InputManager::SetWindowCursorPositionCallback(GLFWwindow *window, void (*fu
     glfwSetCursorPosCallback(window,function);
 }
 
+void InputManager::SetWindowScrollCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double, double)) {
+    glfwSetScrollCallback(window,function);
+}
+
+void InputManager::SetFramebufferSizeCallback(GLFWwindow *window, void (*function)(GLFWwindow *, int, int)) {
+    glfwSetFramebufferSizeCallback(window,function);
+}
+
 
 
 

@@ -11,6 +11,12 @@ private:
     glm::vec3 cameraPosition;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
+    float fieldOfView;
+public:
+    void setFieldOfView(float fieldOfView);
+
+public:
+    float getFieldOfView() const;
 
 public:
     Camera(const glm::vec3& cameraPosition,const glm::vec3& cameraFront,const glm::vec3& cameraUp);

@@ -33,13 +33,15 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     inputManager = InputManager::GetInstance(window);
+    InputManager::SetFramebufferSizeCallback(window,OnFramebufferSizeChange);
     InputManager::SetWindowKeyCallback(window, OnKeyPress);
     InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    InputManager::SetWindowScrollCallback(window, OnScrollChange);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, width, height);
 
     //glEnable(GL_DEPTH_TEST);
     SampleWindow::CompileShaders();
@@ -94,14 +96,13 @@ void SampleWindow::Update() {
 void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix) {
 
     const float radius = 3.0f;
-    float camX = sin(glfwGetTime()) * radius;
-    float camZ = cos(glfwGetTime()) * radius;
+
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
                        camera->getCameraUp());
 
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), (float) width / (float) height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
 
 
     glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE,
@@ -163,6 +164,13 @@ void SampleWindow::OnCursorPositionChange(GLFWwindow *window, double xPosition, 
 
 }
 
+void SampleWindow::OnScrollChange(GLFWwindow *window, double xOffset, double yOffset) {
+    camera->setFieldOfView(camera->getFieldOfView() - yOffset);
+    float foV = camera->getFieldOfView();
+    if (foV < 1.0f) camera->setFieldOfView(1.0f);
+    if (foV > 45.0f) camera->setFieldOfView(45.0f);
+}
+
 void SampleWindow::OnInputUpdate() {
     float currentTime = glfwGetTime();
     deltaTime = currentTime - lastFrame;
@@ -184,6 +192,11 @@ void SampleWindow::OnInputUpdate() {
                 glm::cross(camera->getCameraFront(), camera->getCameraUp())))));
     }
 }
+void SampleWindow::OnFramebufferSizeChange(GLFWwindow *window, int width, int height) {
+
+        glViewport(0,0,width,height);
+}
+
 
 SampleWindow::~SampleWindow() {
     for (auto const &renderable : renderables) {
@@ -204,6 +217,7 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
 
 
 

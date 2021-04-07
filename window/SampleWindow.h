@@ -37,6 +37,9 @@ private:
     static void CompileShaders();
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);
     static void OnCursorPositionChange(GLFWwindow *window, double xPosition,double yPosition);
+    static void OnScrollChange(GLFWwindow *window, double xOffset,double yOffset);
+    static void OnFramebufferSizeChange(GLFWwindow *window, int width, int height);
+
 
 public:
     SampleWindow(int width, int height, const std::string& title);

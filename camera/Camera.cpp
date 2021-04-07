@@ -8,6 +8,7 @@ Camera::Camera(const glm::vec3 &cameraPosition, const glm::vec3 &cameraFront, co
     this->cameraFront=cameraFront;
     this->cameraPosition=cameraPosition;
     this->cameraUp=cameraUp;
+    this->fieldOfView=45.0f;
 }
 
 const glm::vec3 &Camera::getCameraPosition() const {
@@ -32,6 +33,14 @@ const glm::vec3 &Camera::getCameraUp() const {
 
 void Camera::setCameraUp(const glm::vec3 &cameraUp) {
     Camera::cameraUp = cameraUp;
+}
+
+float Camera::getFieldOfView() const {
+    return fieldOfView;
+}
+
+void Camera::setFieldOfView(float fieldOfView) {
+    Camera::fieldOfView = fieldOfView;
 }
 
 

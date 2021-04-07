@@ -17,5 +17,8 @@ public:
     static InputManager& GetInstance(GLFWwindow *windowContext);
     static void SetWindowKeyCallback(GLFWwindow *window, void (*function)(GLFWwindow *, int, int, int, int));
     static void SetWindowCursorPositionCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double ,double ));
+    static void SetWindowScrollCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double ,double ));
+    static void SetFramebufferSizeCallback(GLFWwindow *window, void (*function)(GLFWwindow *, int ,int ));
+
 };
 #endif
