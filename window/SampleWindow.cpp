@@ -5,10 +5,17 @@
 
 #include "SampleWindow.h"
 
-Camera* SampleWindow::camera= nullptr;
-float SampleWindow::cameraSpeed=2.0f;
-float SampleWindow::deltaTime=0.0f;
-float SampleWindow::lastFrame=0.0f;
+Camera *SampleWindow::camera = nullptr;
+float SampleWindow::cameraSpeed = 2.0f;
+float SampleWindow::deltaTime = 0.0f;
+float SampleWindow::lastFrame = 0.0f;
+bool SampleWindow::firstMouseMove = true;
+double SampleWindow::lastMouseX = 0.0f;
+double SampleWindow::lastMouseY = 0.0f;
+double SampleWindow::yaw = -90.0f;
+double SampleWindow::pitch = 0.0f;
+
+float SampleWindow::mouseSensitivity = 0.1f;
 
 SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 
@@ -25,11 +32,15 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     }
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
-    InputManager::SetWindowContext(window, OnKeyPress);
+    inputManager = InputManager::GetInstance(window);
+    InputManager::SetWindowKeyCallback(window, OnKeyPress);
+    InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
     glViewport(0, 0, 800, 600);
+
     //glEnable(GL_DEPTH_TEST);
     SampleWindow::CompileShaders();
     SampleWindow::Init();
@@ -66,6 +77,7 @@ void SampleWindow::Init() {
 
 void SampleWindow::Update() {
     glfwPollEvents();
+    OnInputUpdate();
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -116,28 +128,62 @@ void SampleWindow::CompileShaders() {
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
-    float currentTime=glfwGetTime();
-    deltaTime=currentTime-lastFrame;
-    lastFrame=currentTime;
-    float actualSpeed=cameraSpeed*deltaTime;
+
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
-    }
-    if(key==GLFW_KEY_W && action==GLFW_PRESS){
-        camera->setCameraPosition(camera->getCameraPosition()+(actualSpeed*camera->getCameraFront()));
-    }
-    if(key==GLFW_KEY_S && action==GLFW_PRESS){
-        camera->setCameraPosition(camera->getCameraPosition()-(actualSpeed*camera->getCameraFront()));
-    }
-    if(key==GLFW_KEY_A && action==GLFW_PRESS){
-        camera->setCameraPosition(camera->getCameraPosition()-(actualSpeed*(glm::normalize(glm::cross(camera->getCameraFront(),camera->getCameraUp())))));
-    }
-    if(key==GLFW_KEY_D && action==GLFW_PRESS){
-        camera->setCameraPosition(camera->getCameraPosition()+(actualSpeed*(glm::normalize(glm::cross(camera->getCameraFront(),camera->getCameraUp())))));
     }
 
 }
 
+void SampleWindow::OnCursorPositionChange(GLFWwindow *window, double xPosition, double yPosition) {
+    if (firstMouseMove) {
+        firstMouseMove = false;
+        lastMouseX = xPosition;
+        lastMouseY = yPosition;
+    }
+    float xOffset = xPosition - lastMouseX;
+    float yOffset = lastMouseY - yPosition;
+    lastMouseX = xPosition;
+    lastMouseY = yPosition;
+
+    yaw += mouseSensitivity * xOffset;
+    pitch += mouseSensitivity * yOffset;
+
+    if (pitch > 89.0f)
+        pitch = 89.0f;
+    if (pitch < -89.0f)
+        pitch = -89.0f;
+
+    glm::vec3 front;
+    front.x = glm::cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+    front.y = glm::sin(glm::radians(pitch));
+    front.z = glm::cos(glm::radians(pitch)) * glm::sin(glm::radians(yaw));
+
+    camera->setCameraFront(glm::normalize(front));
+
+}
+
+void SampleWindow::OnInputUpdate() {
+    float currentTime = glfwGetTime();
+    deltaTime = currentTime - lastFrame;
+    lastFrame = currentTime;
+    float actualSpeed = cameraSpeed * deltaTime;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() + (actualSpeed * camera->getCameraFront()));
+    }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() - (actualSpeed * camera->getCameraFront()));
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() - (actualSpeed * (glm::normalize(
+                glm::cross(camera->getCameraFront(), camera->getCameraUp())))));
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() + (actualSpeed * (glm::normalize(
+                glm::cross(camera->getCameraFront(), camera->getCameraUp())))));
+    }
+}
 
 SampleWindow::~SampleWindow() {
     for (auto const &renderable : renderables) {
@@ -158,6 +204,10 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
+
+
+
 
 
 

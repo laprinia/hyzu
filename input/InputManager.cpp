@@ -4,18 +4,23 @@
 
 #include "InputManager.h"
 
-InputManager::InputManager() = default;
+InputManager::InputManager(GLFWwindow *windowContext){
+    InputManager::windowContext=windowContext;
+};
 
 GLFWwindow *InputManager::windowContext = nullptr;
 
-InputManager &InputManager::GetInstance() {
-    static InputManager instance;
+InputManager &InputManager::GetInstance(GLFWwindow *windowContext) {
+    static InputManager instance(windowContext);
     return instance;
 }
 
-void InputManager::SetWindowContext(GLFWwindow *window,void (*function)(GLFWwindow*,int,int,int,int)) {
-    InputManager::windowContext = window;
+void InputManager::SetWindowKeyCallback(GLFWwindow *window, void (*function)(GLFWwindow*, int, int, int, int)) {
     glfwSetKeyCallback(window, function);
+}
+
+void InputManager::SetWindowCursorPositionCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double, double)) {
+    glfwSetCursorPosCallback(window,function);
 }
 
 

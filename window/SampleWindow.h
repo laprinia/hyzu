@@ -21,17 +21,22 @@
 
 class SampleWindow {
 private:
-    InputManager inputManager = InputManager::GetInstance();
+    InputManager inputManager=InputManager::GetInstance(nullptr);
     ShaderManager shaderManager = ShaderManager::GetInstance();
     static Camera* camera;
     GLFWwindow *window;
     int width, height;
+    static bool firstMouseMove;
+    static double lastMouseX, lastMouseY;
+    static double yaw,pitch;
+    static float mouseSensitivity;
     static float cameraSpeed;
     static float deltaTime;
     static float lastFrame;
     std::unordered_map<std::string, RenderableObject*> renderables;
     static void CompileShaders();
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);
+    static void OnCursorPositionChange(GLFWwindow *window, double xPosition,double yPosition);
 
 public:
     SampleWindow(int width, int height, const std::string& title);
@@ -48,6 +53,8 @@ public:
     int GetWindowWidth();
 
     void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix);
+
+    void OnInputUpdate();
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

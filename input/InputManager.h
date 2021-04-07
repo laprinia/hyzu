@@ -8,11 +8,14 @@
 
 class InputManager {
 private:
-    InputManager();
+    static GLFWwindow *windowContext;
+    InputManager()=default;
+    InputManager(GLFWwindow *windowContext);
 
 public:
-    static GLFWwindow *windowContext;
-    static InputManager& GetInstance();
-    static void SetWindowContext(GLFWwindow *window, void (*function)(GLFWwindow *, int, int, int, int));
+
+    static InputManager& GetInstance(GLFWwindow *windowContext);
+    static void SetWindowKeyCallback(GLFWwindow *window, void (*function)(GLFWwindow *, int, int, int, int));
+    static void SetWindowCursorPositionCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double ,double ));
 };
 #endif
