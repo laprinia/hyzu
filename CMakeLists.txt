@@ -8,12 +8,14 @@ if (NOT WIN32)
     set(CMAKE_PREFIX_PATH /usr/local/lib/cmake/glfw)
 endif (NOT WIN32)
 
-
 find_package (OpenGL REQUIRED)
 if (WIN32)
 
-    include_directories( ${PROJECT_SOURCE_DIR}/GLFW/include ${PROJECT_SOURCE_DIR}/GLEW/include  "C:/glm")
-    link_directories("${PROJECT_SOURCE_DIR}/GLEW/lib/Release/Win32" "${PROJECT_SOURCE_DIR}/GLFW/lib-mingw" )
+    include_directories( ${PROJECT_SOURCE_DIR}/libs/GLFW/include ${PROJECT_SOURCE_DIR}/libs/GLEW/include "${PROJECT_SOURCE_DIR}/libs/Assimp/include" "C:/glm")
+    link_directories("${PROJECT_SOURCE_DIR}/libs/GLEW/lib/Release/x64"  "${PROJECT_SOURCE_DIR}/libs/GLFW/lib-mingw" "${PROJECT_SOURCE_DIR}/libs/Assimp/lib" )
+
+    set(BUILD_ASSIMP_TOOLS  ON)
+    set(ASSIMP_BUILD_STATIC_LIB ON)
 else (WIN32)
     find_package (glfw3 REQUIRED)
     find_package (GLM REQUIRED)
@@ -36,8 +38,8 @@ target_link_libraries (hyzu
         ${GLEW_LIBRARY}
         ${COCOA_LIBRARY} ${COREVID_LIBRARY} ${IOKIT_LIBRARY})
 if (WIN32)
-    target_link_libraries (hyzu
-            ${OPENGL_LIBRARIES} glfw3 glew32s glu32 opengl32)
+    target_link_libraries (hyzu assimp ${OPENGL_LIBRARIES} glfw3 glu32 glew32s opengl32  )
+
 endif (WIN32)
 
 if (UNIX)

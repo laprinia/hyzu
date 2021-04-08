@@ -1,1 +1,1 @@
--IE:/Projects/hyzu/GLFW/include -IE:/Projects/hyzu/GLEW/include -IC:/glm 
+-IE:/Projects/hyzu/libs/GLFW/include -IE:/Projects/hyzu/libs/GLEW/include -IE:/Projects/hyzu/libs/Assimp/include -IC:/glm

@@ -2,7 +2,6 @@
 // Created by Lavinia on 3/1/2021.
 //
 
-
 #include "SampleWindow.h"
 
 Camera *SampleWindow::camera = nullptr;
@@ -37,7 +36,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     InputManager::SetWindowKeyCallback(window, OnKeyPress);
     InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
     InputManager::SetWindowScrollCallback(window, OnScrollChange);
-    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     if (glewInit() != GLEW_OK) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
