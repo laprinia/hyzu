@@ -103,6 +103,12 @@
 		<Unit filename="E:/Projects/hyzu/main.cpp">
 			<Option target="hyzu"/>
 		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/Mesh.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/Mesh.h">
+			<Option target="hyzu"/>
+		</Unit>
 		<Unit filename="E:/Projects/hyzu/render/RenderableObject.h">
 			<Option target="hyzu"/>
 		</Unit>
@@ -110,6 +116,12 @@
 			<Option target="hyzu"/>
 		</Unit>
 		<Unit filename="E:/Projects/hyzu/render/RenderableWithVertexColor.h">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/SimpleMesh.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/SimpleMesh.h">
 			<Option target="hyzu"/>
 		</Unit>
 		<Unit filename="E:/Projects/hyzu/shaders/ShaderManager.cpp">

@@ -14,6 +14,7 @@
 #include "../input/InputManager.h"
 #include "../shaders/ShaderManager.h"
 #include "../render/RenderableWithVertexColor.h"
+#include "../render/SimpleMesh.h"
 #include "../camera/Camera.h"
 #include <iostream>
 #include <vector>

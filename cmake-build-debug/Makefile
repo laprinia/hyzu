@@ -222,6 +222,33 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+render/Mesh.obj: render/Mesh.cpp.obj
+
+.PHONY : render/Mesh.obj
+
+# target to build an object file
+render/Mesh.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Mesh.cpp.obj
+.PHONY : render/Mesh.cpp.obj
+
+render/Mesh.i: render/Mesh.cpp.i
+
+.PHONY : render/Mesh.i
+
+# target to preprocess a source file
+render/Mesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Mesh.cpp.i
+.PHONY : render/Mesh.cpp.i
+
+render/Mesh.s: render/Mesh.cpp.s
+
+.PHONY : render/Mesh.s
+
+# target to generate assembly for a file
+render/Mesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Mesh.cpp.s
+.PHONY : render/Mesh.cpp.s
+
 render/RenderableWithVertexColor.obj: render/RenderableWithVertexColor.cpp.obj
 
 .PHONY : render/RenderableWithVertexColor.obj
@@ -248,6 +275,33 @@ render/RenderableWithVertexColor.s: render/RenderableWithVertexColor.cpp.s
 render/RenderableWithVertexColor.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.s
 .PHONY : render/RenderableWithVertexColor.cpp.s
+
+render/SimpleMesh.obj: render/SimpleMesh.cpp.obj
+
+.PHONY : render/SimpleMesh.obj
+
+# target to build an object file
+render/SimpleMesh.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/SimpleMesh.cpp.obj
+.PHONY : render/SimpleMesh.cpp.obj
+
+render/SimpleMesh.i: render/SimpleMesh.cpp.i
+
+.PHONY : render/SimpleMesh.i
+
+# target to preprocess a source file
+render/SimpleMesh.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/SimpleMesh.cpp.i
+.PHONY : render/SimpleMesh.cpp.i
+
+render/SimpleMesh.s: render/SimpleMesh.cpp.s
+
+.PHONY : render/SimpleMesh.s
+
+# target to generate assembly for a file
+render/SimpleMesh.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/SimpleMesh.cpp.s
+.PHONY : render/SimpleMesh.cpp.s
 
 shaders/ShaderManager.obj: shaders/ShaderManager.cpp.obj
 
@@ -321,9 +375,15 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... render/Mesh.obj
+	@echo ... render/Mesh.i
+	@echo ... render/Mesh.s
 	@echo ... render/RenderableWithVertexColor.obj
 	@echo ... render/RenderableWithVertexColor.i
 	@echo ... render/RenderableWithVertexColor.s
+	@echo ... render/SimpleMesh.obj
+	@echo ... render/SimpleMesh.i
+	@echo ... render/SimpleMesh.s
 	@echo ... shaders/ShaderManager.obj
 	@echo ... shaders/ShaderManager.i
 	@echo ... shaders/ShaderManager.s

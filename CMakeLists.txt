@@ -28,7 +28,7 @@ if (APPLE)
     find_library(COREVID_LIBRARY CoreVideo REQUIRED)
 endif (APPLE)
 
-set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h render/RenderableWithVertexColor.cpp render/RenderableWithVertexColor.h shaders/ShaderManager.cpp shaders/ShaderManager.h render/RenderableObject.h camera/Camera.cpp camera/Camera.h)
+set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h render/RenderableWithVertexColor.cpp render/RenderableWithVertexColor.h shaders/ShaderManager.cpp shaders/ShaderManager.h render/RenderableObject.h camera/Camera.cpp camera/Camera.h render/Mesh.cpp render/Mesh.h render/SimpleMesh.cpp render/SimpleMesh.h)
 
 ## "hyzu" is the name of the executable
 add_executable(hyzu ${SOURCE_FILES})

@@ -210,8 +210,94 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  E:/Projects/hyzu/main.cpp
  E:/Projects/hyzu/render/RenderableObject.h
  E:/Projects/hyzu/render/RenderableWithVertexColor.h
+ E:/Projects/hyzu/render/SimpleMesh.h
  E:/Projects/hyzu/shaders/ShaderManager.h
  E:/Projects/hyzu/window/SampleWindow.h
+CMakeFiles/hyzu.dir/render/Mesh.cpp.obj
+ ../libs/GLEW/include/GL/glew.h
+ ../libs/GLFW/include/GLFW/glfw3.h
+ C:/GLM/glm/common.hpp
+ C:/GLM/glm/detail/_fixes.hpp
+ C:/GLM/glm/detail/_swizzle.hpp
+ C:/GLM/glm/detail/_swizzle_func.hpp
+ C:/GLM/glm/detail/_vectorize.hpp
+ C:/GLM/glm/detail/func_common.hpp
+ C:/GLM/glm/detail/func_common.inl
+ C:/GLM/glm/detail/func_exponential.hpp
+ C:/GLM/glm/detail/func_exponential.inl
+ C:/GLM/glm/detail/func_geometric.hpp
+ C:/GLM/glm/detail/func_geometric.inl
+ C:/GLM/glm/detail/func_integer.hpp
+ C:/GLM/glm/detail/func_integer.inl
+ C:/GLM/glm/detail/func_matrix.hpp
+ C:/GLM/glm/detail/func_matrix.inl
+ C:/GLM/glm/detail/func_packing.hpp
+ C:/GLM/glm/detail/func_packing.inl
+ C:/GLM/glm/detail/func_trigonometric.hpp
+ C:/GLM/glm/detail/func_trigonometric.inl
+ C:/GLM/glm/detail/func_vector_relational.hpp
+ C:/GLM/glm/detail/func_vector_relational.inl
+ C:/GLM/glm/detail/precision.hpp
+ C:/GLM/glm/detail/setup.hpp
+ C:/GLM/glm/detail/type_float.hpp
+ C:/GLM/glm/detail/type_half.hpp
+ C:/GLM/glm/detail/type_half.inl
+ C:/GLM/glm/detail/type_int.hpp
+ C:/GLM/glm/detail/type_mat.hpp
+ C:/GLM/glm/detail/type_mat2x2.hpp
+ C:/GLM/glm/detail/type_mat2x2.inl
+ C:/GLM/glm/detail/type_mat2x3.hpp
+ C:/GLM/glm/detail/type_mat2x3.inl
+ C:/GLM/glm/detail/type_mat2x4.hpp
+ C:/GLM/glm/detail/type_mat2x4.inl
+ C:/GLM/glm/detail/type_mat3x2.hpp
+ C:/GLM/glm/detail/type_mat3x2.inl
+ C:/GLM/glm/detail/type_mat3x3.hpp
+ C:/GLM/glm/detail/type_mat3x3.inl
+ C:/GLM/glm/detail/type_mat3x4.hpp
+ C:/GLM/glm/detail/type_mat3x4.inl
+ C:/GLM/glm/detail/type_mat4x2.hpp
+ C:/GLM/glm/detail/type_mat4x2.inl
+ C:/GLM/glm/detail/type_mat4x3.hpp
+ C:/GLM/glm/detail/type_mat4x3.inl
+ C:/GLM/glm/detail/type_mat4x4.hpp
+ C:/GLM/glm/detail/type_mat4x4.inl
+ C:/GLM/glm/detail/type_vec.hpp
+ C:/GLM/glm/detail/type_vec1.hpp
+ C:/GLM/glm/detail/type_vec1.inl
+ C:/GLM/glm/detail/type_vec2.hpp
+ C:/GLM/glm/detail/type_vec2.inl
+ C:/GLM/glm/detail/type_vec3.hpp
+ C:/GLM/glm/detail/type_vec3.inl
+ C:/GLM/glm/detail/type_vec4.hpp
+ C:/GLM/glm/detail/type_vec4.inl
+ C:/GLM/glm/detail/type_vec4_avx.inl
+ C:/GLM/glm/detail/type_vec4_avx2.inl
+ C:/GLM/glm/detail/type_vec4_sse2.inl
+ C:/GLM/glm/exponential.hpp
+ C:/GLM/glm/fwd.hpp
+ C:/GLM/glm/geometric.hpp
+ C:/GLM/glm/glm.hpp
+ C:/GLM/glm/integer.hpp
+ C:/GLM/glm/mat2x2.hpp
+ C:/GLM/glm/mat2x3.hpp
+ C:/GLM/glm/mat2x4.hpp
+ C:/GLM/glm/mat3x2.hpp
+ C:/GLM/glm/mat3x3.hpp
+ C:/GLM/glm/mat3x4.hpp
+ C:/GLM/glm/mat4x2.hpp
+ C:/GLM/glm/mat4x3.hpp
+ C:/GLM/glm/mat4x4.hpp
+ C:/GLM/glm/matrix.hpp
+ C:/GLM/glm/packing.hpp
+ C:/GLM/glm/trigonometric.hpp
+ C:/GLM/glm/vec2.hpp
+ C:/GLM/glm/vec3.hpp
+ C:/GLM/glm/vec4.hpp
+ C:/GLM/glm/vector_relational.hpp
+ E:/Projects/hyzu/render/Mesh.cpp
+ E:/Projects/hyzu/render/Mesh.h
+ E:/Projects/hyzu/render/RenderableObject.h
 CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
@@ -297,6 +383,91 @@ CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
  E:/Projects/hyzu/render/RenderableObject.h
  E:/Projects/hyzu/render/RenderableWithVertexColor.cpp
  E:/Projects/hyzu/render/RenderableWithVertexColor.h
+CMakeFiles/hyzu.dir/render/SimpleMesh.cpp.obj
+ ../libs/GLEW/include/GL/glew.h
+ ../libs/GLFW/include/GLFW/glfw3.h
+ C:/GLM/glm/common.hpp
+ C:/GLM/glm/detail/_fixes.hpp
+ C:/GLM/glm/detail/_swizzle.hpp
+ C:/GLM/glm/detail/_swizzle_func.hpp
+ C:/GLM/glm/detail/_vectorize.hpp
+ C:/GLM/glm/detail/func_common.hpp
+ C:/GLM/glm/detail/func_common.inl
+ C:/GLM/glm/detail/func_exponential.hpp
+ C:/GLM/glm/detail/func_exponential.inl
+ C:/GLM/glm/detail/func_geometric.hpp
+ C:/GLM/glm/detail/func_geometric.inl
+ C:/GLM/glm/detail/func_integer.hpp
+ C:/GLM/glm/detail/func_integer.inl
+ C:/GLM/glm/detail/func_matrix.hpp
+ C:/GLM/glm/detail/func_matrix.inl
+ C:/GLM/glm/detail/func_packing.hpp
+ C:/GLM/glm/detail/func_packing.inl
+ C:/GLM/glm/detail/func_trigonometric.hpp
+ C:/GLM/glm/detail/func_trigonometric.inl
+ C:/GLM/glm/detail/func_vector_relational.hpp
+ C:/GLM/glm/detail/func_vector_relational.inl
+ C:/GLM/glm/detail/precision.hpp
+ C:/GLM/glm/detail/setup.hpp
+ C:/GLM/glm/detail/type_float.hpp
+ C:/GLM/glm/detail/type_half.hpp
+ C:/GLM/glm/detail/type_half.inl
+ C:/GLM/glm/detail/type_int.hpp
+ C:/GLM/glm/detail/type_mat.hpp
+ C:/GLM/glm/detail/type_mat2x2.hpp
+ C:/GLM/glm/detail/type_mat2x2.inl
+ C:/GLM/glm/detail/type_mat2x3.hpp
+ C:/GLM/glm/detail/type_mat2x3.inl
+ C:/GLM/glm/detail/type_mat2x4.hpp
+ C:/GLM/glm/detail/type_mat2x4.inl
+ C:/GLM/glm/detail/type_mat3x2.hpp
+ C:/GLM/glm/detail/type_mat3x2.inl
+ C:/GLM/glm/detail/type_mat3x3.hpp
+ C:/GLM/glm/detail/type_mat3x3.inl
+ C:/GLM/glm/detail/type_mat3x4.hpp
+ C:/GLM/glm/detail/type_mat3x4.inl
+ C:/GLM/glm/detail/type_mat4x2.hpp
+ C:/GLM/glm/detail/type_mat4x2.inl
+ C:/GLM/glm/detail/type_mat4x3.hpp
+ C:/GLM/glm/detail/type_mat4x3.inl
+ C:/GLM/glm/detail/type_mat4x4.hpp
+ C:/GLM/glm/detail/type_mat4x4.inl
+ C:/GLM/glm/detail/type_vec.hpp
+ C:/GLM/glm/detail/type_vec1.hpp
+ C:/GLM/glm/detail/type_vec1.inl
+ C:/GLM/glm/detail/type_vec2.hpp
+ C:/GLM/glm/detail/type_vec2.inl
+ C:/GLM/glm/detail/type_vec3.hpp
+ C:/GLM/glm/detail/type_vec3.inl
+ C:/GLM/glm/detail/type_vec4.hpp
+ C:/GLM/glm/detail/type_vec4.inl
+ C:/GLM/glm/detail/type_vec4_avx.inl
+ C:/GLM/glm/detail/type_vec4_avx2.inl
+ C:/GLM/glm/detail/type_vec4_sse2.inl
+ C:/GLM/glm/exponential.hpp
+ C:/GLM/glm/fwd.hpp
+ C:/GLM/glm/geometric.hpp
+ C:/GLM/glm/glm.hpp
+ C:/GLM/glm/integer.hpp
+ C:/GLM/glm/mat2x2.hpp
+ C:/GLM/glm/mat2x3.hpp
+ C:/GLM/glm/mat2x4.hpp
+ C:/GLM/glm/mat3x2.hpp
+ C:/GLM/glm/mat3x3.hpp
+ C:/GLM/glm/mat3x4.hpp
+ C:/GLM/glm/mat4x2.hpp
+ C:/GLM/glm/mat4x3.hpp
+ C:/GLM/glm/mat4x4.hpp
+ C:/GLM/glm/matrix.hpp
+ C:/GLM/glm/packing.hpp
+ C:/GLM/glm/trigonometric.hpp
+ C:/GLM/glm/vec2.hpp
+ C:/GLM/glm/vec3.hpp
+ C:/GLM/glm/vec4.hpp
+ C:/GLM/glm/vector_relational.hpp
+ E:/Projects/hyzu/render/RenderableObject.h
+ E:/Projects/hyzu/render/SimpleMesh.cpp
+ E:/Projects/hyzu/render/SimpleMesh.h
 CMakeFiles/hyzu.dir/shaders/ShaderManager.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
@@ -475,6 +646,7 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
  E:/Projects/hyzu/input/InputManager.h
  E:/Projects/hyzu/render/RenderableObject.h
  E:/Projects/hyzu/render/RenderableWithVertexColor.h
+ E:/Projects/hyzu/render/SimpleMesh.h
  E:/Projects/hyzu/shaders/ShaderManager.h
  E:/Projects/hyzu/window/SampleWindow.cpp
  E:/Projects/hyzu/window/SampleWindow.h

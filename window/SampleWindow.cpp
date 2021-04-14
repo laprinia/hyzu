@@ -32,7 +32,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
     inputManager = InputManager::GetInstance(window);
-    InputManager::SetFramebufferSizeCallback(window,OnFramebufferSizeChange);
+    InputManager::SetFramebufferSizeCallback(window, OnFramebufferSizeChange);
     InputManager::SetWindowKeyCallback(window, OnKeyPress);
     InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
     InputManager::SetWindowScrollCallback(window, OnScrollChange);
@@ -190,10 +190,18 @@ void SampleWindow::OnInputUpdate() {
         camera->setCameraPosition(camera->getCameraPosition() + (actualSpeed * (glm::normalize(
                 glm::cross(camera->getCameraFront(), camera->getCameraUp())))));
     }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() + (actualSpeed * camera->getCameraUp()));
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        camera->setCameraPosition(camera->getCameraPosition() - (actualSpeed * camera->getCameraUp()));
+    }
+
 }
+
 void SampleWindow::OnFramebufferSizeChange(GLFWwindow *window, int width, int height) {
 
-        glViewport(0,0,width,height);
+    glViewport(0, 0, width, height);
 }
 
 

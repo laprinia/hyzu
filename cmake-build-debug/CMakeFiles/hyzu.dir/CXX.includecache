@@ -1018,10 +1018,6 @@ E:/Projects/hyzu/camera/Camera.h
 glm/glm.hpp
 -
 
-E:/Projects/hyzu/input/InputManager.cpp
-InputManager.h
-E:/Projects/hyzu/input/InputManager.h
-
 E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
@@ -1036,6 +1032,26 @@ assimp/scene.h
 assimp/postprocess.h
 -
 
+E:/Projects/hyzu/render/Mesh.cpp
+Mesh.h
+E:/Projects/hyzu/render/Mesh.h
+
+E:/Projects/hyzu/render/Mesh.h
+RenderableObject.h
+E:/Projects/hyzu/render/RenderableObject.h
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+iostream
+-
+vector
+-
+sstream
+-
+
 E:/Projects/hyzu/render/RenderableObject.h
 iostream
 -
@@ -1047,10 +1063,6 @@ GLFW/glfw3.h
 -
 glm/glm.hpp
 -
-
-E:/Projects/hyzu/render/RenderableWithVertexColor.cpp
-RenderableWithVertexColor.h
-E:/Projects/hyzu/render/RenderableWithVertexColor.h
 
 E:/Projects/hyzu/render/RenderableWithVertexColor.h
 RenderableObject.h
@@ -1066,9 +1078,25 @@ iostream
 vector
 -
 
-E:/Projects/hyzu/shaders/ShaderManager.cpp
-ShaderManager.h
-E:/Projects/hyzu/shaders/ShaderManager.h
+E:/Projects/hyzu/render/SimpleMesh.cpp
+SimpleMesh.h
+E:/Projects/hyzu/render/SimpleMesh.h
+
+E:/Projects/hyzu/render/SimpleMesh.h
+RenderableObject.h
+E:/Projects/hyzu/render/RenderableObject.h
+GL/glew.h
+-
+GLFW/glfw3.h
+-
+glm/glm.hpp
+-
+iostream
+-
+vector
+-
+sstream
+-
 
 E:/Projects/hyzu/shaders/ShaderManager.h
 GL/glew.h
@@ -1105,6 +1133,8 @@ E:/Projects/hyzu/input/InputManager.h
 E:/Projects/hyzu/shaders/ShaderManager.h
 ../render/RenderableWithVertexColor.h
 E:/Projects/hyzu/render/RenderableWithVertexColor.h
+../render/SimpleMesh.h
+E:/Projects/hyzu/render/SimpleMesh.h
 ../camera/Camera.h
 E:/Projects/hyzu/camera/Camera.h
 iostream
