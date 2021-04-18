@@ -39,7 +39,7 @@ target_link_libraries (hyzu
         ${GLEW_LIBRARY}
         ${COCOA_LIBRARY} ${COREVID_LIBRARY} ${IOKIT_LIBRARY} ${SOIL})
 if (WIN32)
-    target_link_libraries (hyzu assimp SOIL ${OPENGL_LIBRARIES} glfw3 glu32 glew32s opengl32)
+    target_link_libraries (hyzu assimp  ${OPENGL_LIBRARIES} glfw3 glu32 glew32s SOIL opengl32)
 
 endif (WIN32)
 

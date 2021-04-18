@@ -2,16 +2,15 @@
 // Created by Lavinia on 4/14/2021.
 //
 
-
 #include "Model.h"
-#include "SOIL.h"
+
 Model::Model(GLchar *path) {
     LoadModel(path);
 }
 
 void Model::Draw(GLuint shaderProgram) {
-    for (GLuint i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw(shaderProgram);
+    for (auto & mesh : meshes) {
+        mesh.Draw(shaderProgram);
     }
 }
 
@@ -76,23 +75,33 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTexture(aiMaterial *material, aiTextureType type, std::string typeName) {
+std::vector<Texture> Model::LoadMaterialTexture(aiMaterial *material, aiTextureType type, const std::string& typeName) {
 
     std::vector<Texture> textures;
     for (GLuint i = 0; i < material->GetTextureCount(type); i++) {
         aiString string;
         aiGetMaterialTexture(material, type, i, &string);
-        Texture texture;
-        texture.id = TextureFromFile(string.C_Str(), modelDirectory);
-        texture.type = typeName;
-        texture.path = string;
-        textures.push_back(texture);
-
+        bool skip=false;
+        for(GLuint j=0;j<texturesLoaded.size(); j++){
+            if(texturesLoaded[j].path==string) {
+                textures.push_back(texturesLoaded[j]);
+                skip=true;
+                break;
+            }
+        }
+        if(!skip) {
+            Texture texture;
+            texture.id = TextureFromFile(string.C_Str(), modelDirectory);
+            texture.type = typeName;
+            texture.path = string;
+            textures.push_back(texture);
+            texturesLoaded.push_back(texture);
+        }
     }
     return textures;
 }
 
-GLint Model::TextureFromFile(const char *path, std::string directory) {
+GLint Model::TextureFromFile(const char *path, const std::string& directory) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
     GLuint textureID;
@@ -102,8 +111,7 @@ GLint Model::TextureFromFile(const char *path, std::string directory) {
 
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    //??
-    //glGenerateMipmap(GL_TEXTURE_2D);
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
