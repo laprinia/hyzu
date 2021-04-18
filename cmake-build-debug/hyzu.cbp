@@ -27,6 +27,7 @@
 					<Add directory="E:/Projects/hyzu/libs/GLFW/include"/>
 					<Add directory="E:/Projects/hyzu/libs/GLEW/include"/>
 					<Add directory="E:/Projects/hyzu/libs/Assimp/include"/>
+					<Add directory="E:/Projects/hyzu/libs/SOIL/include"/>
 					<Add directory="C:/glm"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/x86_64-w64-mingw32"/>
@@ -52,6 +53,7 @@
 					<Add directory="E:/Projects/hyzu/libs/GLFW/include"/>
 					<Add directory="E:/Projects/hyzu/libs/GLEW/include"/>
 					<Add directory="E:/Projects/hyzu/libs/Assimp/include"/>
+					<Add directory="E:/Projects/hyzu/libs/SOIL/include"/>
 					<Add directory="C:/glm"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0"/>
 					<Add directory="c:\mingw\bin\../lib/gcc/x86_64-w64-mingw32/9.2.0/../../../../include/c++/9.2.0/x86_64-w64-mingw32"/>
@@ -94,6 +96,12 @@
 		<Unit filename="E:/Projects/hyzu/camera/Camera.h">
 			<Option target="hyzu"/>
 		</Unit>
+		<Unit filename="E:/Projects/hyzu/import/AssimpImport.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/import/AssimpImport.h">
+			<Option target="hyzu"/>
+		</Unit>
 		<Unit filename="E:/Projects/hyzu/input/InputManager.cpp">
 			<Option target="hyzu"/>
 		</Unit>
@@ -107,6 +115,12 @@
 			<Option target="hyzu"/>
 		</Unit>
 		<Unit filename="E:/Projects/hyzu/render/Mesh.h">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/Model.cpp">
+			<Option target="hyzu"/>
+		</Unit>
+		<Unit filename="E:/Projects/hyzu/render/Model.h">
 			<Option target="hyzu"/>
 		</Unit>
 		<Unit filename="E:/Projects/hyzu/render/RenderableObject.h">

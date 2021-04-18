@@ -83,6 +83,38 @@ CMakeFiles/hyzu.dir/camera/Camera.cpp.obj
  C:/GLM/glm/vector_relational.hpp
  E:/Projects/hyzu/camera/Camera.cpp
  E:/Projects/hyzu/camera/Camera.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj
+ ../libs/Assimp/include/assimp/Compiler/poppack1.h
+ ../libs/Assimp/include/assimp/Compiler/pstdint.h
+ ../libs/Assimp/include/assimp/Compiler/pushpack1.h
+ ../libs/Assimp/include/assimp/Importer.hpp
+ ../libs/Assimp/include/assimp/anim.h
+ ../libs/Assimp/include/assimp/camera.h
+ ../libs/Assimp/include/assimp/color4.h
+ ../libs/Assimp/include/assimp/color4.inl
+ ../libs/Assimp/include/assimp/config.h
+ ../libs/Assimp/include/assimp/defs.h
+ ../libs/Assimp/include/assimp/light.h
+ ../libs/Assimp/include/assimp/material.h
+ ../libs/Assimp/include/assimp/material.inl
+ ../libs/Assimp/include/assimp/matrix3x3.h
+ ../libs/Assimp/include/assimp/matrix3x3.inl
+ ../libs/Assimp/include/assimp/matrix4x4.h
+ ../libs/Assimp/include/assimp/matrix4x4.inl
+ ../libs/Assimp/include/assimp/mesh.h
+ ../libs/Assimp/include/assimp/metadata.h
+ ../libs/Assimp/include/assimp/postprocess.h
+ ../libs/Assimp/include/assimp/quaternion.h
+ ../libs/Assimp/include/assimp/quaternion.inl
+ ../libs/Assimp/include/assimp/scene.h
+ ../libs/Assimp/include/assimp/texture.h
+ ../libs/Assimp/include/assimp/types.h
+ ../libs/Assimp/include/assimp/vector2.h
+ ../libs/Assimp/include/assimp/vector2.inl
+ ../libs/Assimp/include/assimp/vector3.h
+ ../libs/Assimp/include/assimp/vector3.inl
+ E:/Projects/hyzu/import/AssimpImport.cpp
+ E:/Projects/hyzu/import/AssimpImport.h
 CMakeFiles/hyzu.dir/input/InputManager.cpp.obj
  ../libs/GLFW/include/GLFW/glfw3.h
  E:/Projects/hyzu/input/InputManager.cpp
@@ -214,6 +246,23 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  E:/Projects/hyzu/shaders/ShaderManager.h
  E:/Projects/hyzu/window/SampleWindow.h
 CMakeFiles/hyzu.dir/render/Mesh.cpp.obj
+ ../libs/Assimp/include/assimp/Compiler/poppack1.h
+ ../libs/Assimp/include/assimp/Compiler/pushpack1.h
+ ../libs/Assimp/include/assimp/color4.h
+ ../libs/Assimp/include/assimp/color4.inl
+ ../libs/Assimp/include/assimp/config.h
+ ../libs/Assimp/include/assimp/defs.h
+ ../libs/Assimp/include/assimp/matrix3x3.h
+ ../libs/Assimp/include/assimp/matrix3x3.inl
+ ../libs/Assimp/include/assimp/matrix4x4.h
+ ../libs/Assimp/include/assimp/matrix4x4.inl
+ ../libs/Assimp/include/assimp/quaternion.h
+ ../libs/Assimp/include/assimp/quaternion.inl
+ ../libs/Assimp/include/assimp/types.h
+ ../libs/Assimp/include/assimp/vector2.h
+ ../libs/Assimp/include/assimp/vector2.inl
+ ../libs/Assimp/include/assimp/vector3.h
+ ../libs/Assimp/include/assimp/vector3.inl
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
  C:/GLM/glm/common.hpp
@@ -297,6 +346,122 @@ CMakeFiles/hyzu.dir/render/Mesh.cpp.obj
  C:/GLM/glm/vector_relational.hpp
  E:/Projects/hyzu/render/Mesh.cpp
  E:/Projects/hyzu/render/Mesh.h
+ E:/Projects/hyzu/render/RenderableObject.h
+CMakeFiles/hyzu.dir/render/Model.cpp.obj
+ ../libs/Assimp/include/assimp/Compiler/poppack1.h
+ ../libs/Assimp/include/assimp/Compiler/pstdint.h
+ ../libs/Assimp/include/assimp/Compiler/pushpack1.h
+ ../libs/Assimp/include/assimp/Importer.hpp
+ ../libs/Assimp/include/assimp/anim.h
+ ../libs/Assimp/include/assimp/camera.h
+ ../libs/Assimp/include/assimp/color4.h
+ ../libs/Assimp/include/assimp/color4.inl
+ ../libs/Assimp/include/assimp/config.h
+ ../libs/Assimp/include/assimp/defs.h
+ ../libs/Assimp/include/assimp/light.h
+ ../libs/Assimp/include/assimp/material.h
+ ../libs/Assimp/include/assimp/material.inl
+ ../libs/Assimp/include/assimp/matrix3x3.h
+ ../libs/Assimp/include/assimp/matrix3x3.inl
+ ../libs/Assimp/include/assimp/matrix4x4.h
+ ../libs/Assimp/include/assimp/matrix4x4.inl
+ ../libs/Assimp/include/assimp/mesh.h
+ ../libs/Assimp/include/assimp/metadata.h
+ ../libs/Assimp/include/assimp/postprocess.h
+ ../libs/Assimp/include/assimp/quaternion.h
+ ../libs/Assimp/include/assimp/quaternion.inl
+ ../libs/Assimp/include/assimp/scene.h
+ ../libs/Assimp/include/assimp/texture.h
+ ../libs/Assimp/include/assimp/types.h
+ ../libs/Assimp/include/assimp/vector2.h
+ ../libs/Assimp/include/assimp/vector2.inl
+ ../libs/Assimp/include/assimp/vector3.h
+ ../libs/Assimp/include/assimp/vector3.inl
+ ../libs/GLEW/include/GL/glew.h
+ ../libs/GLFW/include/GLFW/glfw3.h
+ ../libs/SOIL/include/SOIL.h
+ C:/GLM/glm/common.hpp
+ C:/GLM/glm/detail/_fixes.hpp
+ C:/GLM/glm/detail/_swizzle.hpp
+ C:/GLM/glm/detail/_swizzle_func.hpp
+ C:/GLM/glm/detail/_vectorize.hpp
+ C:/GLM/glm/detail/func_common.hpp
+ C:/GLM/glm/detail/func_common.inl
+ C:/GLM/glm/detail/func_exponential.hpp
+ C:/GLM/glm/detail/func_exponential.inl
+ C:/GLM/glm/detail/func_geometric.hpp
+ C:/GLM/glm/detail/func_geometric.inl
+ C:/GLM/glm/detail/func_integer.hpp
+ C:/GLM/glm/detail/func_integer.inl
+ C:/GLM/glm/detail/func_matrix.hpp
+ C:/GLM/glm/detail/func_matrix.inl
+ C:/GLM/glm/detail/func_packing.hpp
+ C:/GLM/glm/detail/func_packing.inl
+ C:/GLM/glm/detail/func_trigonometric.hpp
+ C:/GLM/glm/detail/func_trigonometric.inl
+ C:/GLM/glm/detail/func_vector_relational.hpp
+ C:/GLM/glm/detail/func_vector_relational.inl
+ C:/GLM/glm/detail/precision.hpp
+ C:/GLM/glm/detail/setup.hpp
+ C:/GLM/glm/detail/type_float.hpp
+ C:/GLM/glm/detail/type_half.hpp
+ C:/GLM/glm/detail/type_half.inl
+ C:/GLM/glm/detail/type_int.hpp
+ C:/GLM/glm/detail/type_mat.hpp
+ C:/GLM/glm/detail/type_mat2x2.hpp
+ C:/GLM/glm/detail/type_mat2x2.inl
+ C:/GLM/glm/detail/type_mat2x3.hpp
+ C:/GLM/glm/detail/type_mat2x3.inl
+ C:/GLM/glm/detail/type_mat2x4.hpp
+ C:/GLM/glm/detail/type_mat2x4.inl
+ C:/GLM/glm/detail/type_mat3x2.hpp
+ C:/GLM/glm/detail/type_mat3x2.inl
+ C:/GLM/glm/detail/type_mat3x3.hpp
+ C:/GLM/glm/detail/type_mat3x3.inl
+ C:/GLM/glm/detail/type_mat3x4.hpp
+ C:/GLM/glm/detail/type_mat3x4.inl
+ C:/GLM/glm/detail/type_mat4x2.hpp
+ C:/GLM/glm/detail/type_mat4x2.inl
+ C:/GLM/glm/detail/type_mat4x3.hpp
+ C:/GLM/glm/detail/type_mat4x3.inl
+ C:/GLM/glm/detail/type_mat4x4.hpp
+ C:/GLM/glm/detail/type_mat4x4.inl
+ C:/GLM/glm/detail/type_vec.hpp
+ C:/GLM/glm/detail/type_vec1.hpp
+ C:/GLM/glm/detail/type_vec1.inl
+ C:/GLM/glm/detail/type_vec2.hpp
+ C:/GLM/glm/detail/type_vec2.inl
+ C:/GLM/glm/detail/type_vec3.hpp
+ C:/GLM/glm/detail/type_vec3.inl
+ C:/GLM/glm/detail/type_vec4.hpp
+ C:/GLM/glm/detail/type_vec4.inl
+ C:/GLM/glm/detail/type_vec4_avx.inl
+ C:/GLM/glm/detail/type_vec4_avx2.inl
+ C:/GLM/glm/detail/type_vec4_sse2.inl
+ C:/GLM/glm/exponential.hpp
+ C:/GLM/glm/fwd.hpp
+ C:/GLM/glm/geometric.hpp
+ C:/GLM/glm/glm.hpp
+ C:/GLM/glm/integer.hpp
+ C:/GLM/glm/mat2x2.hpp
+ C:/GLM/glm/mat2x3.hpp
+ C:/GLM/glm/mat2x4.hpp
+ C:/GLM/glm/mat3x2.hpp
+ C:/GLM/glm/mat3x3.hpp
+ C:/GLM/glm/mat3x4.hpp
+ C:/GLM/glm/mat4x2.hpp
+ C:/GLM/glm/mat4x3.hpp
+ C:/GLM/glm/mat4x4.hpp
+ C:/GLM/glm/matrix.hpp
+ C:/GLM/glm/packing.hpp
+ C:/GLM/glm/trigonometric.hpp
+ C:/GLM/glm/vec2.hpp
+ C:/GLM/glm/vec3.hpp
+ C:/GLM/glm/vec4.hpp
+ C:/GLM/glm/vector_relational.hpp
+ E:/Projects/hyzu/render/Mesh.h
+ E:/Projects/hyzu/render/Model.cpp
+ E:/Projects/hyzu/render/Model.h
  E:/Projects/hyzu/render/RenderableObject.h
 CMakeFiles/hyzu.dir/render/RenderableWithVertexColor.cpp.obj
  ../libs/GLEW/include/GL/glew.h

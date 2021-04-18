@@ -1582,7 +1582,7 @@ typedef void (* GLFWcharmodsfun)(GLFWwindow*,unsigned int,int);
  *
  *  @param[in] window The window that received the event.
  *  @param[in] path_count The number of dropped paths.
- *  @param[in] paths The UTF-8 encoded file and/or directory path names.
+ *  @param[in] paths The UTF-8 encoded file and/or modelDirectory path names.
  *
  *  @pointer_lifetime The path array and its strings are valid until the
  *  callback function returns.
@@ -1773,7 +1773,7 @@ typedef struct GLFWgamepadstate
  *
  *  @errors Possible errors include @ref GLFW_PLATFORM_ERROR.
  *
- *  @remark @macos This function will change the current directory of the
+ *  @remark @macos This function will change the current modelDirectory of the
  *  application to the `Contents/Resources` subdirectory of the application's
  *  bundle, if present.  This can be disabled with the @ref
  *  GLFW_COCOA_CHDIR_RESOURCES init hint.

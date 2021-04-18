@@ -7,58 +7,60 @@
 
 Mesh::Mesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices,
            const std::vector<Texture> &textures) {
-    this->vertices=vertices;
-    this->indices=indices;
-    this->textures=textures;
+    this->vertices = vertices;
+    this->indices = indices;
+    this->textures = textures;
     this->DefineMesh();
 }
 
 void Mesh::DefineMesh() {
-    glGenVertexArrays(1,&VAO);
-    glGenBuffers(1,&VBO);
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,vertices.size()* sizeof(Vertex), &vertices[0],GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(GLuint), &indices[0],GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(GLvoid*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) 0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,sizeof (Vertex),(GLvoid*) offsetof(Vertex,Normal));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) offsetof(Vertex, Normal));
 
     glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,sizeof (Vertex),(GLvoid*) offsetof(Vertex,TextureCoords));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) offsetof(Vertex, TextureCoords));
 
     glBindVertexArray(0);
 }
+
 void Mesh::Draw(GLuint shaderProgram) {
-    GLuint diffuseNumber=1;
-    GLuint specularNumber=1;
-    for(GLuint i=0; i<textures.size();i++) {
-        glActiveTexture(GL_TEXTURE0+i);
+    GLuint diffuseNumber = 1;
+    GLuint specularNumber = 1;
+    for (GLuint i = 0; i < textures.size(); i++) {
+        glActiveTexture(GL_TEXTURE0 + i);
         std::stringstream stringstream;
         std::string finalNumberString;
-        std::string textureType=textures[i].type;
-        if(textureType=="diffuseText"){
-            stringstream<<diffuseNumber++;
-        }else if(textureType=="specularText") {
-            stringstream<<specularNumber++;
+        std::string textureType = textures[i].type;
+        if (textureType == "texture_diffuse") {
+            stringstream << diffuseNumber++;
+        } else if (textureType == "texture_specular") {
+            stringstream << specularNumber++;
         }
-        finalNumberString=stringstream.str();
+        finalNumberString = stringstream.str();
 
-        glUniform1f(glGetUniformLocation(shaderProgram,("material."+textureType+finalNumberString).c_str()),textures[i].id);
-        glBindTexture(GL_TEXTURE_2D,textures[i].id);
+        glUniform1f(glGetUniformLocation(shaderProgram, ("material." + textureType + finalNumberString).c_str()),
+                    textures[i].id);
+        glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
     }
     glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES,indices.size(),GL_UNSIGNED_INT,0);
+    glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 
 }

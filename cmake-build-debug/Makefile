@@ -168,6 +168,33 @@ camera/Camera.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/camera/Camera.cpp.s
 .PHONY : camera/Camera.cpp.s
 
+import/AssimpImport.obj: import/AssimpImport.cpp.obj
+
+.PHONY : import/AssimpImport.obj
+
+# target to build an object file
+import/AssimpImport.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj
+.PHONY : import/AssimpImport.cpp.obj
+
+import/AssimpImport.i: import/AssimpImport.cpp.i
+
+.PHONY : import/AssimpImport.i
+
+# target to preprocess a source file
+import/AssimpImport.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/import/AssimpImport.cpp.i
+.PHONY : import/AssimpImport.cpp.i
+
+import/AssimpImport.s: import/AssimpImport.cpp.s
+
+.PHONY : import/AssimpImport.s
+
+# target to generate assembly for a file
+import/AssimpImport.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/import/AssimpImport.cpp.s
+.PHONY : import/AssimpImport.cpp.s
+
 input/InputManager.obj: input/InputManager.cpp.obj
 
 .PHONY : input/InputManager.obj
@@ -248,6 +275,33 @@ render/Mesh.s: render/Mesh.cpp.s
 render/Mesh.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Mesh.cpp.s
 .PHONY : render/Mesh.cpp.s
+
+render/Model.obj: render/Model.cpp.obj
+
+.PHONY : render/Model.obj
+
+# target to build an object file
+render/Model.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Model.cpp.obj
+.PHONY : render/Model.cpp.obj
+
+render/Model.i: render/Model.cpp.i
+
+.PHONY : render/Model.i
+
+# target to preprocess a source file
+render/Model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Model.cpp.i
+.PHONY : render/Model.cpp.i
+
+render/Model.s: render/Model.cpp.s
+
+.PHONY : render/Model.s
+
+# target to generate assembly for a file
+render/Model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/render/Model.cpp.s
+.PHONY : render/Model.cpp.s
 
 render/RenderableWithVertexColor.obj: render/RenderableWithVertexColor.cpp.obj
 
@@ -369,6 +423,9 @@ help:
 	@echo ... camera/Camera.obj
 	@echo ... camera/Camera.i
 	@echo ... camera/Camera.s
+	@echo ... import/AssimpImport.obj
+	@echo ... import/AssimpImport.i
+	@echo ... import/AssimpImport.s
 	@echo ... input/InputManager.obj
 	@echo ... input/InputManager.i
 	@echo ... input/InputManager.s
@@ -378,6 +435,9 @@ help:
 	@echo ... render/Mesh.obj
 	@echo ... render/Mesh.i
 	@echo ... render/Mesh.s
+	@echo ... render/Model.obj
+	@echo ... render/Model.i
+	@echo ... render/Model.s
 	@echo ... render/RenderableWithVertexColor.obj
 	@echo ... render/RenderableWithVertexColor.i
 	@echo ... render/RenderableWithVertexColor.s

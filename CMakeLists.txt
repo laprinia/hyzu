@@ -11,8 +11,8 @@ endif (NOT WIN32)
 find_package (OpenGL REQUIRED)
 if (WIN32)
 
-    include_directories( ${PROJECT_SOURCE_DIR}/libs/GLFW/include ${PROJECT_SOURCE_DIR}/libs/GLEW/include "${PROJECT_SOURCE_DIR}/libs/Assimp/include" "C:/glm")
-    link_directories("${PROJECT_SOURCE_DIR}/libs/GLEW/lib/Release/x64"  "${PROJECT_SOURCE_DIR}/libs/GLFW/lib-mingw" "${PROJECT_SOURCE_DIR}/libs/Assimp/lib" )
+    include_directories( ${PROJECT_SOURCE_DIR}/libs/GLFW/include ${PROJECT_SOURCE_DIR}/libs/GLEW/include "${PROJECT_SOURCE_DIR}/libs/Assimp/include" "${PROJECT_SOURCE_DIR}/libs/SOIL/include" "C:/glm")
+    link_directories("${PROJECT_SOURCE_DIR}/libs/GLEW/lib/Release/x64"  "${PROJECT_SOURCE_DIR}/libs/GLFW/lib-mingw" "${PROJECT_SOURCE_DIR}/libs/Assimp/lib" "${PROJECT_SOURCE_DIR}/libs/SOIL" )
 
     set(BUILD_ASSIMP_TOOLS  ON)
     set(ASSIMP_BUILD_STATIC_LIB ON)
@@ -20,6 +20,7 @@ else (WIN32)
     find_package (glfw3 REQUIRED)
     find_package (GLM REQUIRED)
     find_package (GLEW REQUIRED STATIC)
+    find_library(SOIL SOIL lib/libsoil.a)
 endif (WIN32)
 if (APPLE)
     include_directories(/usr/local/include)
@@ -28,7 +29,7 @@ if (APPLE)
     find_library(COREVID_LIBRARY CoreVideo REQUIRED)
 endif (APPLE)
 
-set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h render/RenderableWithVertexColor.cpp render/RenderableWithVertexColor.h shaders/ShaderManager.cpp shaders/ShaderManager.h render/RenderableObject.h camera/Camera.cpp camera/Camera.h render/Mesh.cpp render/Mesh.h render/SimpleMesh.cpp render/SimpleMesh.h)
+set(SOURCE_FILES main.cpp input/InputManager.cpp input/InputManager.h window/SampleWindow.cpp window/SampleWindow.h render/RenderableWithVertexColor.cpp render/RenderableWithVertexColor.h shaders/ShaderManager.cpp shaders/ShaderManager.h render/RenderableObject.h camera/Camera.cpp camera/Camera.h render/Mesh.cpp render/Mesh.h render/SimpleMesh.cpp render/SimpleMesh.h render/Model.cpp render/Model.h import/AssimpImport.cpp import/AssimpImport.h)
 
 ## "hyzu" is the name of the executable
 add_executable(hyzu ${SOURCE_FILES})
@@ -36,9 +37,9 @@ target_link_libraries (hyzu
         ${GLFW3_LIBRARY}
         ${OPENGL_LIBRARIES}
         ${GLEW_LIBRARY}
-        ${COCOA_LIBRARY} ${COREVID_LIBRARY} ${IOKIT_LIBRARY})
+        ${COCOA_LIBRARY} ${COREVID_LIBRARY} ${IOKIT_LIBRARY} ${SOIL})
 if (WIN32)
-    target_link_libraries (hyzu assimp ${OPENGL_LIBRARIES} glfw3 glu32 glew32s opengl32  )
+    target_link_libraries (hyzu assimp SOIL ${OPENGL_LIBRARIES} glfw3 glu32 glew32s opengl32)
 
 endif (WIN32)
 
