@@ -4,5 +4,6 @@ out vec4 fragmentColor;
 uniform sampler2D texture_diffuse1;
 void main() {
 
-    fragmentColor = texture(texture_diffuse1,outTextureCoord);
+    fragmentColor = vec4(1.0,1.0,1.0,1.0);
+
 }

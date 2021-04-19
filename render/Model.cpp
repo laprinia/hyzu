@@ -10,7 +10,7 @@ Model::Model(GLchar *path) {
 }
 
 void Model::Draw(GLuint shaderProgram) {
-    for (auto & mesh : meshes) {
+    for (auto &mesh : meshes) {
         mesh.Draw(shaderProgram);
     }
 }
@@ -78,29 +78,27 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), roughMaps.begin(), roughMaps.end());
         std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
         textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
-
-
     }
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string& typeName) {
+std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName) {
 
     std::vector<Texture> textures;
-    std::cout<<typeName<<" found: "<<material->GetTextureCount(type)<<std::endl;
+    std::cout << typeName << " found: " << material->GetTextureCount(type) << std::endl;
     for (GLuint i = 0; i < material->GetTextureCount(type); i++) {
 
         aiString string;
-        material->GetTexture(type,i, &string);
-        bool skip=false;
-        for(GLuint j=0;j<texturesLoaded.size(); j++){
-            if(std::strcmp(texturesLoaded[j].path.data, string.C_Str()) == 0) {
+        material->GetTexture(type, i, &string);
+        bool skip = false;
+        for (GLuint j = 0; j < texturesLoaded.size(); j++) {
+            if (std::strcmp(texturesLoaded[j].path.data, string.C_Str()) == 0) {
                 textures.push_back(texturesLoaded[j]);
-                skip=true;
+                skip = true;
                 break;
             }
         }
-        if(!skip) {
+        if (!skip) {
 
             Texture texture;
             texture.id = TextureFromFile(string.C_Str(), modelDirectory);
@@ -113,7 +111,7 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTexture
     return textures;
 }
 
-GLint Model::TextureFromFile(const char *path, const std::string& directory) {
+GLint Model::TextureFromFile(const char *path, const std::string &directory) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
@@ -122,8 +120,7 @@ GLint Model::TextureFromFile(const char *path, const std::string& directory) {
 
     int width, height, nrComponents;
     unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-    if (data)
-    {
+    if (data) {
         GLenum format;
         if (nrComponents == 1)
             format = GL_RED;
@@ -143,8 +140,7 @@ GLint Model::TextureFromFile(const char *path, const std::string& directory) {
 
         stbi_image_free(data);
     }
-    else
-    {
+    else {
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
     }

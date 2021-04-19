@@ -1,0 +1,25 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl DULL
+Ns 32.801590
+Ka 1.000000 1.000000 1.000000
+Kd 0.083616 0.552936 0.800000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump C:\\Games\\DOAX-VenusVacation\\mods\\wtx - That Pool\\Textures\\Pool.psd
+map_Kd Pool2.png
+map_d Pool2.png
+
+newmtl Material.001
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2

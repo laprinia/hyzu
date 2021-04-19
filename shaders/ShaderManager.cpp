@@ -6,7 +6,7 @@
 #include "ShaderManager.h"
 
 std::map<int, GLuint> ShaderManager::shaders = {};
-GLuint ShaderManager::shaderProgram = 0;
+
 
 ShaderManager &ShaderManager::GetInstance() {
     static ShaderManager instance;
@@ -53,16 +53,16 @@ void ShaderManager::CheckShaderCompile(int shaderType) {
 
 }
 
-void ShaderManager::LinkShaderProgram() {
-    shaderProgram = glCreateProgram();
+GLuint ShaderManager::LinkShaderProgram() {
+    GLuint shaderProgram = glCreateProgram();
     for (auto it = shaders.begin(); it != shaders.end(); ++it) {
         glAttachShader(shaderProgram, it->second);
     }
     glLinkProgram(shaderProgram);
-    glUseProgram(shaderProgram);
+    return shaderProgram;
 }
 
-void ShaderManager::CheckShaderLink() {
+void ShaderManager::CheckShaderLink(GLuint shaderProgram) {
     GLint success;
     GLchar log[512];
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);

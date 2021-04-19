@@ -23,33 +23,41 @@
 
 class SampleWindow {
 private:
-    InputManager inputManager=InputManager::GetInstance(nullptr);
+    InputManager inputManager = InputManager::GetInstance(nullptr);
     ShaderManager shaderManager = ShaderManager::GetInstance();
-    static Camera* camera;
+    static Camera *camera;
     GLFWwindow *window;
     int width, height;
     static bool firstMouseMove;
     static double lastMouseX, lastMouseY;
-    static double yaw,pitch;
+    static double yaw, pitch;
     static float mouseSensitivity;
     static float cameraSpeed;
     static float deltaTime;
     static float lastFrame;
-    std::unordered_map<std::string, RenderableObject*> renderables;
-    std::unordered_map<std::string, Model*> models;
-    static void CompileShaders();
+    std::unordered_map<std::string, RenderableObject *> renderables;
+    std::unordered_map<std::string, Model *> models;
+    std::unordered_map<std::string, GLuint> shaders;
+    const glm::vec3 lightColor=glm::vec3(1.0f,0.8196f,0.65882f);
+    glm::vec3 lightPosition;
+    void CompileShaders();
+
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);
-    static void OnCursorPositionChange(GLFWwindow *window, double xPosition,double yPosition);
-    static void OnScrollChange(GLFWwindow *window, double xOffset,double yOffset);
+
+    static void OnCursorPositionChange(GLFWwindow *window, double xPosition, double yPosition);
+
+    static void OnScrollChange(GLFWwindow *window, double xOffset, double yOffset);
+
     static void OnFramebufferSizeChange(GLFWwindow *window, int width, int height);
 
 
 public:
-    SampleWindow(int width, int height, const std::string& title);
+    SampleWindow(int width, int height, const std::string &title);
 
     ~SampleWindow();
 
     void Update();
+
     void Init();
 
     GLFWwindow *GetWindowContext();
@@ -58,8 +66,11 @@ public:
 
     int GetWindowWidth();
 
-    void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix);
-    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix);
+    void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix, GLuint shaderProgram);
+
+    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram);
+
+    void SendLightingDataToShader(GLuint shaderProgram);
 
     void OnInputUpdate();
 };

@@ -23,7 +23,7 @@ private:
     ShaderManager() = default;
 
 public:
-    static GLuint shaderProgram;
+
 
     static ShaderManager &GetInstance();
 
@@ -31,9 +31,9 @@ public:
 
     static void CheckShaderCompile(int shaderType);
 
-    static void LinkShaderProgram();
+    static GLuint LinkShaderProgram();
 
-    static void CheckShaderLink();
+    static void CheckShaderLink(GLuint shaderProgram);
 
     ~ShaderManager();
 };

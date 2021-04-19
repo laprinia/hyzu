@@ -1,10 +1,9 @@
-#define GLEW_STATIC
 
 #include "window/SampleWindow.h"
 
 int main() {
 
-    SampleWindow sampleWindow = SampleWindow(800, 600, "hyzu");
+    SampleWindow sampleWindow = SampleWindow(1920, 1080, "hyzu");
 
     return 0;
 }

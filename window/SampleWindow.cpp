@@ -5,7 +5,7 @@
 #include "SampleWindow.h"
 
 Camera *SampleWindow::camera = nullptr;
-float SampleWindow::cameraSpeed = 2.0f;
+float SampleWindow::cameraSpeed = 20.0f;
 float SampleWindow::deltaTime = 0.0f;
 float SampleWindow::lastFrame = 0.0f;
 bool SampleWindow::firstMouseMove = true;
@@ -57,10 +57,13 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 
 void SampleWindow::Init() {
 
-    camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    Model *model1 = new Model("../resources/models/cake/source/cake.obj");
-    models["cake"] = model1;
+    Model *model1 = new Model("../resources/scenes/cathedral/cathedral.fbx");
+    models["throne"] = model1;
+    Model *model2 = new Model("../resources/models/bulb/sphere.obj");
+    models["bulb"] = model2;
+
 }
 
 void SampleWindow::Update() {
@@ -69,17 +72,34 @@ void SampleWindow::Update() {
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    glUseProgram(shaders["env"]);
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(0.10f));
+    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
-    glUseProgram(ShaderManager::shaderProgram);
-    glm::mat4 model = glm::mat4(10.0f);
+    SampleWindow::RenderModel("throne", model, shaders["env"]);
+    SampleWindow::SendLightingDataToShader(shaders["env"]);
+    glUseProgram(shaders["base"]);
+    model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(2.0f));
+    lightPosition=glm::vec3(0, 10, -25);
+    model = glm::translate(model, lightPosition);
 
-    model = glm::scale(model, glm::vec3(1.0f));
-
-    SampleWindow::RenderModel("cake", model);
+    SampleWindow::RenderModel("bulb", model, shaders["base"]);
+    SampleWindow::SendLightingDataToShader(shaders["env"]);
 
 }
 
-void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix) {
+void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
+
+    glUniform3fv(glGetUniformLocation(shaderProgram,"lightColor"),1,glm::value_ptr(lightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram,"lightPosition"),1,glm::value_ptr(lightPosition));
+    glUniform3fv(glGetUniformLocation(shaderProgram,"viewPosition"),1,glm::value_ptr(camera->getCameraPosition()));
+
+}
+
+void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram) {
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
@@ -89,16 +109,16 @@ void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMat
     projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
 
 
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE,
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
                        glm::value_ptr(modelMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "projection"), 1, GL_FALSE,
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE,
                        glm::value_ptr(projection));
 
-    models[modelName]->Draw(ShaderManager::shaderProgram);
+    models[modelName]->Draw(shaderProgram);
 }
 
-void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix) {
+void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix, GLuint shaderProgram) {
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
@@ -108,10 +128,10 @@ void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &mo
     projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
 
 
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE,
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
                        glm::value_ptr(modelMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "projection"), 1, GL_FALSE,
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE,
                        glm::value_ptr(projection));
 
     glBindVertexArray(renderables[meshName]->VAO);
@@ -127,8 +147,19 @@ void SampleWindow::CompileShaders() {
     ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/BaseFS.glsl");
     ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
-    ShaderManager::LinkShaderProgram();
-    ShaderManager::CheckShaderLink();
+    GLuint shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["base"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["base"]);
+
+    ShaderManager::CompileShader(GL_VERTEX_SHADER, "../shaders/EnvVS.glsl");
+    ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+
+    ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/EnvFS.glsl");
+    ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+
+    shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["env"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["env"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
@@ -232,6 +263,8 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
+
 
 
 
