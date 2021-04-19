@@ -6,6 +6,5 @@ int main() {
 
     SampleWindow sampleWindow = SampleWindow(800, 600, "hyzu");
 
-
     return 0;
 }

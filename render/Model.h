@@ -34,7 +34,7 @@ private:
 
     Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
 
-    std::vector<Texture> LoadMaterialTexture(aiMaterial *material, aiTextureType type, const std::string& typeName);
+    std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string& typeName);
 
     static GLint TextureFromFile(const char* path, const std::string& directory);
 };

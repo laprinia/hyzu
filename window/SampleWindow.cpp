@@ -31,7 +31,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     }
     glfwMakeContextCurrent(window);
     glewExperimental = GL_TRUE;
-    inputManager = InputManager::GetInstance(window);
+    InputManager::GetInstance(window);
     InputManager::SetFramebufferSizeCallback(window, OnFramebufferSizeChange);
     InputManager::SetWindowKeyCallback(window, OnKeyPress);
     InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
@@ -56,26 +56,11 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 }
 
 void SampleWindow::Init() {
-    std::vector<float> vertices = {
-
-            0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
-            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
-            -0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f
-    };
-
-    std::vector<unsigned int> indices = {
-            0, 1, 3,
-            1, 2, 3
-    };
 
     camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    RenderableObject *renderableObject = new RenderableWithVertexColor();
-    renderableObject->DefineObject(vertices, indices);
-    renderables["plane"] = renderableObject;
-    Model *model1 = new Model("../resources/models/crate/crate.fbx");
-    models["crate"] = model1;
+    Model *model1 = new Model("../resources/models/cake/source/cake.obj");
+    models["cake"] = model1;
 }
 
 void SampleWindow::Update() {
@@ -86,11 +71,11 @@ void SampleWindow::Update() {
 
 
     glUseProgram(ShaderManager::shaderProgram);
-    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 model = glm::mat4(10.0f);
 
-    model = glm::scale(model, glm::vec3(0.1));
-//   model = glm::mat4(1.0f);
-    SampleWindow::RenderModel("crate", model);
+    model = glm::scale(model, glm::vec3(1.0f));
+
+    SampleWindow::RenderModel("cake", model);
 
 }
 

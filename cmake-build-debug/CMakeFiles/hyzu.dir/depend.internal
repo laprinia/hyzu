@@ -352,6 +352,7 @@ CMakeFiles/hyzu.dir/render/Model.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
  ../libs/SOIL/include/SOIL.h
+ ../libs/SOIL/include/stb_image_aug.h
  C:/GLM/glm/common.hpp
  C:/GLM/glm/detail/_fixes.hpp
  C:/GLM/glm/detail/_swizzle.hpp

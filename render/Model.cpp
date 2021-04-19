@@ -2,6 +2,7 @@
 // Created by Lavinia on 4/14/2021.
 //
 
+#include <stb_image_aug.h>
 #include "Model.h"
 
 Model::Model(GLchar *path) {
@@ -65,31 +66,42 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         }
     }
     if (mesh->mMaterialIndex >= 0) {
+
         aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
-        std::vector<Texture> diffuseMaps = LoadMaterialTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+        std::vector<Texture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-        std::vector<Texture> specularMaps = LoadMaterialTexture(material, aiTextureType_SPECULAR, "texture_specular");
+        std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+        std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
+        textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+        std::vector<Texture> roughMaps = LoadMaterialTextures(material, aiTextureType_SHININESS, "texture_shininess");
+        textures.insert(textures.end(), roughMaps.begin(), roughMaps.end());
+        std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+        textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
 
     }
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTexture(aiMaterial *material, aiTextureType type, const std::string& typeName) {
+std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string& typeName) {
 
     std::vector<Texture> textures;
+    std::cout<<typeName<<" found: "<<material->GetTextureCount(type)<<std::endl;
     for (GLuint i = 0; i < material->GetTextureCount(type); i++) {
+
         aiString string;
-        aiGetMaterialTexture(material, type, i, &string);
+        material->GetTexture(type,i, &string);
         bool skip=false;
         for(GLuint j=0;j<texturesLoaded.size(); j++){
-            if(texturesLoaded[j].path==string) {
+            if(std::strcmp(texturesLoaded[j].path.data, string.C_Str()) == 0) {
                 textures.push_back(texturesLoaded[j]);
                 skip=true;
                 break;
             }
         }
         if(!skip) {
+
             Texture texture;
             texture.id = TextureFromFile(string.C_Str(), modelDirectory);
             texture.type = typeName;
@@ -104,20 +116,38 @@ std::vector<Texture> Model::LoadMaterialTexture(aiMaterial *material, aiTextureT
 GLint Model::TextureFromFile(const char *path, const std::string& directory) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
-    GLuint textureID;
+
+    unsigned int textureID;
     glGenTextures(1, &textureID);
-    int width,height;
-    unsigned char* image = SOIL_load_image(filename.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
 
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    int width, height, nrComponents;
+    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+    if (data)
+    {
+        GLenum format;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
 
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    SOIL_free_image_data(image);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else
+    {
+        std::cout << "Texture failed to load at path: " << path << std::endl;
+        stbi_image_free(data);
+    }
+
     return textureID;
 }

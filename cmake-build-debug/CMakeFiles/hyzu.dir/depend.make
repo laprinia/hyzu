@@ -351,6 +351,7 @@ CMakeFiles/hyzu.dir/render/Model.cpp.obj: ../libs/Assimp/include/assimp/vector3.
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: ../libs/GLEW/include/GL/glew.h
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: ../libs/GLFW/include/GLFW/glfw3.h
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: ../libs/SOIL/include/SOIL.h
+CMakeFiles/hyzu.dir/render/Model.cpp.obj: ../libs/SOIL/include/stb_image_aug.h
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: C:/GLM/glm/common.hpp
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: C:/GLM/glm/detail/_fixes.hpp
 CMakeFiles/hyzu.dir/render/Model.cpp.obj: C:/GLM/glm/detail/_swizzle.hpp
