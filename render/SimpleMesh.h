@@ -14,7 +14,7 @@
 #include <vector>
 #include <sstream>
 
-struct Vertex {
+struct SVertex {
     glm::vec3 Position;
     glm::vec3 Normal;
 };
@@ -27,10 +27,10 @@ private:
     void DefineMesh();
 
 public:
-    std::vector<Vertex> vertices;
+    std::vector<SVertex> vertices;
     std::vector<GLuint> indices;
 
-    SimpleMesh(const std::vector<Vertex> &vertices, const std::vector<GLuint> &indices);
+    SimpleMesh(const std::vector<SVertex> &vertices, const std::vector<GLuint> &indices);
 
     void Draw(GLuint shaderProgram);
 

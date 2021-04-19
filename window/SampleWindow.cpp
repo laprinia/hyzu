@@ -42,7 +42,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     }
     glViewport(0, 0, width, height);
 
-    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     SampleWindow::CompileShaders();
     SampleWindow::Init();
 
@@ -74,27 +74,46 @@ void SampleWindow::Init() {
     RenderableObject *renderableObject = new RenderableWithVertexColor();
     renderableObject->DefineObject(vertices, indices);
     renderables["plane"] = renderableObject;
+    Model *model1 = new Model("../resources/models/crate/crate.fbx");
+    models["crate"] = model1;
 }
 
 void SampleWindow::Update() {
     glfwPollEvents();
     OnInputUpdate();
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
     glUseProgram(ShaderManager::shaderProgram);
     glm::mat4 model = glm::mat4(1.0f);
 
-    model = glm::rotate(model, glm::radians(-20.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    SampleWindow::RenderMeshFromData("plane", model);
-    model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(0.1));
+//   model = glm::mat4(1.0f);
+    SampleWindow::RenderModel("crate", model);
 
 }
 
-void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix) {
+void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix) {
 
-    const float radius = 3.0f;
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
+                       camera->getCameraUp());
+
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
+
+
+    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "model"), 1, GL_FALSE,
+                       glm::value_ptr(modelMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(ShaderManager::shaderProgram, "projection"), 1, GL_FALSE,
+                       glm::value_ptr(projection));
+
+    models[modelName]->Draw(ShaderManager::shaderProgram);
+}
+
+void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix) {
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
@@ -210,6 +229,10 @@ SampleWindow::~SampleWindow() {
         delete renderable.second;
     }
     renderables.clear();
+    for (auto const &model : models) {
+        delete model.second;
+    }
+    models.clear();
     delete camera;
 }
 
@@ -224,6 +247,7 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
 
 
 

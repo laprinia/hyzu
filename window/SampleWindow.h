@@ -16,6 +16,7 @@
 #include "../render/RenderableWithVertexColor.h"
 #include "../render/SimpleMesh.h"
 #include "../camera/Camera.h"
+#include "../render/Model.h"
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -35,6 +36,7 @@ private:
     static float deltaTime;
     static float lastFrame;
     std::unordered_map<std::string, RenderableObject*> renderables;
+    std::unordered_map<std::string, Model*> models;
     static void CompileShaders();
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);
     static void OnCursorPositionChange(GLFWwindow *window, double xPosition,double yPosition);
@@ -57,6 +59,7 @@ public:
     int GetWindowWidth();
 
     void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix);
+    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix);
 
     void OnInputUpdate();
 };

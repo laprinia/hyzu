@@ -49,17 +49,18 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         vertex.Position = vector;
         vector = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         vertex.Normal = vector;
-        vertices.push_back(vertex);
         if (mesh->mTextureCoords[0]) {
             glm::vec2 vector2 = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
             vertex.TextureCoords = vector2;
         } else {
             vertex.TextureCoords = glm::vec2(0.0f, 0.0f);
+
         }
+        vertices.push_back(vertex);
     }
     for (GLuint i = 0; i < mesh->mNumFaces; i++) {
         aiFace face = mesh->mFaces[i];
-        for (GLuint j = 0; j < mesh->mNumFaces; j++) {
+        for (GLuint j = 0; j < face.mNumIndices; j++) {
             indices.push_back(face.mIndices[j]);
         }
     }
@@ -71,7 +72,6 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
     }
-
     return Mesh(vertices, indices, textures);
 }
 
