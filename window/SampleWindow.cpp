@@ -59,7 +59,7 @@ void SampleWindow::Init() {
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    Model *model1 = new Model("../resources/scenes/pool/pool.obj");
+    Model *model1 = new Model("../resources/scenes/pool/pool2.obj");
     models["env"] = model1;
     Model *model2 = new Model("../resources/models/bulb/sphere.obj");
     models["bulb"] = model2;
@@ -86,7 +86,7 @@ void SampleWindow::Update() {
     SampleWindow::SendLightingDataToShader(shaders["env"]);
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(2.0f));
+    model = glm::scale(model, glm::vec3(0.10f));
     //lightPosition = glm::vec3(0, 10, -5);
     lightPosition = glm::vec3(0, 10, -30);
     model = glm::translate(model, lightPosition);

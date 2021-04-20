@@ -19,7 +19,7 @@ void Model::LoadModel(const std::string &modelPath) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(modelPath,
                                              aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals |
-                                             aiProcess_CalcTangentSpace);
+                                             aiProcess_CalcTangentSpace | aiProcess_RemoveRedundantMaterials );
 
     if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Assimp Error: " << importer.GetErrorString() << std::endl;
@@ -52,6 +52,8 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         vector = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         vertex.Normal = vector;
         vertex.Tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+        vertex.BiTangent = glm::vec3(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
+
         if (mesh->mTextureCoords[0]) {
             glm::vec2 vector2 = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
             vertex.TextureCoords = vector2;

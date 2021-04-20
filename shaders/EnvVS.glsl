@@ -4,14 +4,14 @@ layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 textureCoord;
 layout (location = 3) in vec3 tangent;
+layout (location = 4) in vec3 bitangent;
+
 
 out VSDATA {
     vec3 fragmentPosition;
     vec2 textureCoord;
     vec3 normal;
     vec3 worldPosition;
-
-
     vec3 tangentFragmentPosition;
     vec3 tangentViewPosition;
     vec3 tangentLightPosition;
@@ -34,9 +34,9 @@ void main() {
     mat3 normalMatrix = transpose(inverse(mat3(model)));
     vec3 tan = normalize(normalMatrix * tangent);
     vec3 norm = normalize(normalMatrix * normal);
+    vec3 bitan = normalize(normalMatrix * bitangent);
 
     tan = normalize(tan-dot(tan, norm) * norm);
-    vec3 bitan= cross(norm, tan);
     mat3 tbnMatrix=transpose(mat3(tan,bitan,norm));
 
     vertexData.tangentFragmentPosition = tbnMatrix * vertexData.fragmentPosition;

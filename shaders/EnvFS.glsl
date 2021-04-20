@@ -41,7 +41,7 @@ void main() {
     vec3 specular = vec3(specularF) * specularFloat;
 
     vec3 finalColor = (ambient + diffuse + specular);
-    //fragmentColor = texture(texture_normal1, vertexData.textureCoord);
+   // fragmentColor = texture(texture_normal1, vertexData.textureCoord);
     fragmentColor = vec4(finalColor, 0.1);
 
 }
