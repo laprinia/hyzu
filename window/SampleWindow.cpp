@@ -59,8 +59,8 @@ void SampleWindow::Init() {
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    Model *model1 = new Model("../resources/scenes/cathedral/cathedral.fbx");
-    models["throne"] = model1;
+    Model *model1 = new Model("../resources/scenes/pool/pool.obj");
+    models["env"] = model1;
     Model *model2 = new Model("../resources/models/bulb/sphere.obj");
     models["bulb"] = model2;
 
@@ -72,18 +72,23 @@ void SampleWindow::Update() {
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+//    lightColor.x = sin(glfwGetTime() * 2.0f);
+//    lightColor.y = sin(glfwGetTime() * 0.7f);
+//    lightColor.z = sin(glfwGetTime() * 1.3f);
+
     glUseProgram(shaders["env"]);
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(0.10f));
+    model = glm::scale(model, glm::vec3(10.0f));
     model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
-    SampleWindow::RenderModel("throne", model, shaders["env"]);
+    SampleWindow::RenderModel("env", model, shaders["env"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(2.0f));
-    lightPosition=glm::vec3(0, 10, -25);
+    //lightPosition = glm::vec3(0, 10, -5);
+    lightPosition = glm::vec3(0, 10, -30);
     model = glm::translate(model, lightPosition);
 
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
@@ -93,9 +98,9 @@ void SampleWindow::Update() {
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 
-    glUniform3fv(glGetUniformLocation(shaderProgram,"lightColor"),1,glm::value_ptr(lightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram,"lightPosition"),1,glm::value_ptr(lightPosition));
-    glUniform3fv(glGetUniformLocation(shaderProgram,"viewPosition"),1,glm::value_ptr(camera->getCameraPosition()));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "lightColor"), 1, glm::value_ptr(lightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "lightPosition"), 1, glm::value_ptr(lightPosition));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "viewPosition"), 1, glm::value_ptr(camera->getCameraPosition()));
 
 }
 

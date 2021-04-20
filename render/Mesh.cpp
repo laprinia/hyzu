@@ -34,12 +34,18 @@ void Mesh::DefineMesh() {
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) offsetof(Vertex, TextureCoords));
 
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+
     glBindVertexArray(0);
 }
 
 void Mesh::Draw(GLuint shaderProgram) {
     GLuint diffuseNumber = 1;
     GLuint specularNumber = 1;
+    GLuint normalNumber = 1;
+    GLuint heightNumber = 1;
+
     for (GLuint i = 0; i < textures.size(); i++) {
         glActiveTexture(GL_TEXTURE0 + i);
         std::stringstream stringstream;
@@ -50,10 +56,16 @@ void Mesh::Draw(GLuint shaderProgram) {
         } else if (textureType == "texture_specular") {
             stringstream << specularNumber++;
         }
-        finalNumberString = stringstream.str();
+         else if (textureType == "texture_normal") {
+            stringstream << normalNumber++;
+        }
+         else if (textureType == "texture_height") {
+            stringstream << heightNumber++;
+        }
 
-        glUniform1f(glGetUniformLocation(shaderProgram, ("material." + textureType + finalNumberString).c_str()),
-                    textures[i].id);
+        finalNumberString = stringstream.str();
+         std::cout<<"binding to unif "<<textureType + finalNumberString<<std::endl;
+        glUniform1i(glGetUniformLocation(shaderProgram, (textureType + finalNumberString).c_str()),i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
     }

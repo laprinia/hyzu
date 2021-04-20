@@ -3,19 +3,45 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 textureCoord;
+layout (location = 3) in vec3 tangent;
 
-out vec2 outTextureCoord;
-out vec3 outNormal;
-out vec3 outWorldPosition;
+out VSDATA {
+    vec3 fragmentPosition;
+    vec2 textureCoord;
+    vec3 normal;
+    vec3 worldPosition;
+
+
+    vec3 tangentFragmentPosition;
+    vec3 tangentViewPosition;
+    vec3 tangentLightPosition;
+
+} vertexData;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec3 lightPosition;
+uniform vec3 viewPosition;
+
 void main() {
-    outNormal=normal;
-    outTextureCoord = textureCoord;
-    outWorldPosition = vec3(model*vec4(position,1.0));
+    vertexData.normal = normal;
+    vertexData.textureCoord = textureCoord;
+    vertexData.worldPosition = vec3(model*vec4(position, 1.0));
+    vertexData.fragmentPosition = vec3( model* vec4(position,1.0));
+
+    mat3 normalMatrix = transpose(inverse(mat3(model)));
+    vec3 tan = normalize(normalMatrix * tangent);
+    vec3 norm = normalize(normalMatrix * normal);
+
+    tan = normalize(tan-dot(tan, norm) * norm);
+    vec3 bitan= cross(norm, tan);
+    mat3 tbnMatrix=transpose(mat3(tan,bitan,norm));
+
+    vertexData.tangentFragmentPosition = tbnMatrix * vertexData.fragmentPosition;
+    vertexData.tangentViewPosition = tbnMatrix * viewPosition;
+    vertexData.tangentLightPosition = tbnMatrix * lightPosition;
     gl_Position = projection * view * model * vec4(position, 1.0);
 
 }

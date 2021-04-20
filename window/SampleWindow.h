@@ -21,6 +21,7 @@
 #include <vector>
 #include <unordered_map>
 
+
 class SampleWindow {
 private:
     InputManager inputManager = InputManager::GetInstance(nullptr);
@@ -38,7 +39,7 @@ private:
     std::unordered_map<std::string, RenderableObject *> renderables;
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
-    const glm::vec3 lightColor=glm::vec3(1.0f,0.8196f,0.65882f);
+    glm::vec3 lightColor=glm::vec3(0.9943f,1.0f,0.701961);
     glm::vec3 lightPosition;
     void CompileShaders();
 

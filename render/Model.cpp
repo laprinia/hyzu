@@ -18,7 +18,8 @@ void Model::Draw(GLuint shaderProgram) {
 void Model::LoadModel(const std::string &modelPath) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(modelPath,
-                                             aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
+                                             aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals |
+                                             aiProcess_CalcTangentSpace);
 
     if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Assimp Error: " << importer.GetErrorString() << std::endl;
@@ -50,6 +51,7 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         vertex.Position = vector;
         vector = glm::vec3(mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z);
         vertex.Normal = vector;
+        vertex.Tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
         if (mesh->mTextureCoords[0]) {
             glm::vec2 vector2 = glm::vec2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
             vertex.TextureCoords = vector2;
@@ -72,7 +74,7 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
         textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
         std::vector<Texture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-        std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_height");
+        std::vector<Texture> normalMaps = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
         textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
         std::vector<Texture> roughMaps = LoadMaterialTextures(material, aiTextureType_SHININESS, "texture_shininess");
         textures.insert(textures.end(), roughMaps.begin(), roughMaps.end());
@@ -82,7 +84,8 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName) {
+std::vector<Texture>
+Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName) {
 
     std::vector<Texture> textures;
     std::cout << typeName << " found: " << material->GetTextureCount(type) << std::endl;
@@ -139,8 +142,7 @@ GLint Model::TextureFromFile(const char *path, const std::string &directory) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_image_free(data);
-    }
-    else {
+    } else {
         std::cout << "Texture failed to load at path: " << path << std::endl;
         stbi_image_free(data);
     }
