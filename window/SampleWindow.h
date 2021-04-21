@@ -5,6 +5,7 @@
 #ifndef HYZU_SAMPLEWINDOW_H
 #define HYZU_SAMPLEWINDOW_H
 #define GLEW_STATIC
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -29,7 +30,7 @@ private:
     ShaderManager shaderManager = ShaderManager::GetInstance();
     static Camera *camera;
     GLFWwindow *window;
-    const bool hasGUI=true;
+    const bool hasGUI = true;
     int width, height;
     static bool firstMouseMove;
     static double lastMouseX, lastMouseY;
@@ -41,8 +42,11 @@ private:
     std::unordered_map<std::string, RenderableObject *> renderables;
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
-    glm::vec3 lightColor=glm::vec3(0.9943f,1.0f,0.701961);
-    glm::vec3 directionalLight=glm::vec3(0, 0, -30);
+    glm::vec3 directLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);
+    glm::vec3 directionalLight = glm::vec3(0, 0, -30);
+    glm::vec3 pointLight = glm::vec3(0, 20, -30);
+    glm::vec3 pointLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);
+
     void CompileShaders();
 
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);
@@ -76,6 +80,7 @@ public:
     void SendLightingDataToShader(GLuint shaderProgram);
 
     void OnInputUpdate();
+
     void GUIUpdate();
 };
 

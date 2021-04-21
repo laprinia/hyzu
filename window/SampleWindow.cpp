@@ -95,10 +95,9 @@ void SampleWindow::Update() {
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
 
-    model = glm::translate(model, directionalLight);
+    model = glm::translate(model, pointLight);
     model = glm::scale(model, glm::vec3(2.0f));
-
-    //SampleWindow::RenderModel("bulb", model, shaders["base"]);
+    SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
     if (hasGUI) ImGui::Render();
 }
@@ -110,7 +109,11 @@ void SampleWindow::GUIUpdate() {
         ImGui::Text("Light variables");
 
         ImGui::DragFloat3("Directional Light", (float *) &directionalLight);
-        ImGui::ColorEdit3("light color",(float *)  &lightColor);
+        ImGui::ColorEdit3(" Directional Light Color",(float *)  &directLightColor);
+
+        ImGui::DragFloat3(" Point Light",(float *)  &pointLight);
+        ImGui::ColorEdit3(" Point Light Color",(float *)  &pointLightColor);
+
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
     }
@@ -119,15 +122,26 @@ void SampleWindow::GUIUpdate() {
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 
-    glUniform3fv(glGetUniformLocation(shaderProgram, "lightColor"), 1, glm::value_ptr(lightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directLightColor"), 1, glm::value_ptr(directLightColor));
     glUniform3fv(glGetUniformLocation(shaderProgram, "directionalLight"), 1, glm::value_ptr(directionalLight));
     glUniform3fv(glGetUniformLocation(shaderProgram, "viewPosition"), 1, glm::value_ptr(camera->getCameraPosition()));
 
     //directional
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.direction"), 1, glm::value_ptr(directionalLight));
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.ambient"), 1, glm::value_ptr(glm::vec3(0.05f,0.05f,0.05f)));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.diffuse"), 1, glm::value_ptr(lightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.specular"), 1, glm::value_ptr(lightColor+glm::vec3(0.1f,0.1f,0.1f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.diffuse"), 1, glm::value_ptr(directLightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.specular"), 1, glm::value_ptr(directLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+
+    //point
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.position"), 1, glm::value_ptr(pointLight));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.ambient"), 1, glm::value_ptr(glm::vec3(0.9f,0.9f,0.9f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.diffuse"), 1, glm::value_ptr(pointLightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.specular"), 1, glm::value_ptr(pointLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), 1.0f);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), 0.045f);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), 0.0075f);
+
 
 }
 
