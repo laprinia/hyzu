@@ -26,6 +26,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_SAMPLES, 8);
     this->width = width;
     this->height = height;
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -45,7 +46,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
         std::cout << "Failed to initialize GLEW" << std::endl;
     }
     glViewport(0, 0, width, height);
-
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
     SampleWindow::CompileShaders();
     SampleWindow::Init();
