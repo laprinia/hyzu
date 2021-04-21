@@ -84,6 +84,37 @@ CMakeFiles/hyzu.dir/camera/Camera.cpp.obj
  E:/Projects/hyzu/camera/Camera.cpp
  E:/Projects/hyzu/camera/Camera.h
 CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj
+ ../libs/Assimp/include/assimp/Compiler/poppack1.h
+ ../libs/Assimp/include/assimp/Compiler/pstdint.h
+ ../libs/Assimp/include/assimp/Compiler/pushpack1.h
+ ../libs/Assimp/include/assimp/Importer.hpp
+ ../libs/Assimp/include/assimp/anim.h
+ ../libs/Assimp/include/assimp/camera.h
+ ../libs/Assimp/include/assimp/color4.h
+ ../libs/Assimp/include/assimp/color4.inl
+ ../libs/Assimp/include/assimp/config.h
+ ../libs/Assimp/include/assimp/defs.h
+ ../libs/Assimp/include/assimp/light.h
+ ../libs/Assimp/include/assimp/material.h
+ ../libs/Assimp/include/assimp/material.inl
+ ../libs/Assimp/include/assimp/matrix3x3.h
+ ../libs/Assimp/include/assimp/matrix3x3.inl
+ ../libs/Assimp/include/assimp/matrix4x4.h
+ ../libs/Assimp/include/assimp/matrix4x4.inl
+ ../libs/Assimp/include/assimp/mesh.h
+ ../libs/Assimp/include/assimp/metadata.h
+ ../libs/Assimp/include/assimp/postprocess.h
+ ../libs/Assimp/include/assimp/quaternion.h
+ ../libs/Assimp/include/assimp/quaternion.inl
+ ../libs/Assimp/include/assimp/scene.h
+ ../libs/Assimp/include/assimp/texture.h
+ ../libs/Assimp/include/assimp/types.h
+ ../libs/Assimp/include/assimp/vector2.h
+ ../libs/Assimp/include/assimp/vector2.inl
+ ../libs/Assimp/include/assimp/vector3.h
+ ../libs/Assimp/include/assimp/vector3.inl
+ E:/Projects/hyzu/import/AssimpImport.cpp
+ E:/Projects/hyzu/import/AssimpImport.h
 CMakeFiles/hyzu.dir/input/InputManager.cpp.obj
  ../libs/GLFW/include/GLFW/glfw3.h
  E:/Projects/hyzu/input/InputManager.cpp

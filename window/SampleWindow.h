@@ -29,6 +29,7 @@ private:
     ShaderManager shaderManager = ShaderManager::GetInstance();
     static Camera *camera;
     GLFWwindow *window;
+    const bool hasGUI=true;
     int width, height;
     static bool firstMouseMove;
     static double lastMouseX, lastMouseY;
@@ -41,7 +42,7 @@ private:
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
     glm::vec3 lightColor=glm::vec3(0.9943f,1.0f,0.701961);
-    glm::vec3 lightPosition;
+    glm::vec3 directionalLight=glm::vec3(0, 0, -30);
     void CompileShaders();
 
     static void OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode);

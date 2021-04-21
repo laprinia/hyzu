@@ -47,6 +47,7 @@ void ShaderManager::CheckShaderCompile(int shaderType) {
     if (!success) {
         glGetShaderInfoLog(shaderIterator->second, 512, nullptr, log);
         std::cout << "Error in compiling " << shaderType << " \n" << std::endl;
+        std::cout << log << std::endl;
     } else {
         std::cout << "Success in compiling " << shaderType << " \n" << std::endl;
     }

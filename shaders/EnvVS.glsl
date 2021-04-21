@@ -29,7 +29,7 @@ void main() {
     vertexData.normal = normal;
     vertexData.textureCoord = textureCoord;
     vertexData.worldPosition = vec3(model*vec4(position, 1.0));
-    vertexData.fragmentPosition = vec3( model* vec4(position,1.0));
+    vertexData.fragmentPosition = vec3(model* vec4(position, 1.0));
 
     mat3 normalMatrix = transpose(inverse(mat3(model)));
     vec3 tan = normalize(normalMatrix * tangent);
@@ -37,7 +37,7 @@ void main() {
     vec3 bitan = normalize(normalMatrix * bitangent);
 
     tan = normalize(tan-dot(tan, norm) * norm);
-    mat3 tbnMatrix=transpose(mat3(tan,bitan,norm));
+    mat3 tbnMatrix=transpose(mat3(tan, bitan, norm));
 
     vertexData.tangentFragmentPosition = tbnMatrix * vertexData.fragmentPosition;
     vertexData.tangentViewPosition = tbnMatrix * viewPosition;

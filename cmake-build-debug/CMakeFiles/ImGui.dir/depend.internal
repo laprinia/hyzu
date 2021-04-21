@@ -6,6 +6,7 @@ CMakeFiles/ImGui.dir/libs/imgui/imgui.cpp.obj
  E:/Projects/hyzu/libs/imgui/imgui.cpp
  E:/Projects/hyzu/libs/imgui/imgui.h
  E:/Projects/hyzu/libs/imgui/imgui_internal.h
+ E:/Projects/hyzu/libs/imgui/stb_textedit.h
 CMakeFiles/ImGui.dir/libs/imgui/imgui_demo.cpp.obj
  E:/Projects/hyzu/libs/imgui/imconfig.h
  E:/Projects/hyzu/libs/imgui/imgui.h
@@ -15,6 +16,9 @@ CMakeFiles/ImGui.dir/libs/imgui/imgui_draw.cpp.obj
  E:/Projects/hyzu/libs/imgui/imgui.h
  E:/Projects/hyzu/libs/imgui/imgui_draw.cpp
  E:/Projects/hyzu/libs/imgui/imgui_internal.h
+ E:/Projects/hyzu/libs/imgui/stb_rect_pack.h
+ E:/Projects/hyzu/libs/imgui/stb_textedit.h
+ E:/Projects/hyzu/libs/imgui/stb_truetype.h
 CMakeFiles/ImGui.dir/libs/imgui/imgui_impl_glfw_gl3.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h

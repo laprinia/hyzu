@@ -83,6 +83,37 @@ CMakeFiles/hyzu.dir/camera/Camera.cpp.obj: C:/GLM/glm/vector_relational.hpp
 CMakeFiles/hyzu.dir/camera/Camera.cpp.obj: ../camera/Camera.cpp
 CMakeFiles/hyzu.dir/camera/Camera.cpp.obj: ../camera/Camera.h
 
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/Compiler/poppack1.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/Compiler/pstdint.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/Compiler/pushpack1.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/Importer.hpp
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/anim.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/camera.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/color4.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/color4.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/config.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/defs.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/light.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/material.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/material.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/matrix3x3.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/matrix3x3.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/matrix4x4.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/matrix4x4.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/mesh.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/metadata.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/postprocess.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/quaternion.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/quaternion.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/scene.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/texture.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/types.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/vector2.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/vector2.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/vector3.h
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../libs/Assimp/include/assimp/vector3.inl
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../import/AssimpImport.cpp
+CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj: ../import/AssimpImport.h
 
 CMakeFiles/hyzu.dir/input/InputManager.cpp.obj: ../libs/GLFW/include/GLFW/glfw3.h
 CMakeFiles/hyzu.dir/input/InputManager.cpp.obj: ../input/InputManager.cpp
