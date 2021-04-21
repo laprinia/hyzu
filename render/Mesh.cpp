@@ -67,7 +67,7 @@ void Mesh::Draw(GLuint shaderProgram) {
         }
 
         finalNumberString = stringstream.str();
-         std::cout<<"binding to unif "<<textureType + finalNumberString<<std::endl;
+
         glUniform1i(glGetUniformLocation(shaderProgram, (textureType + finalNumberString).c_str()),i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
 

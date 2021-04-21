@@ -42,7 +42,7 @@ private:
     std::unordered_map<std::string, RenderableObject *> renderables;
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
-    glm::vec3 directLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);
+    glm::vec3 directLightColor = glm::vec3(1, 1, 1);
     glm::vec3 directionalLight = glm::vec3(0, 0, -30);
     glm::vec3 pointLight = glm::vec3(0, 20, -30);
     glm::vec3 pointLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);

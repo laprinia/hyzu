@@ -45,44 +45,46 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
 void main() {
     vec3 normal = texture(texture_normal1, vertexData.textureCoord).rgb;
     normal = normalize(normal*2.0-1.0);
-    vec3 result = ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
-   result+= ComputePointLight(point, normal, vertexData.tangentFragmentPosition,vertexData.tangentViewPosition);
+    float gamma=2.2;
+    vec3 color=texture(texture_diffuse1, vertexData.textureCoord).rgb;
+    vec3 result=color *ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
+    result+= color * ComputePointLight(point, normal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition);
+
+
+    result=pow(result, vec3(1.0/gamma));
     fragmentColor = vec4(result, 0.1);
 }
 
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition) {
     vec3 lightDirection = normalize(-light.direction);
-    float diffuseFloat = max(dot(normal, lightDirection), 0.0);
+    float diffuseFloat = max(dot(lightDirection, normal), 0.0);
 
     vec3 viewDirectionC = normalize(viewDirection- fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
 
-    vec3 ambient = light.ambient * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 diffuse = light.diffuse * diffuseFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 specular = light.specular * specularFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
 
-    return ambient + diffuse + specular;
+    return diffuse + specular;
 }
 
 vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection) {
 
     vec3 lightDirection = normalize(light.position-fragmentPosition);
-    float diffuseFloat = max(dot(normal, lightDirection), 0.0);
+    float diffuseFloat = max(dot(lightDirection, normal), 0.0);
 
     vec3 viewDirectionC = normalize(viewDirection- fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
 
     float distance = length(light.position-fragmentPosition);
-    float attenuation = 1.0/(light.constant+ light.linear * distance + light.quadratic * (distance*distance));
+    float attenuation =1.0 / (distance * distance);
 
-    vec3 ambient = light.ambient * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 diffuse = light.diffuse * diffuseFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 specular = light.specular * specularFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
 
     diffuse *= attenuation;
-    ambient *= attenuation;
     specular *= attenuation;
-    return ambient + diffuse + specular;
+    return diffuse + specular;
 }
