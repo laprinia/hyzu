@@ -51,12 +51,39 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     SampleWindow::Init();
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    unsigned int fb;
+    glGenFramebuffers(1, &fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb);
+    fbID=&fb;
+
+    unsigned int bt;
+    glGenTextures(1, &bt);
+    glBindTexture(GL_TEXTURE_2D, bt);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, bt, 0);
+    bufferTexture= &bt;
+
+   unsigned int rbo;
+   glGenRenderbuffers(1,&rbo);
+   glBindRenderbuffer(GL_RENDERBUFFER,rbo);
+   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,width,height);
+   glBindRenderbuffer(GL_RENDERBUFFER,0);
+   glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << " Framebuffer isn't complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     while (!glfwWindowShouldClose(window)) {
 
         SampleWindow::Update();
         glfwSwapBuffers(window);
     }
     if (hasGUI) ImGui_ImplGlfwGL3_Shutdown();
+    glDeleteVertexArrays(1, &quadVAO);
+    glDeleteBuffers(1, &quadVBO);
     glfwTerminate();
 }
 
@@ -66,6 +93,26 @@ void SampleWindow::Init() {
         ImGui::CreateContext();
         ImGui_ImplGlfwGL3_Init(window, true);
     }
+    float screenQuadVertices[] = {
+
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            -1.0f, -1.0f,  0.0f, 0.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+            1.0f,  1.0f,  1.0f, 1.0f
+    };
+
+    glGenVertexArrays(1, &quadVAO);
+    glGenBuffers(1,&quadVBO);
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(screenQuadVertices), &screenQuadVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -82,6 +129,9 @@ void SampleWindow::Update() {
     glfwPollEvents();
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
+    glBindFramebuffer(GL_FRAMEBUFFER,*fbID);
+    glEnable(GL_DEPTH_TEST);
+
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(shaders["env"]);
@@ -99,6 +149,15 @@ void SampleWindow::Update() {
     model = glm::scale(model, glm::vec3(2.0f));
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
+
+    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    glDisable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(shaders["post"]);
+    glBindVertexArray(quadVAO);
+    glBindTexture(GL_TEXTURE_2D,*bufferTexture);
+    glDrawArrays(GL_TRIANGLES,0,6);
+
     if (hasGUI) ImGui::Render();
 }
 
@@ -206,6 +265,16 @@ void SampleWindow::CompileShaders() {
     shaderProgram = ShaderManager::LinkShaderProgram();
     shaders["env"] = shaderProgram;
     ShaderManager::CheckShaderLink(shaders["env"]);
+
+    ShaderManager::CompileShader(GL_VERTEX_SHADER, "../shaders/PostVS.glsl");
+    ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+
+    ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/PostFS.glsl");
+    ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+
+    shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["post"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["post"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {

@@ -31,6 +31,10 @@ private:
     static Camera *camera;
     GLFWwindow *window;
     const bool hasGUI = true;
+    unsigned int* fbID;
+    unsigned int* bufferTexture;
+    unsigned int quadVAO;
+    unsigned int quadVBO;
     int width, height;
     static bool firstMouseMove;
     static double lastMouseX, lastMouseY;
