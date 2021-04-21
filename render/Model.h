@@ -19,7 +19,7 @@
 #include "SOIL.h"
 class Model {
 public:
-    Model(GLchar *path);
+    Model(const std::string& path);
 
     void Draw(GLuint shaderProgram);
 

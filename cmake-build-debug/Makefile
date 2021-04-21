@@ -129,6 +129,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named ImGui
+
+# Build rule for target.
+ImGui: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 ImGui
+.PHONY : ImGui
+
+# fast build rule for target.
+ImGui/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/build
+.PHONY : ImGui/fast
+
+#=============================================================================
 # Target rules for targets named hyzu
 
 # Build rule for target.
@@ -221,6 +234,114 @@ input/InputManager.s: input/InputManager.cpp.s
 input/InputManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\hyzu.dir\build.make CMakeFiles/hyzu.dir/input/InputManager.cpp.s
 .PHONY : input/InputManager.cpp.s
+
+libs/imgui/imgui.obj: libs/imgui/imgui.cpp.obj
+
+.PHONY : libs/imgui/imgui.obj
+
+# target to build an object file
+libs/imgui/imgui.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui.cpp.obj
+.PHONY : libs/imgui/imgui.cpp.obj
+
+libs/imgui/imgui.i: libs/imgui/imgui.cpp.i
+
+.PHONY : libs/imgui/imgui.i
+
+# target to preprocess a source file
+libs/imgui/imgui.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui.cpp.i
+.PHONY : libs/imgui/imgui.cpp.i
+
+libs/imgui/imgui.s: libs/imgui/imgui.cpp.s
+
+.PHONY : libs/imgui/imgui.s
+
+# target to generate assembly for a file
+libs/imgui/imgui.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui.cpp.s
+.PHONY : libs/imgui/imgui.cpp.s
+
+libs/imgui/imgui_demo.obj: libs/imgui/imgui_demo.cpp.obj
+
+.PHONY : libs/imgui/imgui_demo.obj
+
+# target to build an object file
+libs/imgui/imgui_demo.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_demo.cpp.obj
+.PHONY : libs/imgui/imgui_demo.cpp.obj
+
+libs/imgui/imgui_demo.i: libs/imgui/imgui_demo.cpp.i
+
+.PHONY : libs/imgui/imgui_demo.i
+
+# target to preprocess a source file
+libs/imgui/imgui_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_demo.cpp.i
+.PHONY : libs/imgui/imgui_demo.cpp.i
+
+libs/imgui/imgui_demo.s: libs/imgui/imgui_demo.cpp.s
+
+.PHONY : libs/imgui/imgui_demo.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_demo.cpp.s
+.PHONY : libs/imgui/imgui_demo.cpp.s
+
+libs/imgui/imgui_draw.obj: libs/imgui/imgui_draw.cpp.obj
+
+.PHONY : libs/imgui/imgui_draw.obj
+
+# target to build an object file
+libs/imgui/imgui_draw.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_draw.cpp.obj
+.PHONY : libs/imgui/imgui_draw.cpp.obj
+
+libs/imgui/imgui_draw.i: libs/imgui/imgui_draw.cpp.i
+
+.PHONY : libs/imgui/imgui_draw.i
+
+# target to preprocess a source file
+libs/imgui/imgui_draw.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_draw.cpp.i
+.PHONY : libs/imgui/imgui_draw.cpp.i
+
+libs/imgui/imgui_draw.s: libs/imgui/imgui_draw.cpp.s
+
+.PHONY : libs/imgui/imgui_draw.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_draw.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_draw.cpp.s
+.PHONY : libs/imgui/imgui_draw.cpp.s
+
+libs/imgui/imgui_impl_glfw_gl3.obj: libs/imgui/imgui_impl_glfw_gl3.cpp.obj
+
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.obj
+
+# target to build an object file
+libs/imgui/imgui_impl_glfw_gl3.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_impl_glfw_gl3.cpp.obj
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.cpp.obj
+
+libs/imgui/imgui_impl_glfw_gl3.i: libs/imgui/imgui_impl_glfw_gl3.cpp.i
+
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.i
+
+# target to preprocess a source file
+libs/imgui/imgui_impl_glfw_gl3.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_impl_glfw_gl3.cpp.i
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.cpp.i
+
+libs/imgui/imgui_impl_glfw_gl3.s: libs/imgui/imgui_impl_glfw_gl3.cpp.s
+
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.s
+
+# target to generate assembly for a file
+libs/imgui/imgui_impl_glfw_gl3.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ImGui.dir\build.make CMakeFiles/ImGui.dir/libs/imgui/imgui_impl_glfw_gl3.cpp.s
+.PHONY : libs/imgui/imgui_impl_glfw_gl3.cpp.s
 
 main.obj: main.cpp.obj
 
@@ -419,6 +540,7 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... ImGui
 	@echo ... hyzu
 	@echo ... camera/Camera.obj
 	@echo ... camera/Camera.i
@@ -429,6 +551,18 @@ help:
 	@echo ... input/InputManager.obj
 	@echo ... input/InputManager.i
 	@echo ... input/InputManager.s
+	@echo ... libs/imgui/imgui.obj
+	@echo ... libs/imgui/imgui.i
+	@echo ... libs/imgui/imgui.s
+	@echo ... libs/imgui/imgui_demo.obj
+	@echo ... libs/imgui/imgui_demo.i
+	@echo ... libs/imgui/imgui_demo.s
+	@echo ... libs/imgui/imgui_draw.obj
+	@echo ... libs/imgui/imgui_draw.i
+	@echo ... libs/imgui/imgui_draw.s
+	@echo ... libs/imgui/imgui_impl_glfw_gl3.obj
+	@echo ... libs/imgui/imgui_impl_glfw_gl3.i
+	@echo ... libs/imgui/imgui_impl_glfw_gl3.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

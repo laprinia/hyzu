@@ -120,6 +120,9 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
  ../libs/SOIL/include/SOIL.h
+ ../libs/imgui/imconfig.h
+ ../libs/imgui/imgui.h
+ ../libs/imgui/imgui_impl_glfw_gl3.h
  C:/GLM/glm/common.hpp
  C:/GLM/glm/detail/_fixes.hpp
  C:/GLM/glm/detail/_swizzle.hpp
@@ -722,6 +725,9 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
  ../libs/GLEW/include/GL/glew.h
  ../libs/GLFW/include/GLFW/glfw3.h
  ../libs/SOIL/include/SOIL.h
+ ../libs/imgui/imconfig.h
+ ../libs/imgui/imgui.h
+ ../libs/imgui/imgui_impl_glfw_gl3.h
  C:/GLM/glm/common.hpp
  C:/GLM/glm/detail/_fixes.hpp
  C:/GLM/glm/detail/_swizzle.hpp

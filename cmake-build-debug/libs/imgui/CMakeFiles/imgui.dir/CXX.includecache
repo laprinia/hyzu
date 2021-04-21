@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+E:/Projects/hyzu/libs/imgui/imconfig.h
+
+E:/Projects/hyzu/libs/imgui/imgui.h
+imconfig.h
+E:/Projects/hyzu/libs/imgui/imconfig.h
+float.h
+-
+stdarg.h
+-
+stddef.h
+-
+string.h
+-
+assert.h
+-
+stdint.h
+-
+imgui_user.h
+E:/Projects/hyzu/libs/imgui/imgui_user.h
+
+E:/Projects/hyzu/libs/imgui/imgui_impl_glfw_gl3.cpp
+imgui.h
+E:/Projects/hyzu/libs/imgui/imgui.h
+imgui_impl_glfw_gl3.h
+E:/Projects/hyzu/libs/imgui/imgui_impl_glfw_gl3.h
+GLFW/glfw3.h
+-
+GLFW/glfw3native.h
+-
+
+E:/Projects/hyzu/libs/imgui/imgui_impl_glfw_gl3.h
+

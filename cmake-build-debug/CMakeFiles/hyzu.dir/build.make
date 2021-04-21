@@ -242,6 +242,8 @@ hyzu.exe: CMakeFiles/hyzu.dir/render/SimpleMesh.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/render/Model.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/import/AssimpImport.cpp.obj
 hyzu.exe: CMakeFiles/hyzu.dir/build.make
+hyzu.exe: libImGui.a
+hyzu.exe: libImGui.a
 hyzu.exe: CMakeFiles/hyzu.dir/linklibs.rsp
 hyzu.exe: CMakeFiles/hyzu.dir/objects1.rsp
 hyzu.exe: CMakeFiles/hyzu.dir/link.txt

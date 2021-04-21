@@ -24,10 +24,12 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "../libs/Assimp/include"
   "../libs/SOIL/include"
   "C:/glm"
+  "../libs/imgui"
   )
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
+  "E:/Projects/hyzu/cmake-build-debug/CMakeFiles/ImGui.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

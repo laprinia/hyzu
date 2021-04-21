@@ -119,6 +119,9 @@ CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/Assimp/include/assimp/vector3.inl
 CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/GLEW/include/GL/glew.h
 CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/GLFW/include/GLFW/glfw3.h
 CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/SOIL/include/SOIL.h
+CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/imgui/imconfig.h
+CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/imgui/imgui.h
+CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/imgui/imgui_impl_glfw_gl3.h
 CMakeFiles/hyzu.dir/main.cpp.obj: C:/GLM/glm/common.hpp
 CMakeFiles/hyzu.dir/main.cpp.obj: C:/GLM/glm/detail/_fixes.hpp
 CMakeFiles/hyzu.dir/main.cpp.obj: C:/GLM/glm/detail/_swizzle.hpp
@@ -721,6 +724,9 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/Assimp/include/assimp/v
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/GLEW/include/GL/glew.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/GLFW/include/GLFW/glfw3.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/SOIL/include/SOIL.h
+CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/imgui/imconfig.h
+CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/imgui/imgui.h
+CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/imgui/imgui_impl_glfw_gl3.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: C:/GLM/glm/common.hpp
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: C:/GLM/glm/detail/_fixes.hpp
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: C:/GLM/glm/detail/_swizzle.hpp

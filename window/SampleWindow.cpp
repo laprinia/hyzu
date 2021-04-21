@@ -16,6 +16,10 @@ double SampleWindow::pitch = 0.0f;
 
 float SampleWindow::mouseSensitivity = 0.1f;
 
+bool show_test_window = true;
+bool show_another_window = false;
+ImVec4 clear_color = ImColor(114, 144, 154);
+
 SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 
     glfwInit();
@@ -52,10 +56,17 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
         SampleWindow::Update();
         glfwSwapBuffers(window);
     }
+    ImGui_ImplGlfwGL3_Shutdown();
     glfwTerminate();
 }
 
 void SampleWindow::Init() {
+   // IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui_ImplGlfwGL3_Init(window,true);
+   // ImGui_ImplGlfw_InitForOpenGL(window, true);
+
+   // ImGui::StyleColorsDark();
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -64,18 +75,16 @@ void SampleWindow::Init() {
     Model *model2 = new Model("../resources/models/bulb/sphere.obj");
     models["bulb"] = model2;
 
+
 }
 
 void SampleWindow::Update() {
+    ImGui_ImplGlfwGL3_NewFrame();
     glfwPollEvents();
     OnInputUpdate();
+    GUIUpdate();
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    lightColor.x = sin(glfwGetTime() * 2.0f);
-//    lightColor.y = sin(glfwGetTime() * 0.7f);
-//    lightColor.z = sin(glfwGetTime() * 1.3f);
-
     glUseProgram(shaders["env"]);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(10.0f));
@@ -86,14 +95,40 @@ void SampleWindow::Update() {
     SampleWindow::SendLightingDataToShader(shaders["env"]);
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(0.10f));
     //lightPosition = glm::vec3(0, 10, -5);
     lightPosition = glm::vec3(0, 10, -30);
     model = glm::translate(model, lightPosition);
+    model = glm::scale(model, glm::vec3(2.0f));
 
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
+    ImGui::Render();
+}
+void SampleWindow::GUIUpdate() {
 
+    {
+        static float f = 0.0f;
+        ImGui::Text("Hello, world!");
+        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+        ImGui::ColorEdit3("clear color", (float*)&clear_color);
+        if (ImGui::Button("Test Window")) show_test_window ^= 1;
+        if (ImGui::Button("Another Window")) show_another_window ^= 1;
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    }
+
+    if (show_another_window)
+    {
+        ImGui::SetNextWindowSize(ImVec2(200,100), ImGuiSetCond_FirstUseEver);
+        ImGui::Begin("Another Window", &show_another_window);
+        ImGui::Text("Hello");
+        ImGui::End();
+    }
+
+    if (show_test_window)
+    {
+        ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+        ImGui::ShowTestWindow(&show_test_window);
+    }
 }
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
@@ -268,6 +303,7 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
 
 
 

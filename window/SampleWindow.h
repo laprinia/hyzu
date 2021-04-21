@@ -5,7 +5,6 @@
 #ifndef HYZU_SAMPLEWINDOW_H
 #define HYZU_SAMPLEWINDOW_H
 #define GLEW_STATIC
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -17,6 +16,8 @@
 #include "../render/SimpleMesh.h"
 #include "../camera/Camera.h"
 #include "../render/Model.h"
+#include "imgui.h"
+#include "imgui_impl_glfw_gl3.h"
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -74,6 +75,7 @@ public:
     void SendLightingDataToShader(GLuint shaderProgram);
 
     void OnInputUpdate();
+    void GUIUpdate();
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

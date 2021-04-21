@@ -1,0 +1,2 @@
+C:\MinGW\bin\ar.exe qc libImGui.a CMakeFiles/ImGui.dir/libs/imgui/imgui.cpp.obj CMakeFiles/ImGui.dir/libs/imgui/imgui_demo.cpp.obj CMakeFiles/ImGui.dir/libs/imgui/imgui_draw.cpp.obj CMakeFiles/ImGui.dir/libs/imgui/imgui_impl_glfw_gl3.cpp.obj
+C:\MinGW\bin\ranlib.exe libImGui.a

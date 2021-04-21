@@ -5,7 +5,7 @@
 #include <stb_image_aug.h>
 #include "Model.h"
 
-Model::Model(GLchar *path) {
+Model::Model(const std::string& path) {
     LoadModel(path);
 }
 
