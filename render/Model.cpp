@@ -106,7 +106,8 @@ Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std:
         if (!skip) {
 
             Texture texture;
-            texture.id = TextureFromFile(string.C_Str(), modelDirectory);
+            bool isDiffuse= (typeName=="texture_diffuse");
+            texture.id = TextureFromFile(string.C_Str(), modelDirectory,isDiffuse);
             texture.type = typeName;
             texture.path = string;
             textures.push_back(texture);
@@ -116,7 +117,7 @@ Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std:
     return textures;
 }
 
-GLint Model::TextureFromFile(const char *path, const std::string &directory) {
+GLint Model::TextureFromFile(const char *path, const std::string &directory, bool isTextureDiffuse) {
     std::string filename = std::string(path);
     filename = directory + '/' + filename;
 
@@ -132,11 +133,11 @@ GLint Model::TextureFromFile(const char *path, const std::string &directory) {
             internalFormat = dataFormat = GL_RED;
         }
         else if (nrComponents == 3){
-            internalFormat = GL_SRGB;
+            internalFormat = isTextureDiffuse?GL_SRGB:GL_RGB;
             dataFormat = GL_RGB;
         }else if (nrComponents == 4)
         {
-            internalFormat = GL_RGBA;
+            internalFormat = isTextureDiffuse?GL_SRGB_ALPHA:GL_RGBA;
             dataFormat = GL_RGBA;
         }
         glBindTexture(GL_TEXTURE_2D, textureID);

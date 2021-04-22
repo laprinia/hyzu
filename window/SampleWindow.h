@@ -23,6 +23,22 @@
 #include <vector>
 #include <unordered_map>
 
+struct DirectionalLight {
+    glm::vec3 diffuseColor = glm::vec3(1, 1, 1);
+    glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 direction = glm::vec3(0, 0, -30);
+
+    float lightExposure = 0.1f;
+};
+struct PointLight {
+    glm::vec3 diffuseColor = glm::vec3(1.0f, 0.016471f, 0.036471f);
+    glm::vec3 specularColor = glm::vec3(1.0f, 0.16470f, 0.776470f);
+    glm::vec3 position = glm::vec3(0, -5.0f, -35.0f);
+
+    float constant = 0.630f;
+    float linear = 0.070f;
+    float quadratic = 0.017f;
+};
 
 class SampleWindow {
 private:
@@ -46,11 +62,8 @@ private:
     std::unordered_map<std::string, RenderableObject *> renderables;
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
-    glm::vec3 directLightColor = glm::vec3(1, 1, 1);
-    glm::vec3 directionalLight = glm::vec3(0, 0, -30);
-    glm::vec3 pointLight = glm::vec3(0, 20, -30);
-    glm::vec3 pointLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);
-    float lightExposure = 0.1f;
+    DirectionalLight directional;
+    PointLight point;
 
     void CompileShaders();
 

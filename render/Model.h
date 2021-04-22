@@ -36,7 +36,7 @@ private:
 
     std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string& typeName);
 
-    static GLint TextureFromFile(const char* path, const std::string& directory);
+    static GLint TextureFromFile(const char* path, const std::string& directory, bool isDiffuse);
 };
 
 

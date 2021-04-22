@@ -35,6 +35,10 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
         glfwTerminate();
     }
     glfwMakeContextCurrent(window);
+    GLFWimage icon;
+    icon.pixels = SOIL_load_image("../resources/icon_dark.png", &icon.width, &icon.height, 0, SOIL_LOAD_RGBA);
+    glfwSetWindowIcon(window, 1, &icon);
+    SOIL_free_image_data(icon.pixels);
     glewExperimental = GL_TRUE;
     InputManager::GetInstance(window);
     InputManager::SetFramebufferSizeCallback(window, OnFramebufferSizeChange);
@@ -48,6 +52,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glViewport(0, 0, width, height);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_FRAMEBUFFER_SRGB);
     SampleWindow::CompileShaders();
     SampleWindow::Init();
 
@@ -145,7 +150,7 @@ void SampleWindow::Update() {
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
 
-    model = glm::translate(model, pointLight);
+    model = glm::translate(model, point.position);
     model = glm::scale(model, glm::vec3(2.0f));
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
@@ -165,14 +170,19 @@ void SampleWindow::Update() {
 void SampleWindow::GUIUpdate() {
 
     {
-        static float f = 0.0f;
-        ImGui::Text("Light variables");
-        ImGui::DragFloat("Light Exposure", (float *) &lightExposure, 0.10f, 0.1f, 5.0f);
-        ImGui::DragFloat3("Directional Light", (float *) &directionalLight);
-        ImGui::ColorEdit3(" Directional Light Color", (float *) &directLightColor);
-
-        ImGui::DragFloat3(" Point Light", (float *) &pointLight);
-        ImGui::ColorEdit3(" Point Light Color", (float *) &pointLightColor);
+        ImGui::Text("Exposure");
+        ImGui::DragFloat("Light Exposure", (float *) &directional.lightExposure, 0.10f, 0.1f, 5.0f);
+        ImGui::Text("Directional variables");
+        ImGui::DragFloat3("Light Direction", (float *) &directional.direction);
+        ImGui::ColorEdit3("Diffuse Light Color", (float *) &directional.diffuseColor);
+        ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
+        ImGui::Text("Point variables");
+        ImGui::DragFloat3("Light Position", (float *) &point.position);
+        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
+        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
+        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
@@ -182,33 +192,35 @@ void SampleWindow::GUIUpdate() {
 
 void SampleWindow::SendPostDataToShader(GLuint shaderProgram) {
 
-    glUniform1f(glGetUniformLocation(shaderProgram, "lightExposure"), lightExposure);
+    glUniform1f(glGetUniformLocation(shaderProgram, "lightExposure"), directional.lightExposure);
 }
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directLightColor"), 1, glm::value_ptr(directLightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directionalLight"), 1, glm::value_ptr(directionalLight));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directLightColor"), 1, glm::value_ptr(directional.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directionalLight"), 1, glm::value_ptr(directional.direction));
     glUniform3fv(glGetUniformLocation(shaderProgram, "viewPosition"), 1, glm::value_ptr(camera->getCameraPosition()));
 
     //directional
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.direction"), 1, glm::value_ptr(directionalLight));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.direction"), 1,
+                 glm::value_ptr(directional.direction));
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.ambient"), 1,
-                 glm::value_ptr(glm::vec3(0.05f, 0.05f, 0.05f)));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.diffuse"), 1, glm::value_ptr(directLightColor));
+                 glm::value_ptr(directional.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.diffuse"), 1,
+                 glm::value_ptr(directional.diffuseColor));
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.specular"), 1,
-                 glm::value_ptr(directLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+                 glm::value_ptr(directional.specularColor));
 
     //point
-    glUniform3fv(glGetUniformLocation(shaderProgram, "point.position"), 1, glm::value_ptr(pointLight));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "point.ambient"), 1, glm::value_ptr(glm::vec3(0.9f, 0.9f, 0.9f)));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "point.diffuse"), 1, glm::value_ptr(pointLightColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.position"), 1, glm::value_ptr(point.position));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.ambient"), 1, glm::value_ptr(point.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.diffuse"), 1, glm::value_ptr(point.diffuseColor));
     glUniform3fv(glGetUniformLocation(shaderProgram, "point.specular"), 1,
-                 glm::value_ptr(pointLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+                 glm::value_ptr(point.specularColor));
 
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), 1.0f);
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), 0.045f);
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), 0.0075f);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), point.constant);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), point.linear);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), point.quadratic);
 }
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram) {
