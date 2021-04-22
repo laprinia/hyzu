@@ -31,6 +31,7 @@ in VSDATA {
 
 } vertexData;
 
+float gamma=2.2;
 uniform vec3 lightColor;
 uniform vec3 lightPosition;
 uniform vec3 viewPosition;
@@ -43,15 +44,16 @@ vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, ve
 vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection);
 
 void main() {
+    if(texture(texture_normal1, vertexData.textureCoord).a < 0.7) {
+        discard;
+    }
     vec3 normal = texture(texture_normal1, vertexData.textureCoord).rgb;
     normal = normalize(normal*2.0-1.0);
-    float gamma=2.2;
     vec3 color=texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 result=color *ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
     result+= color * ComputePointLight(point, normal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition);
 
-
-    result=pow(result, vec3(1.0/gamma));
+   // result=pow(result, vec3(1.0/gamma));
     fragmentColor = vec4(result, 0.1);
 }
 
@@ -62,7 +64,7 @@ vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, ve
     vec3 viewDirectionC = normalize(viewDirection- fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
-
+    //todo add intensity modifier
     vec3 diffuse = light.diffuse * diffuseFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 specular = light.specular * specularFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
 

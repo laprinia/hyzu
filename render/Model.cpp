@@ -132,7 +132,7 @@ GLint Model::TextureFromFile(const char *path, const std::string &directory) {
             internalFormat = dataFormat = GL_RED;
         }
         else if (nrComponents == 3){
-            internalFormat = GL_RGB;
+            internalFormat = GL_SRGB;
             dataFormat = GL_RGB;
         }else if (nrComponents == 4)
         {

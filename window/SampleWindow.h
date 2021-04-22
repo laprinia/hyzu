@@ -31,8 +31,8 @@ private:
     static Camera *camera;
     GLFWwindow *window;
     const bool hasGUI = true;
-    unsigned int* fbID;
-    unsigned int* bufferTexture;
+    unsigned int *fbID;
+    unsigned int *bufferTexture;
     unsigned int quadVAO;
     unsigned int quadVBO;
     int width, height;
@@ -50,6 +50,7 @@ private:
     glm::vec3 directionalLight = glm::vec3(0, 0, -30);
     glm::vec3 pointLight = glm::vec3(0, 20, -30);
     glm::vec3 pointLightColor = glm::vec3(0.9943f, 1.0f, 0.701961);
+    float lightExposure = 0.1f;
 
     void CompileShaders();
 
@@ -82,6 +83,8 @@ public:
     void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram);
 
     void SendLightingDataToShader(GLuint shaderProgram);
+
+    void SendPostDataToShader(GLuint shaderProgram);
 
     void OnInputUpdate();
 

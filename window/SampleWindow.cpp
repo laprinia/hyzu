@@ -56,23 +56,22 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     unsigned int fb;
     glGenFramebuffers(1, &fb);
     glBindFramebuffer(GL_FRAMEBUFFER, fb);
-    fbID=&fb;
+    fbID = &fb;
 
     unsigned int bt;
     glGenTextures(1, &bt);
     glBindTexture(GL_TEXTURE_2D, bt);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, bt, 0);
-    bufferTexture= &bt;
+    bufferTexture = &bt;
 
-   unsigned int rbo;
-   glGenRenderbuffers(1,&rbo);
-   glBindRenderbuffer(GL_RENDERBUFFER,rbo);
-   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8,width,height);
-   glBindRenderbuffer(GL_RENDERBUFFER,0);
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
+    unsigned int rbo;
+    glGenRenderbuffers(1, &rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << " Framebuffer isn't complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -96,24 +95,24 @@ void SampleWindow::Init() {
     }
     float screenQuadVertices[] = {
 
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
-            1.0f,  1.0f,  1.0f, 1.0f
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f
     };
 
     glGenVertexArrays(1, &quadVAO);
-    glGenBuffers(1,&quadVBO);
+    glGenBuffers(1, &quadVBO);
     glBindVertexArray(quadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(screenQuadVertices), &screenQuadVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2 * sizeof(float)));
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -130,7 +129,7 @@ void SampleWindow::Update() {
     glfwPollEvents();
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
-    glBindFramebuffer(GL_FRAMEBUFFER,*fbID);
+    glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
     glEnable(GL_DEPTH_TEST);
 
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
@@ -151,13 +150,14 @@ void SampleWindow::Update() {
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
 
-    glBindFramebuffer(GL_FRAMEBUFFER,0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaders["post"]);
+    SampleWindow::SendPostDataToShader(shaders["post"]);
     glBindVertexArray(quadVAO);
-    glBindTexture(GL_TEXTURE_2D,*bufferTexture);
-    glDrawArrays(GL_TRIANGLES,0,6);
+    glBindTexture(GL_TEXTURE_2D, *bufferTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     if (hasGUI) ImGui::Render();
 }
@@ -167,17 +167,22 @@ void SampleWindow::GUIUpdate() {
     {
         static float f = 0.0f;
         ImGui::Text("Light variables");
-
+        ImGui::DragFloat("Light Exposure", (float *) &lightExposure, 0.10f, 0.1f, 5.0f);
         ImGui::DragFloat3("Directional Light", (float *) &directionalLight);
-        ImGui::ColorEdit3(" Directional Light Color",(float *)  &directLightColor);
+        ImGui::ColorEdit3(" Directional Light Color", (float *) &directLightColor);
 
-        ImGui::DragFloat3(" Point Light",(float *)  &pointLight);
-        ImGui::ColorEdit3(" Point Light Color",(float *)  &pointLightColor);
+        ImGui::DragFloat3(" Point Light", (float *) &pointLight);
+        ImGui::ColorEdit3(" Point Light Color", (float *) &pointLightColor);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
     }
 
+}
+
+void SampleWindow::SendPostDataToShader(GLuint shaderProgram) {
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "lightExposure"), lightExposure);
 }
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
@@ -188,21 +193,22 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 
     //directional
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.direction"), 1, glm::value_ptr(directionalLight));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.ambient"), 1, glm::value_ptr(glm::vec3(0.05f,0.05f,0.05f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.ambient"), 1,
+                 glm::value_ptr(glm::vec3(0.05f, 0.05f, 0.05f)));
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.diffuse"), 1, glm::value_ptr(directLightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.specular"), 1, glm::value_ptr(directLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "directional.specular"), 1,
+                 glm::value_ptr(directLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
 
     //point
     glUniform3fv(glGetUniformLocation(shaderProgram, "point.position"), 1, glm::value_ptr(pointLight));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "point.ambient"), 1, glm::value_ptr(glm::vec3(0.9f,0.9f,0.9f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.ambient"), 1, glm::value_ptr(glm::vec3(0.9f, 0.9f, 0.9f)));
     glUniform3fv(glGetUniformLocation(shaderProgram, "point.diffuse"), 1, glm::value_ptr(pointLightColor));
-    glUniform3fv(glGetUniformLocation(shaderProgram, "point.specular"), 1, glm::value_ptr(pointLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point.specular"), 1,
+                 glm::value_ptr(pointLightColor + glm::vec3(0.1f, 0.1f, 0.1f)));
 
     glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), 1.0f);
     glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), 0.045f);
     glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), 0.0075f);
-
-
 }
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram) {
@@ -379,6 +385,8 @@ int SampleWindow::GetWindowHeight() {
 int SampleWindow::GetWindowWidth() {
     return width;
 }
+
+
 
 
 
