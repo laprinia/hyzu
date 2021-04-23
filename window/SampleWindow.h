@@ -47,9 +47,12 @@ private:
     ShaderManager shaderManager = ShaderManager::GetInstance();
     static Camera *camera;
     GLFWwindow *window;
-    const bool hasGUI = true;
+    const bool hasGUI = false;
     unsigned int *fbID;
+    unsigned int *depthID;
     unsigned int *bufferTexture;
+    unsigned int *depthTexture;
+    const unsigned int depth_width_height = 1024;
     unsigned int quadVAO;
     unsigned int quadVBO;
     unsigned int cubeVAO;
@@ -97,7 +100,8 @@ public:
 
     void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix, GLuint shaderProgram);
 
-    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram);
+    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix,glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix, GLuint shaderProgram);
+
 
     void SendLightingDataToShader(GLuint shaderProgram);
 
@@ -110,6 +114,8 @@ public:
     void OnInputUpdate();
 
     void GUIUpdate();
+
+    void RenderScene(glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix,bool isLightPov,const glm::mat4 &lightMatrix=glm::mat4(0));
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

@@ -69,7 +69,7 @@ void main() {
     vec3 ambient = 0.05 * color;
     vec3 result = ambient;
     result+= ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
-    result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
+   // result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
 
     fragmentColor = vec4(result, 0.1);
 }

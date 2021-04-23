@@ -3,7 +3,7 @@
 
 int main() {
 
-    SampleWindow sampleWindow = SampleWindow(1920, 1080, "hyzu");
+    SampleWindow sampleWindow = SampleWindow(1900, 1000, "hyzu");
 
     return 0;
 }

@@ -81,6 +81,29 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
         std::cout << " Framebuffer isn't complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    //depth buffer
+    unsigned int depthFb;
+    glGenFramebuffers(1, &depthFb);
+
+    unsigned int depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, depth_width_height, depth_width_height, 0, GL_DEPTH_COMPONENT,
+                 GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, depthFb);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    depthID = &depthFb;
+    depthTexture = &depthMap;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
     while (!glfwWindowShouldClose(window)) {
 
         SampleWindow::Update();
@@ -90,7 +113,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
     glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteBuffers(1,&cubeVBO);
+    glDeleteBuffers(1, &cubeVBO);
 
     glfwTerminate();
 }
@@ -136,57 +159,83 @@ void SampleWindow::Init() {
 
 }
 
+void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix,bool isLightPov,const glm::mat4 &lightMatrix) {
+
+
+    if(isLightPov){
+        glUseProgram(shaders["depth"]);
+        glUniformMatrix4fv(glGetUniformLocation(shaders["depth"],"lightMatrix"), 1, GL_FALSE, glm::value_ptr(lightMatrix));
+    } else{
+        glUseProgram(shaders["env"]);
+    }
+
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(10.0f));
+    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+
+    SampleWindow::RenderModel("env", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["env"]);
+    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+    SampleWindow::RenderModel("env2", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["env"]);
+    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+
+    glDisable(GL_BLEND);
+    glUseProgram(isLightPov?shaders["depth"]:shaders["base"]);
+    model = glm::mat4(1.0f);
+
+    model = glm::translate(model, point.position);
+    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["base"]);
+    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+}
+
 void SampleWindow::Update() {
     if (hasGUI) ImGui_ImplGlfwGL3_NewFrame();
     glfwPollEvents();
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
 
+    //depth pass
+    glViewport(0, 0, depth_width_height, depth_width_height);
+    glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBindTexture(GL_TEXTURE_2D, *depthTexture);
+    float near_plane = 1.0f, far_plane = 7.5f;
+    glm::mat4 bogus=glm::mat4(0);
+    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+
+    glm::mat4 lightView = glm::lookAt(directional.direction,
+                                      glm::vec3(0.0f, 0.0f, 0.0f),
+                                      glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    SampleWindow::RenderScene(bogus,bogus,true,lightSpaceMatrix);
     glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
 
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //ENV
 
+    //normal pass
     glEnable(GL_DEPTH_TEST);
-
-    glUseProgram(shaders["env"]);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(10.0f));
-    model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-
-    SampleWindow::RenderModel("env", model, shaders["env"]);
-    SampleWindow::SendLightingDataToShader(shaders["env"]);
-    glEnable( GL_BLEND );
-    glBlendFunc( GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA );
-    SampleWindow::RenderModel("env2", model, shaders["env"]);
-    SampleWindow::SendLightingDataToShader(shaders["env"]);
-
-
-    glDisable(GL_BLEND);
-    glUseProgram(shaders["base"]);
-    model = glm::mat4(1.0f);
-
-    model = glm::translate(model, point.position);
-    SampleWindow::RenderModel("bulb", model, shaders["base"]);
-    SampleWindow::SendLightingDataToShader(shaders["env"]);
-
-
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
+                       camera->getCameraUp());
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+    SampleWindow::RenderScene(view, projection,false);
     //skybox
     glDepthFunc(GL_LEQUAL);
     glUseProgram(shaders["skybox"]);
-    model = glm::mat4(1.0f);
+    glm::mat4 model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(400.0f));
 
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),camera->getCameraUp());
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
 
     glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE,glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE,glm::value_ptr(model));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(cubeVAO);
     glActiveTexture(GL_TEXTURE0);
@@ -205,7 +254,6 @@ void SampleWindow::Update() {
     glBindVertexArray(quadVAO);
     glBindTexture(GL_TEXTURE_2D, *bufferTexture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
-
 
 
     if (hasGUI) ImGui::Render();
@@ -267,21 +315,14 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
     glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), point.quadratic);
 }
 
-void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, GLuint shaderProgram) {
-
-    glm::mat4 view = glm::mat4(1.0f);
-    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
-                       camera->getCameraUp());
-
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
-
+void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
+                               glm::mat4 &projectionMatrix, GLuint shaderProgram) {
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
                        glm::value_ptr(modelMatrix));
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE,
-                       glm::value_ptr(projection));
+                       glm::value_ptr(projectionMatrix));
 
     models[modelName]->Draw(shaderProgram);
 }
@@ -348,6 +389,16 @@ void SampleWindow::CompileShaders() {
     shaderProgram = ShaderManager::LinkShaderProgram();
     shaders["skybox"] = shaderProgram;
     ShaderManager::CheckShaderLink(shaders["skybox"]);
+
+    ShaderManager::CompileShader(GL_VERTEX_SHADER, "../shaders/DepthVS.glsl");
+    ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+
+    ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/DepthFS.glsl");
+    ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+
+    shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["depth"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["depth"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
@@ -458,18 +509,14 @@ unsigned int SampleWindow::LoadCubeMap(const std::vector<std::string> &faces) {
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
     int width, height, nrChannels;
-    for (unsigned int i = 0; i < faces.size(); i++)
-    {
+    for (unsigned int i = 0; i < faces.size(); i++) {
         unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
+        if (data) {
             glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                          0, GL_SRGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
             );
             stbi_image_free(data);
-        }
-        else
-        {
+        } else {
             std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
             stbi_image_free(data);
         }
@@ -486,47 +533,47 @@ unsigned int SampleWindow::LoadCubeMap(const std::vector<std::string> &faces) {
 void SampleWindow::InitCubeMap() {
     float cubeVertices[] = {
 
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
             -1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
-            1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
             -1.0f, -1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f, -1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
             1.0f, -1.0f, -1.0f,
-            1.0f, -1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
 
-            -1.0f, -1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f, -1.0f,  1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f,
+            -1.0f, -1.0f, 1.0f,
 
-            -1.0f,  1.0f, -1.0f,
-            1.0f,  1.0f, -1.0f,
-            1.0f,  1.0f,  1.0f,
-            1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f,  1.0f,
-            -1.0f,  1.0f, -1.0f,
+            -1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, -1.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, 1.0f,
+            -1.0f, 1.0f, -1.0f,
 
             -1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, 1.0f,
             1.0f, -1.0f, -1.0f,
             1.0f, -1.0f, -1.0f,
-            -1.0f, -1.0f,  1.0f,
-            1.0f, -1.0f,  1.0f
+            -1.0f, -1.0f, 1.0f,
+            1.0f, -1.0f, 1.0f
     };
 
     glGenVertexArrays(1, &cubeVAO);
@@ -535,7 +582,7 @@ void SampleWindow::InitCubeMap() {
     glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
     std::vector<std::string> cubeMapFaces{
             "../resources/skybox/pinkright.png",
             "../resources/skybox/pinkleft.png",
@@ -546,3 +593,4 @@ void SampleWindow::InitCubeMap() {
     };
     cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
 }
+
