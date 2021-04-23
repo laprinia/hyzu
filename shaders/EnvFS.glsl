@@ -43,6 +43,7 @@ in VSDATA {
     vec3 tangentFragmentPosition;
     vec3 tangentViewPosition;
     vec3 tangentLightPosition;
+    vec4 fragmentLightSpace;
 
 } vertexData;
 
@@ -50,6 +51,7 @@ in VSDATA {
 
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_normal1;
+uniform sampler2D shadowMap;
 
 uniform DirectionalLight directional;
 uniform PointLight point;
@@ -58,6 +60,7 @@ uniform vec3 viewPosition;
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition);
 vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection);
 vec3 ComputeSpotLight(SpotLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection);
+float ComputeShadow(vec4 fragmentLightSpace);
 
 void main() {
     if (texture(texture_diffuse1, vertexData.textureCoord).a < 0.3) {
@@ -67,13 +70,27 @@ void main() {
     normal = normalize(normal*2.0-1.0);
     vec3 color=texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 ambient = 0.05 * color;
+    float shadow =ComputeShadow(vertexData.fragmentLightSpace);
     vec3 result = ambient;
-    result+= ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
-   // result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
+    result+= (1.0-shadow) * ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
+   // result+=(1.0-shadow) * ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
 
     fragmentColor = vec4(result, 0.1);
-}
+    //debug shadow
 
+//    vec3 ndcCoords = vertexData.fragmentLightSpace.xyz / vertexData.fragmentLightSpace.w;
+//    ndcCoords = ndcCoords * 0.5 + 0.5;
+//    float closestDepth = texture(shadowMap, ndcCoords.xy).r;
+//    fragmentColor = vec4(ndcCoords.z);
+}
+float ComputeShadow(vec4 fragmentLightSpace){
+    vec3 ndcCoords = fragmentLightSpace.xyz / fragmentLightSpace.w;
+    ndcCoords = ndcCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowMap, ndcCoords.xy).r;
+    float currentDepth = ndcCoords.z;
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    return shadow;
+}
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition) {
     vec3 lightDirection = normalize(-light.direction);
     float diffuseFloat = max(dot(lightDirection, normal), 0.0);

@@ -8,6 +8,7 @@ out vec2 outTextureCoord;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightMatrix;
 
 void main() {
     outTextureCoord = textureCoord;

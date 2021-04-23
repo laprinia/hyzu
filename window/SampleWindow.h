@@ -27,7 +27,7 @@
 struct DirectionalLight {
     glm::vec3 diffuseColor = glm::vec3(1, 1, 1);
     glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 direction = glm::vec3(0, 36, -30);
+    glm::vec3 direction = glm::vec3(-44, 16, -30);
 
     float lightExposure = 0.1f;
 };
@@ -47,12 +47,13 @@ private:
     ShaderManager shaderManager = ShaderManager::GetInstance();
     static Camera *camera;
     GLFWwindow *window;
-    const bool hasGUI = false;
+    const bool hasGUI = true;
     unsigned int *fbID;
     unsigned int *depthID;
     unsigned int *bufferTexture;
     unsigned int *depthTexture;
     const unsigned int depth_width_height = 1024;
+    float nearPlane = 1.0f, farPlane = 100.0f;
     unsigned int quadVAO;
     unsigned int quadVBO;
     unsigned int cubeVAO;
@@ -100,7 +101,7 @@ public:
 
     void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix, GLuint shaderProgram);
 
-    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix,glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix, GLuint shaderProgram);
+    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix,glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix,glm::mat4 &lightMatrix, GLuint shaderProgram);
 
 
     void SendLightingDataToShader(GLuint shaderProgram);
@@ -115,7 +116,7 @@ public:
 
     void GUIUpdate();
 
-    void RenderScene(glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix,bool isLightPov,const glm::mat4 &lightMatrix=glm::mat4(0));
+    void RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass, glm::mat4 &lightMatrix);
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

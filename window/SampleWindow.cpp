@@ -159,13 +159,14 @@ void SampleWindow::Init() {
 
 }
 
-void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix,bool isLightPov,const glm::mat4 &lightMatrix) {
+void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass,
+                               glm::mat4 &lightMatrix) {
 
 
-    if(isLightPov){
+    if (isDepthPass) {
         glUseProgram(shaders["depth"]);
-        glUniformMatrix4fv(glGetUniformLocation(shaders["depth"],"lightMatrix"), 1, GL_FALSE, glm::value_ptr(lightMatrix));
-    } else{
+
+    } else {
         glUseProgram(shaders["env"]);
     }
 
@@ -174,20 +175,23 @@ void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatri
     model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
-    SampleWindow::RenderModel("env", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["env"]);
-    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+    SampleWindow::RenderModel("env", model, viewMatrix, projectionMatrix, lightMatrix,
+                              isDepthPass ? shaders["depth"] : shaders["env"]);
+    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-    SampleWindow::RenderModel("env2", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["env"]);
-    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+    SampleWindow::RenderModel("env2", model, viewMatrix, projectionMatrix, lightMatrix,
+                              isDepthPass ? shaders["depth"] : shaders["env"]);
+    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
 
     glDisable(GL_BLEND);
-    glUseProgram(isLightPov?shaders["depth"]:shaders["base"]);
+    glUseProgram(isDepthPass ? shaders["depth"] : shaders["base"]);
     model = glm::mat4(1.0f);
 
     model = glm::translate(model, point.position);
-    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, isLightPov?shaders["depth"]:shaders["base"]);
-    SampleWindow::SendLightingDataToShader(isLightPov?shaders["depth"]:shaders["env"]);
+    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
+                              isDepthPass ? shaders["depth"] : shaders["base"]);
+    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
 }
 
 void SampleWindow::Update() {
@@ -195,28 +199,29 @@ void SampleWindow::Update() {
     glfwPollEvents();
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //depth pass
-    glViewport(0, 0, depth_width_height, depth_width_height);
-    glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
-    glClear(GL_DEPTH_BUFFER_BIT);
-
-    glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glBindTexture(GL_TEXTURE_2D, *depthTexture);
-    float near_plane = 1.0f, far_plane = 7.5f;
-    glm::mat4 bogus=glm::mat4(0);
-    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    glm::mat4 bogus = glm::mat4(0);
+    glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, nearPlane, farPlane);
 
     glm::mat4 lightView = glm::lookAt(directional.direction,
                                       glm::vec3(0.0f, 0.0f, 0.0f),
                                       glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-    SampleWindow::RenderScene(bogus,bogus,true,lightSpaceMatrix);
+
+    glViewport(0, 0, depth_width_height, depth_width_height);
+    glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    SampleWindow::RenderScene(bogus, bogus, true, lightSpaceMatrix);
+
+    glViewport(0, 0, width, height);
     glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
 
-    glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glBindTexture(GL_TEXTURE_2D, *depthTexture);
+
 
     //normal pass
     glEnable(GL_DEPTH_TEST);
@@ -225,7 +230,10 @@ void SampleWindow::Update() {
                        camera->getCameraUp());
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
-    SampleWindow::RenderScene(view, projection,false);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, *depthTexture);
+    SampleWindow::RenderScene(view, projection, false, lightSpaceMatrix);
+
     //skybox
     glDepthFunc(GL_LEQUAL);
     glUseProgram(shaders["skybox"]);
@@ -248,7 +256,6 @@ void SampleWindow::Update() {
     //post
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT);
     glUseProgram(shaders["post"]);
     SampleWindow::SendPostDataToShader(shaders["post"]);
     glBindVertexArray(quadVAO);
@@ -275,6 +282,9 @@ void SampleWindow::GUIUpdate() {
         ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
         ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
         ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
+        ImGui::Text("Shadow variables");
+        ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
+        ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 100.0f);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
@@ -316,10 +326,10 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 }
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
-                               glm::mat4 &projectionMatrix, GLuint shaderProgram) {
+                               glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix, GLuint shaderProgram) {
 
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
-                       glm::value_ptr(modelMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "lightMatrix"), 1, GL_FALSE, glm::value_ptr(lightMatrix));
+    glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE,
                        glm::value_ptr(projectionMatrix));

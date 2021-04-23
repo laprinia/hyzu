@@ -15,12 +15,14 @@ out VSDATA {
     vec3 tangentFragmentPosition;
     vec3 tangentViewPosition;
     vec3 tangentLightPosition;
+    vec4 fragmentLightSpace;
 
 } vertexData;
 
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 lightMatrix;
 
 uniform vec3 lightPosition;
 uniform vec3 viewPosition;
@@ -42,6 +44,9 @@ void main() {
     vertexData.tangentFragmentPosition = tbnMatrix * vertexData.fragmentPosition;
     vertexData.tangentViewPosition = tbnMatrix * viewPosition;
     vertexData.tangentLightPosition = tbnMatrix * lightPosition;
+    //shadows
+    vertexData.fragmentLightSpace = lightMatrix * vec4(vertexData.fragmentPosition,1.0f);
+
     gl_Position = projection * view * model * vec4(position, 1.0);
 
 }
