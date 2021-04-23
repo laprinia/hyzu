@@ -11,5 +11,5 @@ uniform mat4 model;
 void main() {
     outTextureCoord = position;
     vec4 worldPosition= projection * view *model * vec4(position, 1.0);
-    gl_Position=worldPosition;
+    gl_Position=worldPosition.xyww;
 }

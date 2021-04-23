@@ -162,10 +162,10 @@ void SampleWindow::Update() {
     SampleWindow::SendLightingDataToShader(shaders["env"]);
 
     //skybox
-
+    glDepthFunc(GL_LEQUAL);
     glUseProgram(shaders["skybox"]);
     model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(100.0f));
+    model = glm::scale(model, glm::vec3(400.0f));
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),camera->getCameraUp());
@@ -181,6 +181,8 @@ void SampleWindow::Update() {
     glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
     glDrawArrays(GL_TRIANGLES, 0, 36);
     glBindVertexArray(0);
+    glDepthFunc(GL_LESS);
+
 
     //post
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -523,12 +525,12 @@ void SampleWindow::InitCubeMap() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     std::vector<std::string> cubeMapFaces{
-            "../resources/skybox/right.jpg",
-            "../resources/skybox/left.jpg",
-            "../resources/skybox/top.jpg",
-            "../resources/skybox/bottom.jpg",
-            "../resources/skybox/front.jpg",
-            "../resources/skybox/back.jpg",
+            "../resources/skybox/pinkright.png",
+            "../resources/skybox/pinkleft.png",
+            "../resources/skybox/pinkup.png",
+            "../resources/skybox/pinkbottom.png",
+            "../resources/skybox/pinkfront.png",
+            "../resources/skybox/pinkback.png",
     };
     cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
 }
