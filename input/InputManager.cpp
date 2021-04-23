@@ -20,6 +20,7 @@ void InputManager::SetWindowKeyCallback(GLFWwindow *window, void (*function)(GLF
 }
 
 void InputManager::SetWindowCursorPositionCallback(GLFWwindow *window, void (*function)(GLFWwindow *, double, double)) {
+
     glfwSetCursorPosCallback(window,function);
 }
 

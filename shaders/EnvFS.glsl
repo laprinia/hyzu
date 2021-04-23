@@ -47,8 +47,6 @@ in VSDATA {
 
 } vertexData;
 
-
-
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_normal1;
 uniform sampler2D shadowMap;
@@ -73,22 +71,38 @@ void main() {
     float shadow =ComputeShadow(vertexData.fragmentLightSpace);
     vec3 result = ambient;
     result+= (1.0-shadow) * ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
-   // result+=(1.0-shadow) * ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
+    result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
 
     fragmentColor = vec4(result, 0.1);
-    //debug shadow
+    //debug depth map
 
-//    vec3 ndcCoords = vertexData.fragmentLightSpace.xyz / vertexData.fragmentLightSpace.w;
-//    ndcCoords = ndcCoords * 0.5 + 0.5;
-//    float closestDepth = texture(shadowMap, ndcCoords.xy).r;
-//    fragmentColor = vec4(ndcCoords.z);
+    //    vec3 ndcCoords = vertexData.fragmentLightSpace.xyz / vertexData.fragmentLightSpace.w;
+    //    ndcCoords = ndcCoords * 0.5 + 0.5;
+    //    float closestDepth = texture(shadowMap, ndcCoords.xy).r;
+    //    fragmentColor = vec4(ndcCoords.z);
 }
 float ComputeShadow(vec4 fragmentLightSpace){
+
     vec3 ndcCoords = fragmentLightSpace.xyz / fragmentLightSpace.w;
     ndcCoords = ndcCoords * 0.5 + 0.5;
     float closestDepth = texture(shadowMap, ndcCoords.xy).r;
     float currentDepth = ndcCoords.z;
-    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    vec3 lightDirection = normalize(-directional.direction);
+    float bias = max(0.05 * (1.0 - dot(vertexData.normal, lightDirection)), 0.005);
+    float shadow =0;
+    vec2 texelSize= 1.0/ textureSize(shadowMap, 0);
+    for (int x = -1; x <= 1; ++x)
+    {
+        for (int y = -1; y <= 1; ++y)
+        {
+            float pcf = texture(shadowMap, ndcCoords.xy + vec2(x, y) * texelSize).r;
+            shadow += currentDepth - bias > pcf ? 1.0 : 0.0;
+        }
+    }
+    shadow /= 20.0;
+//    if (ndcCoords.z>1.0){
+//        shadow=0.0;
+//    }
     return shadow;
 }
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition) {
@@ -122,6 +136,6 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
     diffuse *= attenuation;
     specular *= attenuation;
 
-    return  diffuse + specular;
+    return diffuse + specular;
 
 }

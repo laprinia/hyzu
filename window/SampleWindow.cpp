@@ -26,7 +26,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_SAMPLES, 16);
+    glfwWindowHint(GLFW_SAMPLES, 32);
     this->width = width;
     this->height = height;
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -92,8 +92,8 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
                  GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
     glBindFramebuffer(GL_FRAMEBUFFER, depthFb);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
@@ -147,7 +147,7 @@ void SampleWindow::Init() {
 
     camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    Model *model1 = new Model("../resources/scenes/pool/pool2.obj");
+    Model *model1 = new Model("../resources/scenes/pool/pool4.obj");
     models["env"] = model1;
     Model *model2 = new Model("../resources/scenes/pool/pool3.obj");
     models["env2"] = model2;
@@ -191,7 +191,14 @@ void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatri
     model = glm::translate(model, point.position);
     SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
                               isDepthPass ? shaders["depth"] : shaders["base"]);
-    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
+
+    model = glm::mat4(1.0f);
+
+    model = glm::translate(model, directional.direction);
+    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
+                              isDepthPass ? shaders["depth"] : shaders["base"]);
+
+   // SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
 }
 
 void SampleWindow::Update() {
@@ -203,8 +210,10 @@ void SampleWindow::Update() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //depth pass
+
     glm::mat4 bogus = glm::mat4(0);
-    glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, nearPlane, farPlane);
+    //glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, nearPlane, farPlane);
+    glm::mat4 lightProjection = glm::perspective(glm::radians(lightAngle),(GLfloat) depth_width_height/depth_width_height, nearPlane, farPlane);
 
     glm::mat4 lightView = glm::lookAt(directional.direction,
                                       glm::vec3(0.0f, 0.0f, 0.0f),
