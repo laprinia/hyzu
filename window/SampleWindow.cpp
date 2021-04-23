@@ -26,7 +26,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    glfwWindowHint(GLFW_SAMPLES, 8);
+    glfwWindowHint(GLFW_SAMPLES, 16);
     this->width = width;
     this->height = height;
     window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
@@ -126,8 +126,11 @@ void SampleWindow::Init() {
 
     Model *model1 = new Model("../resources/scenes/pool/pool2.obj");
     models["env"] = model1;
-    Model *model2 = new Model("../resources/models/bulb/sphere.obj");
-    models["bulb"] = model2;
+    Model *model2 = new Model("../resources/scenes/pool/pool3.obj");
+    models["env2"] = model2;
+
+    Model *model3 = new Model("../resources/models/bulb/sphere.obj");
+    models["bulb"] = model3;
 
     SampleWindow::InitCubeMap();
 
@@ -146,6 +149,7 @@ void SampleWindow::Update() {
     //ENV
 
     glEnable(GL_DEPTH_TEST);
+
     glUseProgram(shaders["env"]);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(10.0f));
@@ -154,12 +158,20 @@ void SampleWindow::Update() {
 
     SampleWindow::RenderModel("env", model, shaders["env"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
+    glEnable( GL_BLEND );
+    glBlendFunc( GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA );
+    SampleWindow::RenderModel("env2", model, shaders["env"]);
+    SampleWindow::SendLightingDataToShader(shaders["env"]);
+
+
+    glDisable(GL_BLEND);
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
 
     model = glm::translate(model, point.position);
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
+
 
     //skybox
     glDepthFunc(GL_LEQUAL);

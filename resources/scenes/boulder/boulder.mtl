@@ -1,0 +1,57 @@
+# Blender MTL File: 'None'
+# Material Count: 4
+
+newmtl Rock_material
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.456411 0.337164 0.296138
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump N_bake.png
+map_Kd C_color.png
+map_d C_color.png
+
+
+newmtl Rock_material.2
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.456411 0.337164 0.296138
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump N_bake.png
+map_Kd C_color.png
+map_d C_color.png
+
+
+newmtl Rock_material.3
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.456411 0.337164 0.296138
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump N_bake.png
+map_Kd C_color.png
+map_d C_color.png
+
+
+newmtl Rock_material.4
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.456411 0.337164 0.296138
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 1
+map_Bump N_bake.png
+map_Kd C_color.png
+map_d C_color.png

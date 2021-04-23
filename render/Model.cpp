@@ -137,7 +137,7 @@ GLint Model::TextureFromFile(const char *path, const std::string &directory, boo
             dataFormat = GL_RGB;
         }else if (nrComponents == 4)
         {
-            internalFormat = isTextureDiffuse?GL_SRGB_ALPHA:GL_RGBA;
+            internalFormat = isTextureDiffuse?GL_SRGB:GL_RGBA;
             dataFormat = GL_RGBA;
         }
         glBindTexture(GL_TEXTURE_2D, textureID);
