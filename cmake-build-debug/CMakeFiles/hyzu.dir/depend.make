@@ -242,6 +242,7 @@ CMakeFiles/hyzu.dir/main.cpp.obj: C:/GLM/glm/vec4.hpp
 CMakeFiles/hyzu.dir/main.cpp.obj: C:/GLM/glm/vector_relational.hpp
 CMakeFiles/hyzu.dir/main.cpp.obj: ../camera/Camera.h
 CMakeFiles/hyzu.dir/main.cpp.obj: ../input/InputManager.h
+CMakeFiles/hyzu.dir/main.cpp.obj: ../libs/stb/stb_image.h
 CMakeFiles/hyzu.dir/main.cpp.obj: ../main.cpp
 CMakeFiles/hyzu.dir/main.cpp.obj: ../render/Mesh.h
 CMakeFiles/hyzu.dir/main.cpp.obj: ../render/Model.h
@@ -847,6 +848,7 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: C:/GLM/glm/vec4.hpp
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: C:/GLM/glm/vector_relational.hpp
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../camera/Camera.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../input/InputManager.h
+CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../libs/stb/stb_image.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../render/Mesh.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../render/Model.h
 CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj: ../render/RenderableObject.h

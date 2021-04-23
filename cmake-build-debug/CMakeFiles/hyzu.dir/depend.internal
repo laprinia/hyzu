@@ -243,6 +243,7 @@ CMakeFiles/hyzu.dir/main.cpp.obj
  C:/GLM/glm/vector_relational.hpp
  E:/Projects/hyzu/camera/Camera.h
  E:/Projects/hyzu/input/InputManager.h
+ E:/Projects/hyzu/libs/stb/stb_image.h
  E:/Projects/hyzu/main.cpp
  E:/Projects/hyzu/render/Mesh.h
  E:/Projects/hyzu/render/Model.h
@@ -848,6 +849,7 @@ CMakeFiles/hyzu.dir/window/SampleWindow.cpp.obj
  C:/GLM/glm/vector_relational.hpp
  E:/Projects/hyzu/camera/Camera.h
  E:/Projects/hyzu/input/InputManager.h
+ E:/Projects/hyzu/libs/stb/stb_image.h
  E:/Projects/hyzu/render/Mesh.h
  E:/Projects/hyzu/render/Model.h
  E:/Projects/hyzu/render/RenderableObject.h

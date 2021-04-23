@@ -69,7 +69,7 @@ void main() {
     vec3 ambient = 0.05 * color;
     vec3 result = ambient;
     result+= ComputeDirLight(directional, normal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition);
-    result+= ComputePointLight(point, normal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition);
+    result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
 
     fragmentColor = vec4(result, 0.1);
 }
@@ -96,7 +96,7 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
 
     float distance = length(light.position-fragmentPosition);
-    float attenuation = 1.0 / (0.01*distance);
+    float attenuation = 1.0 / (0.1*distance);
 
     vec3 diffuse = light.diffuse * diffuseFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 specular = light.specular * specularFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;

@@ -19,6 +19,7 @@
 #include "../render/Model.h"
 #include "imgui.h"
 #include "imgui_impl_glfw_gl3.h"
+#include "../libs/stb/stb_image.h"
 #include <iostream>
 #include <vector>
 #include <unordered_map>
@@ -26,7 +27,7 @@
 struct DirectionalLight {
     glm::vec3 diffuseColor = glm::vec3(1, 1, 1);
     glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 direction = glm::vec3(0, 0, -30);
+    glm::vec3 direction = glm::vec3(0, 36, -30);
 
     float lightExposure = 0.1f;
 };
@@ -51,6 +52,9 @@ private:
     unsigned int *bufferTexture;
     unsigned int quadVAO;
     unsigned int quadVBO;
+    unsigned int cubeVAO;
+    unsigned int cubeVBO;
+    unsigned int cubemapTexture;
     int width, height;
     static bool firstMouseMove;
     static double lastMouseX, lastMouseY;
@@ -98,6 +102,10 @@ public:
     void SendLightingDataToShader(GLuint shaderProgram);
 
     void SendPostDataToShader(GLuint shaderProgram);
+
+    unsigned int LoadCubeMap(const std::vector<std::string>& faceLocations);
+
+    void InitCubeMap();
 
     void OnInputUpdate();
 

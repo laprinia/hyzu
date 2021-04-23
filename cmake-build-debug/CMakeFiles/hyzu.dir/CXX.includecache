@@ -130,12 +130,6 @@ types.h
 defs.h
 ../libs/Assimp/include/assimp/defs.h
 
-../libs/Assimp/include/assimp/quaternion.inl
-quaternion.h
-../libs/Assimp/include/assimp/quaternion.h
-cmath
--
-
 ../libs/Assimp/include/assimp/scene.h
 types.h
 ../libs/Assimp/include/assimp/types.h
@@ -297,10 +291,6 @@ GL/glext.h
 -
 
 ../libs/SOIL/include/SOIL.h
-
-../libs/SOIL/include/stb_image_aug.h
-stdio.h
--
 
 ../libs/imgui/imconfig.h
 
@@ -1048,9 +1038,33 @@ E:/Projects/hyzu/input/InputManager.h
 GLFW/glfw3.h
 -
 
-E:/Projects/hyzu/main.cpp
-window/SampleWindow.h
-E:/Projects/hyzu/window/SampleWindow.h
+E:/Projects/hyzu/libs/stb/stb_image.h
+stb_image.h
+E:/Projects/hyzu/libs/stb/stb_image.h
+stdio.h
+-
+stdarg.h
+-
+stddef.h
+-
+stdlib.h
+-
+string.h
+-
+math.h
+-
+stdio.h
+-
+assert.h
+-
+stdint.h
+-
+emmintrin.h
+-
+intrin.h
+-
+arm_neon.h
+-
 
 E:/Projects/hyzu/render/Mesh.h
 RenderableObject.h
@@ -1069,12 +1083,6 @@ sstream
 -
 assimp/types.h
 -
-
-E:/Projects/hyzu/render/Model.cpp
-stb_image_aug.h
--
-Model.h
-E:/Projects/hyzu/render/Model.h
 
 E:/Projects/hyzu/render/Model.h
 Model.h
@@ -1189,6 +1197,8 @@ imgui.h
 E:/Projects/hyzu/window/imgui.h
 imgui_impl_glfw_gl3.h
 E:/Projects/hyzu/window/imgui_impl_glfw_gl3.h
+../libs/stb/stb_image.h
+E:/Projects/hyzu/libs/stb/stb_image.h
 iostream
 -
 vector

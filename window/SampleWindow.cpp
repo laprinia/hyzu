@@ -52,7 +52,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glViewport(0, 0, width, height);
     glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_FRAMEBUFFER_SRGB);
+
     SampleWindow::CompileShaders();
     SampleWindow::Init();
 
@@ -89,6 +89,9 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     if (hasGUI) ImGui_ImplGlfwGL3_Shutdown();
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &quadVBO);
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteBuffers(1,&cubeVBO);
+
     glfwTerminate();
 }
 
@@ -126,6 +129,7 @@ void SampleWindow::Init() {
     Model *model2 = new Model("../resources/models/bulb/sphere.obj");
     models["bulb"] = model2;
 
+    SampleWindow::InitCubeMap();
 
 }
 
@@ -134,11 +138,14 @@ void SampleWindow::Update() {
     glfwPollEvents();
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
+
     glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
-    glEnable(GL_DEPTH_TEST);
 
     glClearColor(0.14f, 0.13f, 0.21f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //ENV
+
+    glEnable(GL_DEPTH_TEST);
     glUseProgram(shaders["env"]);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(10.0f));
@@ -151,10 +158,31 @@ void SampleWindow::Update() {
     model = glm::mat4(1.0f);
 
     model = glm::translate(model, point.position);
-    model = glm::scale(model, glm::vec3(2.0f));
     SampleWindow::RenderModel("bulb", model, shaders["base"]);
     SampleWindow::SendLightingDataToShader(shaders["env"]);
 
+    //skybox
+
+    glUseProgram(shaders["skybox"]);
+    model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(100.0f));
+
+    glm::mat4 view = glm::mat4(1.0f);
+    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),camera->getCameraUp());
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE,glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE,glm::value_ptr(model));
+
+    glBindVertexArray(cubeVAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+
+    //post
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -163,6 +191,8 @@ void SampleWindow::Update() {
     glBindVertexArray(quadVAO);
     glBindTexture(GL_TEXTURE_2D, *bufferTexture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
 
     if (hasGUI) ImGui::Render();
 }
@@ -230,7 +260,7 @@ void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMat
                        camera->getCameraUp());
 
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
 
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
@@ -249,7 +279,7 @@ void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &mo
                        camera->getCameraUp());
 
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
 
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
@@ -294,6 +324,16 @@ void SampleWindow::CompileShaders() {
     shaderProgram = ShaderManager::LinkShaderProgram();
     shaders["post"] = shaderProgram;
     ShaderManager::CheckShaderLink(shaders["post"]);
+
+    ShaderManager::CompileShader(GL_VERTEX_SHADER, "../shaders/SkyVS.glsl");
+    ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+
+    ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/SkyFS.glsl");
+    ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+
+    shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["skybox"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["skybox"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
@@ -398,21 +438,97 @@ int SampleWindow::GetWindowWidth() {
     return width;
 }
 
+unsigned int SampleWindow::LoadCubeMap(const std::vector<std::string> &faces) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 
+    int width, height, nrChannels;
+    for (unsigned int i = 0; i < faces.size(); i++)
+    {
+        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                         0, GL_SRGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+            );
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            stbi_image_free(data);
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
+    return textureID;
+}
 
+void SampleWindow::InitCubeMap() {
+    float cubeVertices[] = {
 
+            -1.0f,  1.0f, -1.0f,
+            -1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
 
+            -1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f, -1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
 
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
 
+            -1.0f, -1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f,
+            -1.0f, -1.0f,  1.0f,
 
+            -1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f, -1.0f,
+            1.0f,  1.0f,  1.0f,
+            1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f,  1.0f,
+            -1.0f,  1.0f, -1.0f,
 
+            -1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f, -1.0f,
+            1.0f, -1.0f, -1.0f,
+            -1.0f, -1.0f,  1.0f,
+            1.0f, -1.0f,  1.0f
+    };
 
-
-
-
-
-
-
-
-
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &cubeVBO);
+    glBindVertexArray(cubeVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    std::vector<std::string> cubeMapFaces{
+            "../resources/skybox/right.jpg",
+            "../resources/skybox/left.jpg",
+            "../resources/skybox/top.jpg",
+            "../resources/skybox/bottom.jpg",
+            "../resources/skybox/front.jpg",
+            "../resources/skybox/back.jpg",
+    };
+    cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
+}
