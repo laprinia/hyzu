@@ -35,10 +35,10 @@ void Mesh::DefineMesh() {
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid *) offsetof(Vertex, TextureCoords));
 
     glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, Tangent));
 
     glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, BiTangent));
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *) offsetof(Vertex, BiTangent));
 
     glBindVertexArray(0);
 }
@@ -58,17 +58,15 @@ void Mesh::Draw(GLuint shaderProgram) {
             stringstream << diffuseNumber++;
         } else if (textureType == "texture_specular") {
             stringstream << specularNumber++;
-        }
-         else if (textureType == "texture_normal") {
+        } else if (textureType == "texture_normal") {
             stringstream << normalNumber++;
-        }
-         else if (textureType == "texture_height") {
+        } else if (textureType == "texture_height") {
             stringstream << heightNumber++;
         }
 
         finalNumberString = stringstream.str();
 
-        glUniform1i(glGetUniformLocation(shaderProgram, (textureType + finalNumberString).c_str()),i);
+        glUniform1i(glGetUniformLocation(shaderProgram, (textureType + finalNumberString).c_str()), i);
         glBindTexture(GL_TEXTURE_2D, textures[i].id);
 
     }

@@ -23,23 +23,26 @@
 #include <unordered_map>
 
 struct DirectionalLight {
-    glm::vec3 diffuseColor = glm::vec3(1, 1, 1);
-    glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 diffuseColor = glm::vec3(0.9960784f, 0.6196078f, 0.552941176f);
+    glm::vec3 specularColor = glm::vec3(1.0f, 0.4588235f, 0.8117647f);
     glm::vec3 position = glm::vec3(-76, 64, 24);
-    glm::vec3 target =glm::vec3 (0,0,0);
-    glm::vec3 GetDirection () const {
-        return -(glm::normalize(position-target));
-    }
-    float lightExposure = 0.1f;
-};
-struct PointLight {
-    glm::vec3 diffuseColor = glm::vec3(1.0f, 0.016471f, 0.036471f);
-    glm::vec3 specularColor = glm::vec3(1.0f, 0.16470f, 0.776470f);
-    glm::vec3 position = glm::vec3(0, -5.0f, -35.0f);
+    glm::vec3 target = glm::vec3(0, 0, 0);
 
-    float constant = 0.630f;
-    float linear = 0.070f;
-    float quadratic = 0.017f;
+    glm::vec3 GetDirection() const {
+        return -(glm::normalize(position - target));
+    }
+
+    float lightExposure = 2.1f;
+};
+
+struct PointLight {
+    glm::vec3 diffuseColor = glm::vec3(0.650980f, 0.1254902f, 0.8980392f);
+    glm::vec3 specularColor = glm::vec3(1.0f, 0.16470f, 0.4666667f);
+    glm::vec3 position = glm::vec3(1.0f, 1.0f, -38.0f);
+
+    float constant = 0.20f;
+    float linear = 0.030f;
+    float quadratic = 0.001f;
 };
 
 class SampleWindow {
@@ -55,7 +58,7 @@ private:
     unsigned int *depthTexture;
     const unsigned int depth_width_height = 1024;
     float nearPlane = 68.0f, farPlane = 150.0f;
-    float lightAngle=45.0f;
+    float lightAngle = 45.0f;
     unsigned int quadVAO;
     unsigned int quadVBO;
     unsigned int cubeVAO;
@@ -73,7 +76,7 @@ private:
     std::unordered_map<std::string, Model *> models;
     std::unordered_map<std::string, GLuint> shaders;
     DirectionalLight directional;
-    PointLight point;
+    PointLight point,point2;
 
     void CompileShaders();
 
@@ -103,14 +106,15 @@ public:
 
     void RenderMeshFromData(const std::string &meshName, glm::mat4 &modelMatrix, GLuint shaderProgram);
 
-    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix,glm::mat4 &viewMatrix,glm::mat4 &projectionMatrix,glm::mat4 &lightMatrix, GLuint shaderProgram);
+    void RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
+                     glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix, GLuint shaderProgram);
 
 
     void SendLightingDataToShader(GLuint shaderProgram);
 
     void SendPostDataToShader(GLuint shaderProgram);
 
-    unsigned int LoadCubeMap(const std::vector<std::string>& faceLocations);
+    unsigned int LoadCubeMap(const std::vector<std::string> &faceLocations);
 
     void InitCubeMap();
 

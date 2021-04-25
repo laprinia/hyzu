@@ -55,6 +55,7 @@ uniform sampler2D shadowMap;
 
 uniform DirectionalLight directional;
 uniform PointLight point;
+uniform PointLight point2;
 uniform vec3 viewPosition;
 
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition, float shadow);
@@ -74,7 +75,8 @@ void main() {
     float shadow =ComputeShadow(vertexData.fragmentLightSpace);
     vec3 result = ambient * color;
     result+= ComputeDirLight(directional,tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition,shadow) * color;
-   // result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
+    result+= ComputePointLight(point, tangentNormal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition) * color;
+    result+= ComputePointLight(point2, tangentNormal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition) * color;
     fragmentColor = vec4(result, 0.1);
 
 }
@@ -96,7 +98,7 @@ float ComputeShadow(vec4 fragmentLightSpace){
             shadow += currentDepth - bias > pcf ? 1.0 : 0.0;
         }
     }
-    shadow /= 20.0;
+    shadow /= 15.0;
     return shadow;
 }
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition,float shadow) {
@@ -104,14 +106,12 @@ vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, ve
 
     float diffuseFloat = max(dot(normal, lightDirection), 0.0);
 
-    vec3 viewDirectionC = normalize(viewDirection- fragmentPosition);
+    vec3 viewDirectionC = normalize(viewDirection - fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
 
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
     vec3 diffuse = light.diffuse * diffuseFloat * (1.0-shadow);
     vec3 specular = light.specular * specularFloat * (1.0-shadow);
-//        vec3 diffuse = light.diffuse * diffuseFloat;
-//        vec3 specular = light.specular * specularFloat;
     return diffuse + specular;
 }
 
@@ -120,16 +120,15 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
     vec3 lightDirection = normalize(light.position-fragmentPosition);
     float diffuseFloat = max(dot(lightDirection, normal), 0.0);
 
-    vec3 viewDirectionC = normalize(viewDirection- fragmentPosition);
+    vec3 viewDirectionC = normalize(viewDirection - fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
 
     float distance = length(light.position-fragmentPosition);
-    float attenuation = 1.0 / (0.1*distance);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 
-    vec3 diffuse = light.diffuse * diffuseFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
-    vec3 specular = light.specular * specularFloat * texture(texture_diffuse1, vertexData.textureCoord).rgb;
-
+    vec3 diffuse = light.diffuse * diffuseFloat;
+    vec3 specular = light.specular * specularFloat;
 
     diffuse *= attenuation;
     specular *= attenuation;

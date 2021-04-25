@@ -157,6 +157,10 @@ void SampleWindow::Init() {
 
     SampleWindow::InitCubeMap();
 
+    point2.position=glm::vec3(0.0f,0.0f,59.0f);
+    glm::mat4 pointRotMatrix(1.0f);
+    pointRotMatrix = glm::rotate(pointRotMatrix, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    point2.position= point2.position * glm::mat3(pointRotMatrix);
 }
 
 void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass,
@@ -182,6 +186,10 @@ void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatri
     model = glm::mat4(1.0f);
 
     model = glm::translate(model, point.position);
+    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
+                              isDepthPass ? shaders["depth"] : shaders["base"]);
+
+    model = glm::translate(model, point2.position);
     SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
                               isDepthPass ? shaders["depth"] : shaders["base"]);
 
@@ -284,12 +292,13 @@ void SampleWindow::GUIUpdate() {
         ImGui::ColorEdit3("Diffuse Light Color", (float *) &directional.diffuseColor);
         ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
         ImGui::Text("Point variables");
-        ImGui::DragFloat3("Light Position", (float *) &point.position);
-        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
-        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
-        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
+
+        ImGui::DragFloat3("Light Position", (float *) &point2.position);
+        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point2.diffuseColor);
+        ImGui::ColorEdit3(" Specular Light Color", (float *) &point2.specularColor);
+        ImGui::DragFloat("Constant", (float *) &point2.constant, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Linear", (float *) &point2.linear, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Quadratic", (float *) &point2.quadratic, 0.03f, 0.0f, 1.0f);
         ImGui::Text("Shadow variables");
         ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
         ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 300.0f);
@@ -329,9 +338,19 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
     glUniform3fv(glGetUniformLocation(shaderProgram, "point.specular"), 1,
                  glm::value_ptr(point.specularColor));
 
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), point.constant);
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), point.linear);
-    glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), point.quadratic);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point2.constant"), point.constant);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point2.linear"), point.linear);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point2.quadratic"), point.quadratic);
+
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point2.position"), 1, glm::value_ptr(point2.position));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point2.ambient"), 1, glm::value_ptr(point2.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point2.diffuse"), 1, glm::value_ptr(point2.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "point2.specular"), 1,
+                 glm::value_ptr(point.specularColor));
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), point2.constant);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), point2.linear);
+    glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), point2.quadratic);
 }
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
@@ -547,7 +566,7 @@ unsigned int SampleWindow::LoadCubeMap(const std::vector<std::string> &faces) {
             );
             stbi_image_free(data);
         } else {
-            std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+            std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
             stbi_image_free(data);
         }
     }

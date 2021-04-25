@@ -5,6 +5,7 @@
 #ifndef HYZU_MODEL_H
 #define HYZU_MODEL_H
 #define GLEW_STATIC
+
 #include "Model.h"
 #include "SOIL.h"
 #include <GL/glew.h>
@@ -17,9 +18,10 @@
 #include <assimp/postprocess.h>
 #include "../render/Mesh.h"
 #include "SOIL.h"
+
 class Model {
 public:
-    Model(const std::string& path);
+    Model(const std::string &path);
 
     void Draw(GLuint shaderProgram);
 
@@ -28,15 +30,15 @@ private:
     std::vector<Texture> texturesLoaded;
     std::string modelDirectory;
 
-    void LoadModel(const std::string& modelPath);
+    void LoadModel(const std::string &modelPath);
 
     void ProcessNode(aiNode *node, const aiScene *scene);
 
     Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
 
-    std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string& typeName);
+    std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std::string &typeName);
 
-    static GLint TextureFromFile(const char* path, const std::string& directory, bool isDiffuse);
+    static GLint TextureFromFile(const char *path, const std::string &directory, bool isDiffuse);
 };
 
 

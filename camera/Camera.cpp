@@ -5,10 +5,10 @@
 #include "Camera.h"
 
 Camera::Camera(const glm::vec3 &cameraPosition, const glm::vec3 &cameraFront, const glm::vec3 &cameraUp) {
-    this->cameraFront=cameraFront;
-    this->cameraPosition=cameraPosition;
-    this->cameraUp=cameraUp;
-    this->fieldOfView=45.0f;
+    this->cameraFront = cameraFront;
+    this->cameraPosition = cameraPosition;
+    this->cameraUp = cameraUp;
+    this->fieldOfView = 45.0f;
 }
 
 const glm::vec3 &Camera::getCameraPosition() const {

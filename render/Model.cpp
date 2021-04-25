@@ -5,7 +5,7 @@
 #include <stb_image_aug.h>
 #include "Model.h"
 
-Model::Model(const std::string& path) {
+Model::Model(const std::string &path) {
     LoadModel(path);
 }
 
@@ -19,7 +19,7 @@ void Model::LoadModel(const std::string &modelPath) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(modelPath,
                                              aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenSmoothNormals |
-                                             aiProcess_CalcTangentSpace | aiProcess_RemoveRedundantMaterials );
+                                             aiProcess_CalcTangentSpace | aiProcess_RemoveRedundantMaterials);
 
     if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Assimp Error: " << importer.GetErrorString() << std::endl;
@@ -106,8 +106,8 @@ Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, const std:
         if (!skip) {
 
             Texture texture;
-            bool isDiffuse= (typeName=="texture_diffuse");
-            texture.id = TextureFromFile(string.C_Str(), modelDirectory,isDiffuse);
+            bool isDiffuse = (typeName == "texture_diffuse");
+            texture.id = TextureFromFile(string.C_Str(), modelDirectory, isDiffuse);
             texture.type = typeName;
             texture.path = string;
             textures.push_back(texture);
@@ -131,13 +131,11 @@ GLint Model::TextureFromFile(const char *path, const std::string &directory, boo
         GLenum dataFormat;
         if (nrComponents == 1) {
             internalFormat = dataFormat = GL_RED;
-        }
-        else if (nrComponents == 3){
-            internalFormat = isTextureDiffuse?GL_SRGB:GL_RGB;
+        } else if (nrComponents == 3) {
+            internalFormat = isTextureDiffuse ? GL_SRGB : GL_RGB;
             dataFormat = GL_RGB;
-        }else if (nrComponents == 4)
-        {
-            internalFormat = isTextureDiffuse?GL_SRGB_ALPHA:GL_RGBA;
+        } else if (nrComponents == 4) {
+            internalFormat = isTextureDiffuse ? GL_SRGB_ALPHA : GL_RGBA;
             dataFormat = GL_RGBA;
         }
         glBindTexture(GL_TEXTURE_2D, textureID);
