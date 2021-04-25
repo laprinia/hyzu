@@ -75,14 +75,8 @@ void main() {
     vec3 result = ambient * color;
     result+= ComputeDirLight(directional,tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition,shadow) * color;
    // result+= ComputePointLight(point, normal, vertexData.fragmentPosition, viewPosition);
-
     fragmentColor = vec4(result, 0.1);
-    //debug depth map
-//
-//        vec3 ndcCoords = vertexData.fragmentLightSpace.xyz / vertexData.fragmentLightSpace.w;
-//        ndcCoords = ndcCoords * 0.5 + 0.5;
-//        float closestDepth = texture(shadowMap, ndcCoords.xy).r;
-//        fragmentColor = vec4(ndcCoords.z);
+
 }
 float ComputeShadow(vec4 fragmentLightSpace){
 
@@ -103,9 +97,6 @@ float ComputeShadow(vec4 fragmentLightSpace){
         }
     }
     shadow /= 20.0;
-//    if (ndcCoords.z>1.0){
-//        shadow=0.0;
-//    }
     return shadow;
 }
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition,float shadow) {

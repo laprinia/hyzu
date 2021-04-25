@@ -1,6 +1,4 @@
-//
-// Created by Lavinia on 3/1/2021.
-//
+
 
 #ifndef HYZU_SAMPLEWINDOW_H
 #define HYZU_SAMPLEWINDOW_H
@@ -56,7 +54,7 @@ private:
     unsigned int *bufferTexture;
     unsigned int *depthTexture;
     const unsigned int depth_width_height = 1024;
-    float nearPlane = 1.0f, farPlane = 150.0f;
+    float nearPlane = 68.0f, farPlane = 150.0f;
     float lightAngle=45.0f;
     unsigned int quadVAO;
     unsigned int quadVBO;

@@ -202,11 +202,9 @@ void SampleWindow::Update() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //depth pass
-
-
-    //glm::mat4 lightProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, nearPlane, farPlane);
-//    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
-//                       camera->getCameraUp());
+    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_FRONT);
     glm::mat4 lightProjection = glm::perspective(glm::radians(lightAngle),
                                                  (GLfloat) depth_width_height / depth_width_height, nearPlane,
                                                  farPlane);
@@ -226,6 +224,7 @@ void SampleWindow::Update() {
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+//    glCullFace(GL_BACK);
 
     //normal pass
     glViewport(0, 0, width, height);
@@ -238,7 +237,9 @@ void SampleWindow::Update() {
                        camera->getCameraUp());
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
-    glActiveTexture(GL_TEXTURE0);
+
+    glUniform1i(glGetUniformLocation(shaders["env"], "shadowMap"), 3);
+    glActiveTexture(GL_TEXTURE0 + 3);
     glBindTexture(GL_TEXTURE_2D, *depthTexture);
     SampleWindow::RenderScene(view, projection, false, lightSpaceMatrix);
 
@@ -247,7 +248,6 @@ void SampleWindow::Update() {
     glUseProgram(shaders["skybox"]);
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::scale(model, glm::vec3(400.0f));
-
 
     glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -270,16 +270,6 @@ void SampleWindow::Update() {
     glBindTexture(GL_TEXTURE_2D, *bufferTexture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
-    // depth debug
-//    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//    glUseProgram(shaders["lightdepth"]);
-//    glBindVertexArray(quadVAO);
-//    glUniform1f(glGetUniformLocation(shaders["lightdepth"],"farPlane"),farPlane);
-//    glUniform1f(glGetUniformLocation(shaders["lightdepth"],"nearPlane"),nearPlane);
-//    glBindTexture(GL_TEXTURE_2D, *depthTexture);
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-
     if (hasGUI) ImGui::Render();
 }
 
@@ -293,13 +283,13 @@ void SampleWindow::GUIUpdate() {
         ImGui::DragFloat3("Light Target", (float *) &directional.target);
         ImGui::ColorEdit3("Diffuse Light Color", (float *) &directional.diffuseColor);
         ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
-//        ImGui::Text("Point variables");
-//        ImGui::DragFloat3("Light Position", (float *) &point.position);
-//        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
-//        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
-//        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
-//        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
-//        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
+        ImGui::Text("Point variables");
+        ImGui::DragFloat3("Light Position", (float *) &point.position);
+        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
+        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
+        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
         ImGui::Text("Shadow variables");
         ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
         ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 300.0f);
@@ -319,7 +309,7 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
 
 
     glUniform3fv(glGetUniformLocation(shaderProgram, "viewPosition"), 1, glm::value_ptr(camera->getCameraPosition()));
-    glUniform3fv(glGetUniformLocation(shaderProgram,"lightPosition"),1, glm::value_ptr(directional.position));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "lightPosition"), 1, glm::value_ptr(directional.position));
     //directional
     glUniform3fv(glGetUniformLocation(shaderProgram, "directional.position"), 1,
                  glm::value_ptr(directional.position));
