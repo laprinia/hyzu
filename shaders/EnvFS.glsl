@@ -21,7 +21,7 @@ struct PointLight {
 };
 
 struct SpotLight {
-    vec3 postion;
+    vec3 position;
     vec3 direction;
     float cutAngle;
     float outterCutAngle;
@@ -122,7 +122,7 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
 
     vec3 viewDirectionC = normalize(viewDirection - fragmentPosition);
     vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
-    float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 32);
+    float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 64);
 
     float distance = length(light.position-fragmentPosition);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
@@ -135,4 +135,26 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
 
     return diffuse + specular;
 
+}
+
+vec3 ComputeSpotLight(SpotLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection)
+{
+    vec3 lightDirection = normalize(light.position - fragmentPosition);
+    float diffuseFloat = max(dot(normal, lightDirection), 0.0);
+
+    vec3 reflectDirection = reflect(-lightDirection, normal);
+    float specularFloat = pow(max(dot(viewDirection, reflectDirection), 0.0), 64);
+
+    float distance = length(light.position - fragmentPosition);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+    float theta = dot(lightDirection, normalize(-light.direction));
+    float epsilon = light.cutAngle - light.outterCutAngle;
+    float intensity = clamp((theta - light.outterCutAngle) / epsilon, 0.0, 1.0);
+
+    vec3 diffuse = light.diffuse * diffuseFloat;
+    vec3 specular = light.specular * specularFloat;
+
+    diffuse *= attenuation * intensity;
+    specular *= attenuation * intensity;
+    return (diffuse + specular);
 }

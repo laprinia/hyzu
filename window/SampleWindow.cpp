@@ -312,6 +312,7 @@ void SampleWindow::GUIUpdate() {
 void SampleWindow::SendPostDataToShader(GLuint shaderProgram) {
 
     glUniform1f(glGetUniformLocation(shaderProgram, "lightExposure"), directional.lightExposure);
+    glUniform1f(glGetUniformLocation(shaderProgram, "time"),glfwGetTime());
 }
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
