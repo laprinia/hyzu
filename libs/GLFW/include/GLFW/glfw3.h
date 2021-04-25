@@ -4949,7 +4949,7 @@ GLFWAPI const unsigned char* glfwGetJoystickButtons(int jid, int* count);
  *
  *  The diagonal directions are bitwise combinations of the primary (up, right,
  *  down and left) directions and you can test for these individually by ANDing
- *  it with the corresponding direction.
+ *  it with the corresponding position.
  *
  *  @code
  *  if (hats[2] & GLFW_HAT_RIGHT)

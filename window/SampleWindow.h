@@ -27,8 +27,11 @@
 struct DirectionalLight {
     glm::vec3 diffuseColor = glm::vec3(1, 1, 1);
     glm::vec3 specularColor = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 direction = glm::vec3(13, 115, -30);
-
+    glm::vec3 position = glm::vec3(-76, 64, 24);
+    glm::vec3 target =glm::vec3 (0,0,0);
+    glm::vec3 GetDirection () const {
+        return -(glm::normalize(position-target));
+    }
     float lightExposure = 0.1f;
 };
 struct PointLight {
@@ -53,7 +56,7 @@ private:
     unsigned int *bufferTexture;
     unsigned int *depthTexture;
     const unsigned int depth_width_height = 1024;
-    float nearPlane = 1.0f, farPlane = 100.0f;
+    float nearPlane = 1.0f, farPlane = 150.0f;
     float lightAngle=45.0f;
     unsigned int quadVAO;
     unsigned int quadVBO;

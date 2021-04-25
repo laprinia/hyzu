@@ -11,11 +11,12 @@ out VSDATA {
     vec3 fragmentPosition;
     vec2 textureCoord;
     vec3 normal;
-    vec3 worldPosition;
+    vec3 viewPosition;
     vec3 tangentFragmentPosition;
     vec3 tangentViewPosition;
     vec3 tangentLightPosition;
     vec4 fragmentLightSpace;
+    vec3 lightNormal;
 
 } vertexData;
 
@@ -29,16 +30,16 @@ uniform vec3 viewPosition;
 
 void main() {
     vertexData.normal = normal;
+    vertexData.lightNormal=transpose(inverse(mat3(model))) * normal;
     vertexData.textureCoord = textureCoord;
-    vertexData.worldPosition = vec3(model*vec4(position, 1.0));
     vertexData.fragmentPosition = vec3(model* vec4(position, 1.0));
+    vertexData.viewPosition = viewPosition;
 
     mat3 normalMatrix = transpose(inverse(mat3(model)));
-    vec3 tan = normalize(normalMatrix * tangent);
+
     vec3 norm = normalize(normalMatrix * normal);
     vec3 bitan = normalize(normalMatrix * bitangent);
-
-    tan = normalize(tan-dot(tan, norm) * norm);
+    vec3 tan = cross(bitan, norm);
     mat3 tbnMatrix=transpose(mat3(tan, bitan, norm));
 
     vertexData.tangentFragmentPosition = tbnMatrix * vertexData.fragmentPosition;
