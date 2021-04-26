@@ -55,6 +55,6 @@ The lighting is pretty boring tho, so I added two point lights near the ends of 
 One more thing I added was a Grain effect, again in my Post Processing shaders.
 
 ![framework video](/screenshots/7.png "Model w/ Grain")
-![framework video](/screenshots/7.png "Model w/ Grain")
+![framework video](/screenshots/8.png "Model w/ Grain")
 
 Now everything is set for some much needed Volumetric light & reflections/refractions.
