@@ -56,6 +56,8 @@ uniform sampler2D shadowMap;
 uniform DirectionalLight directional;
 uniform PointLight point;
 uniform PointLight point2;
+uniform SpotLight spot;
+uniform SpotLight spot2;
 uniform vec3 viewPosition;
 
 vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition, float shadow);
@@ -74,9 +76,13 @@ void main() {
     vec3 ambient = 0.5 * color;
     float shadow =ComputeShadow(vertexData.fragmentLightSpace);
     vec3 result = ambient * color;
-    result+= ComputeDirLight(directional,tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition,shadow) * color;
-    result+= ComputePointLight(point, tangentNormal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition) * color;
-    result+= ComputePointLight(point2, tangentNormal, vertexData.tangentFragmentPosition, vertexData.tangentViewPosition) * color;
+    vec3 cViewPosition= normalize(vertexData.viewPosition - vertexData.fragmentPosition);
+    result+= ComputeDirLight(directional, tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition, shadow) * color;
+
+    result+= ComputePointLight(point, normal, vertexData.fragmentPosition, cViewPosition) * color;
+    result+= ComputePointLight(point2, normal, vertexData.fragmentPosition, cViewPosition) * color;
+    result+= ComputeSpotLight(spot, normal, vertexData.fragmentPosition, cViewPosition);
+    result+= ComputeSpotLight(spot2, normal, vertexData.fragmentPosition, cViewPosition);
     fragmentColor = vec4(result, 0.1);
 
 }
@@ -98,10 +104,10 @@ float ComputeShadow(vec4 fragmentLightSpace){
             shadow += currentDepth - bias > pcf ? 1.0 : 0.0;
         }
     }
-    shadow /= 15.0;
+    shadow /= 12.0;
     return shadow;
 }
-vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition,float shadow) {
+vec3 ComputeDirLight(DirectionalLight light, vec3 normal, vec3 viewDirection, vec3 fragmentPosition, float shadow) {
     vec3 lightDirection = normalize(-light.direction);
 
     float diffuseFloat = max(dot(normal, lightDirection), 0.0);
@@ -121,7 +127,7 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
     float diffuseFloat = max(dot(lightDirection, normal), 0.0);
 
     vec3 viewDirectionC = normalize(viewDirection - fragmentPosition);
-    vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
+    vec3 halfwayDirection = normalize(lightDirection + viewDirectionC);
     float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 64);
 
     float distance = length(light.position-fragmentPosition);
@@ -133,21 +139,22 @@ vec3 ComputePointLight(PointLight light, vec3 normal, vec3 fragmentPosition, vec
     diffuse *= attenuation;
     specular *= attenuation;
 
-    return diffuse + specular;
+    return (diffuse + specular);
 
 }
 
-vec3 ComputeSpotLight(SpotLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection)
-{
+vec3 ComputeSpotLight(SpotLight light, vec3 normal, vec3 fragmentPosition, vec3 viewDirection) {
     vec3 lightDirection = normalize(light.position - fragmentPosition);
     float diffuseFloat = max(dot(normal, lightDirection), 0.0);
 
     vec3 reflectDirection = reflect(-lightDirection, normal);
-    float specularFloat = pow(max(dot(viewDirection, reflectDirection), 0.0), 64);
+    vec3 viewDirectionC = normalize(viewDirection - fragmentPosition);
+    vec3 halfwayDirection=normalize(lightDirection + viewDirectionC);
+    float specularFloat = pow(max(dot(normal, halfwayDirection), 0.0), 64);
 
     float distance = length(light.position - fragmentPosition);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
-    float theta = dot(lightDirection, normalize(-light.direction));
+    float theta = dot(lightDirection, normalize(light.direction));
     float epsilon = light.cutAngle - light.outterCutAngle;
     float intensity = clamp((theta - light.outterCutAngle) / epsilon, 0.0, 1.0);
 

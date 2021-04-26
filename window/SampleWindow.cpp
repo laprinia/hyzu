@@ -157,10 +157,12 @@ void SampleWindow::Init() {
 
     SampleWindow::InitCubeMap();
 
-    point2.position=glm::vec3(0.0f,0.0f,59.0f);
-    glm::mat4 pointRotMatrix(1.0f);
-    pointRotMatrix = glm::rotate(pointRotMatrix, glm::radians(180.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    point2.position= point2.position * glm::mat3(pointRotMatrix);
+    point2.position = glm::vec3(1.0f, 16.0f, 38.0f);
+
+    spot2.position= glm::vec3(26,30,-27);
+    spot2.target= glm::vec3(-11,2,15);
+    spot2.diffuseColor=glm::vec3(1.0f,0.2392f,0.50588f);
+    spot2.specularColor = glm::vec3 (1.0f,0.388235f,0.60392f);
 }
 
 void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass,
@@ -180,23 +182,7 @@ void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatri
     SampleWindow::RenderModel("env2", model, viewMatrix, projectionMatrix, lightMatrix,
                               isDepthPass ? shaders["depth"] : shaders["env"]);
     SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
-
     glDisable(GL_BLEND);
-    glUseProgram(isDepthPass ? shaders["depth"] : shaders["base"]);
-    model = glm::mat4(1.0f);
-
-    model = glm::translate(model, point.position);
-    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
-                              isDepthPass ? shaders["depth"] : shaders["base"]);
-
-    model = glm::translate(model, point2.position);
-    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
-                              isDepthPass ? shaders["depth"] : shaders["base"]);
-
-    model = glm::mat4(1.0f);
-    model = glm::translate(model, directional.position);
-    SampleWindow::RenderModel("bulb", model, viewMatrix, projectionMatrix, lightMatrix,
-                              isDepthPass ? shaders["depth"] : shaders["base"]);
 
 
 }
@@ -293,16 +279,18 @@ void SampleWindow::GUIUpdate() {
         ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
         ImGui::Text("Point variables");
 
-        ImGui::DragFloat3("Light Position", (float *) &point2.position);
-        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point2.diffuseColor);
-        ImGui::ColorEdit3(" Specular Light Color", (float *) &point2.specularColor);
-        ImGui::DragFloat("Constant", (float *) &point2.constant, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Linear", (float *) &point2.linear, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Quadratic", (float *) &point2.quadratic, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat3("Light Position", (float *) &point.position);
+        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
+        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
+        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
+        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
         ImGui::Text("Shadow variables");
         ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
         ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 300.0f);
         ImGui::DragFloat("Light Angle", (float *) &lightAngle, 0.1f, 30.0f, 100.0f);
+
+
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
     }
@@ -352,6 +340,35 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
     glUniform1f(glGetUniformLocation(shaderProgram, "point.constant"), point2.constant);
     glUniform1f(glGetUniformLocation(shaderProgram, "point.linear"), point2.linear);
     glUniform1f(glGetUniformLocation(shaderProgram, "point.quadratic"), point2.quadratic);
+    //spot
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot.position"), 1, glm::value_ptr(spot.position));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot.direction"), 1,glm::value_ptr(spot.GetDirection()));
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot.cutAngle"), spot.GetCut());
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot.outterCutAngle"), spot.GetOutterCut());
+
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot.ambient"), 1, glm::value_ptr(spot.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot.diffuse"), 1, glm::value_ptr(spot.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot.specular"), 1,
+                 glm::value_ptr(spot.specularColor));
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot.constant"), spot.constant);
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot.linear"), spot.linear);
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot.quadratic"), spot.quadratic);
+
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot2.position"), 1, glm::value_ptr(spot2.position));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot2.direction"), 1,glm::value_ptr(spot2.GetDirection()));
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot2.cutAngle"), spot2.GetCut());
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot2.outterCutAngle"), spot2.GetOutterCut());
+
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot2.ambient"), 1, glm::value_ptr(spot2.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot2.diffuse"), 1, glm::value_ptr(spot2.diffuseColor));
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spot2.specular"), 1,
+                 glm::value_ptr(spot2.specularColor));
+
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot2.constant"), spot2.constant);
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot2.linear"), spot2.linear);
+    glUniform1f(glGetUniformLocation(shaderProgram, "spot2.quadratic"), spot2.quadratic);
+
 }
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
@@ -643,4 +660,3 @@ void SampleWindow::InitCubeMap() {
     };
     cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
 }
-
