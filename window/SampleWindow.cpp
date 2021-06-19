@@ -217,9 +217,7 @@ void SampleWindow::Update() {
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-//   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//
-//
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //    //occlusion pass
     glBindFramebuffer(GL_FRAMEBUFFER,*occID);
     glViewport(0, 0, width, height);
@@ -252,29 +250,23 @@ void SampleWindow::Update() {
     glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(0.0f,0.0f,0.0f)));
     SampleWindow::RenderScene(shaders["base"],view, projection, false, lightSpaceMatrix);
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
-   // glViewport(0, 0, width, height);
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     //depth pass
     glEnable(GL_DEPTH_TEST);
-
     glUseProgram(shaders["depth"]);
     glViewport(0, 0, depth_width_height, depth_width_height);
     glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
     glClear(GL_DEPTH_BUFFER_BIT);
+
     glm::mat4 bogus = glm::mat4(0);
     SampleWindow::RenderScene(shaders["env"],bogus, bogus, true, lightSpaceMatrix);
-    //RENDER TO DEF
-    //glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 //
     //normal pass
+    glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     //light
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
@@ -317,10 +309,20 @@ void SampleWindow::Update() {
 //    glBindVertexArray(0);
 //    glDepthFunc(GL_LEQUAL);
 
+
+    //post
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glDisable(GL_DEPTH_TEST);
+
+    glUseProgram(shaders["post"]);
+    SampleWindow::SendPostDataToShader(shaders["post"]);
+    glBindVertexArray(quadVAO);
+    //TODO NEW TEXT BASED ON VOL SHADER AND RENDER IT
+    glBindTexture(GL_TEXTURE_2D, *bufferTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+
     //volumetric light
-
-
-    //glDisable(GL_DEPTH_TEST);
+   // glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
@@ -343,16 +345,7 @@ void SampleWindow::Update() {
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisable(GL_BLEND);
-    //post
-  //  glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//    glDisable(GL_DEPTH_TEST);
-//
-//    glUseProgram(shaders["post"]);
-//    SampleWindow::SendPostDataToShader(shaders["post"]);
-//    glBindVertexArray(quadVAO);
-//    //TODO NEW TEXT BASED ON VOL SHADER AND RENDER IT
-//    glBindTexture(GL_TEXTURE_2D, *bufferTexture);
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
+
 
     if (hasGUI) ImGui::Render();
 }
@@ -769,18 +762,20 @@ void SampleWindow::InitCubeMap() {
 }
 
 glm::vec2 SampleWindow::GetSunScreenPosition(const glm::mat4& viewMatrix,const glm::mat4& projectionMatrix)  {
-    glm::vec4 sunWorldPos=glm::vec4(directional.position, 1.0);
-    sunWorldPos= projectionMatrix * viewMatrix * sunWorldPos;
 
+
+    glm::vec4 sunWorldPos=glm::vec4(directional.position, 1.0);
+
+    glm::scale(projectionMatrix, glm::vec3(-1.0f,-1.0f,-1.0f));
+    sunWorldPos=(viewMatrix)*(projectionMatrix)*sunWorldPos;
     //perspective division
     glm::mat4 scaleMatrix = glm::mat4(1.0f);
-    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f/sunWorldPos[3]));
-
+    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f/sunWorldPos.w));
+    sunWorldPos=  sunWorldPos* scaleMatrix;
     // scale (x,y) from range [-1,+1] to range [0,+1]
-    sunWorldPos= scaleMatrix * sunWorldPos;
     sunWorldPos+=glm::vec4(1.0f, 1.0f, 0.0f, 0.0f);
     scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.5f));
-    sunWorldPos= scaleMatrix * sunWorldPos;
+    sunWorldPos= sunWorldPos*scaleMatrix;
 
     return glm::vec2(sunWorldPos.x,sunWorldPos.y);
 }

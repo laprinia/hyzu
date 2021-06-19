@@ -79,11 +79,11 @@ private:
     unsigned int *depthTexture;
     unsigned int *occTexture;
     //vol light
-    float density=1.0f;
+    float density=1.10f;
     float weight=0.01f;
-    float decay=1.0f;
+    float decay=1.01f;
     float exposure=1.0f;
-    int samples=80;
+    int samples=200;
     const unsigned int depth_width_height = 1024;
     float nearPlane = 68.0f, farPlane = 150.0f;
     float lightAngle = 45.0f;

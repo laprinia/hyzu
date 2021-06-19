@@ -1,6 +1,6 @@
 #version 460 core
 out vec4 fragmentColor;
-in vec2 vUv;
+varying vec2 vUv;
 uniform sampler2D occTexture;
 
 uniform vec2 screenSpaceSunPosition;
