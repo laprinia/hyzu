@@ -276,7 +276,7 @@ void SampleWindow::Update() {
     model = glm::scale(model, glm::vec3(20.0f));
     glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),1);
     glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(directional.diffuseColor));
-   // SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
+    SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
 
     //scene
     glUseProgram(shaders["env"]);
@@ -364,19 +364,18 @@ void SampleWindow::GUIUpdate() {
         ImGui::DragFloat3("Light Target", (float *) &directional.target);
         ImGui::ColorEdit3("Diffuse Light Color", (float *) &directional.diffuseColor);
         ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
-        ImGui::Text("Point variables");
 
-        ImGui::DragFloat3("Light Position", (float *) &point.position);
-        ImGui::ColorEdit3(" Diffuse Light Color", (float *) &point.diffuseColor);
-        ImGui::ColorEdit3(" Specular Light Color", (float *) &point.specularColor);
-        ImGui::DragFloat("Constant", (float *) &point.constant, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Linear", (float *) &point.linear, 0.03f, 0.0f, 1.0f);
-        ImGui::DragFloat("Quadratic", (float *) &point.quadratic, 0.03f, 0.0f, 1.0f);
         ImGui::Text("Shadow variables");
         ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
         ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 300.0f);
         ImGui::DragFloat("Light Angle", (float *) &lightAngle, 0.1f, 30.0f, 100.0f);
 
+        ImGui::Text("Volumetric variables");
+        ImGui::DragFloat("Density", (float*)&density,0.10,0,2);
+        ImGui::DragFloat("Weight", (float*)&weight,0.10,0,2);
+        ImGui::DragFloat("Decay", (float*)&decay,0.10,0,2);
+        ImGui::DragFloat("Exposure", (float*)&exposure,0.10,0,2);
+        ImGui::DragFloat("Samples", (float*)&samples,0.10,100,300);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
