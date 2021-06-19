@@ -34,6 +34,14 @@ struct DirectionalLight {
 
     float lightExposure = 1.1f;
 };
+struct VolLight {
+    glm::vec3 position = glm::vec3(-76, 64, 24);
+    glm::vec3 GetRelativePosition(const glm::vec3& target) const {
+        return glm::vec3(target.x-50,target.y+60,target.z);
+    }
+
+    float lightExposure = 1.1f;
+};
 
 struct PointLight {
     glm::vec3 diffuseColor = glm::vec3(0.650980f, 0.1254902f, 0.8980392f);
@@ -79,10 +87,10 @@ private:
     unsigned int *depthTexture;
     unsigned int *occTexture;
     //vol light
-    float density=1.10f;
+    float density=2.10f;
     float weight=0.01f;
     float decay=1.01f;
-    float exposure=1.0f;
+    float exposure=0.8f;
     int samples=200;
     const unsigned int depth_width_height = 1024;
     float nearPlane = 68.0f, farPlane = 150.0f;
@@ -104,6 +112,7 @@ private:
     std::unordered_map<std::string, Model*> models;
     std::unordered_map<std::string, GLuint> shaders;
     DirectionalLight directional;
+    VolLight vol;
     PointLight point,point2;
     SpotLight spot, spot2;
 

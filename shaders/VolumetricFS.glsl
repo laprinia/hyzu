@@ -10,6 +10,7 @@ uniform float decay;
 uniform float exposure;
 uniform int samples;
 
+uniform vec3 directionalColor;
 vec3 volumetricLight() {
     vec3 result=vec3(0.0, 0.0, 0.0);
     vec2 deltaTextureCoord=vec2(vUv-screenSpaceSunPosition.xy);
@@ -25,6 +26,7 @@ vec3 volumetricLight() {
         illuminationDecay*=decay;
     }
     result*=exposure;
+    result*=directionalColor;
     return result;
 }
 void main() {

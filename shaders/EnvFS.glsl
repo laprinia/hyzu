@@ -74,7 +74,8 @@ void main() {
     vec3 normal= normalize(vertexData.normal);
     vec3 color=texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 ambient = 0.5 * color;
-    float shadow =ComputeShadow(vertexData.fragmentLightSpace);
+    //float shadow =ComputeShadow(vertexData.fragmentLightSpace);
+    float shadow =0;
     vec3 result = ambient * color;
     vec3 cViewPosition= normalize(vertexData.viewPosition - vertexData.fragmentPosition);
     result+= ComputeDirLight(directional, tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition, shadow) * color;

@@ -242,11 +242,13 @@ void SampleWindow::Update() {
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, directional.position);
-    model = glm::scale(model, glm::vec3(10.0f));
+    model = glm::scale(model, glm::vec3(20.0f));
 
-    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(1.0f,1.0f,1.0f)));
+    glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),1);
+    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(directional.diffuseColor));
     SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
 
+    glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),0);
     glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(0.0f,0.0f,0.0f)));
     SampleWindow::RenderScene(shaders["base"],view, projection, false, lightSpaceMatrix);
 
@@ -261,7 +263,7 @@ void SampleWindow::Update() {
     glm::mat4 bogus = glm::mat4(0);
     SampleWindow::RenderScene(shaders["env"],bogus, bogus, true, lightSpaceMatrix);
 
-//
+
     //normal pass
     glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
     glViewport(0, 0, width, height);
@@ -271,10 +273,10 @@ void SampleWindow::Update() {
     glUseProgram(shaders["base"]);
     model = glm::mat4(1.0f);
     model = glm::translate(model, directional.position);
-    model = glm::scale(model, glm::vec3(10.0f));
-
-    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(1.0f,1.0f,1.0f)));
-    SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
+    model = glm::scale(model, glm::vec3(20.0f));
+    glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),1);
+    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(directional.diffuseColor));
+   // SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
 
     //scene
     glUseProgram(shaders["env"]);
@@ -291,23 +293,23 @@ void SampleWindow::Update() {
     glBindTexture(GL_TEXTURE_2D, *depthTexture);
 
     SampleWindow::RenderScene(shaders["env"],view, projection, false, lightSpaceMatrix);
-//
-//    //skybox
-//    glDepthFunc(GL_LEQUAL);
-//    glUseProgram(shaders["skybox"]);
-//    model = glm::mat4(1.0f);
-//    model = glm::scale(model, glm::vec3(400.0f));
-//
-//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
-//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
-//
-//    glBindVertexArray(cubeVAO);
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-//    glBindVertexArray(0);
-//    glDepthFunc(GL_LEQUAL);
+
+    //skybox
+    glDepthFunc(GL_LEQUAL);
+    glUseProgram(shaders["skybox"]);
+    model = glm::mat4(1.0f);
+    model = glm::scale(model, glm::vec3(400.0f));
+
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
+
+    glBindVertexArray(cubeVAO);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
+    glBindVertexArray(0);
+    glDepthFunc(GL_LESS);
 
 
     //post
@@ -317,12 +319,13 @@ void SampleWindow::Update() {
     glUseProgram(shaders["post"]);
     SampleWindow::SendPostDataToShader(shaders["post"]);
     glBindVertexArray(quadVAO);
-    //TODO NEW TEXT BASED ON VOL SHADER AND RENDER IT
+
     glBindTexture(GL_TEXTURE_2D, *bufferTexture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
 
+
     //volumetric light
-   // glDisable(GL_DEPTH_TEST);
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 
@@ -338,6 +341,8 @@ void SampleWindow::Update() {
     glUniform1f(glGetUniformLocation(shaders["vol"], "exposure"), exposure);
     glUniform1i(glGetUniformLocation(shaders["vol"], "samples"), samples);
 
+    glUniform3fv(glGetUniformLocation(shaders["vol"], "directionalColor"),1,glm::value_ptr(directional.diffuseColor));
+
     glUniform1i(glGetUniformLocation(shaders["vol"], "occTexture"), 0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, *occTexture);
@@ -345,7 +350,6 @@ void SampleWindow::Update() {
     glBindVertexArray(quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glDisable(GL_BLEND);
-
 
     if (hasGUI) ImGui::Render();
 }
@@ -457,7 +461,9 @@ void SampleWindow::RenderSun(GLuint shader,glm::mat4 &modelMatrix, glm::mat4 &vi
                              glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix) {
 
     glDisable(GL_DEPTH_TEST);
+
     SampleWindow::RenderModel("bulb", modelMatrix, viewMatrix, projectionMatrix, lightMatrix,shader);
+
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -763,21 +769,13 @@ void SampleWindow::InitCubeMap() {
 
 glm::vec2 SampleWindow::GetSunScreenPosition(const glm::mat4& viewMatrix,const glm::mat4& projectionMatrix)  {
 
+    glm::vec4 clipSpacePosition=projectionMatrix*(viewMatrix*glm::vec4(directional.position, 1.0));
 
-    glm::vec4 sunWorldPos=glm::vec4(directional.position, 1.0);
+    glm::vec3 ndcSpaceCoord=glm::vec3(clipSpacePosition.x,clipSpacePosition.y,clipSpacePosition.z)/(clipSpacePosition.w);
 
-    glm::scale(projectionMatrix, glm::vec3(-1.0f,-1.0f,-1.0f));
-    sunWorldPos=(viewMatrix)*(projectionMatrix)*sunWorldPos;
-    //perspective division
-    glm::mat4 scaleMatrix = glm::mat4(1.0f);
-    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f/sunWorldPos.w));
-    sunWorldPos=  sunWorldPos* scaleMatrix;
-    // scale (x,y) from range [-1,+1] to range [0,+1]
-    sunWorldPos+=glm::vec4(1.0f, 1.0f, 0.0f, 0.0f);
-    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.5f));
-    sunWorldPos= sunWorldPos*scaleMatrix;
+    glm::vec2 windowSpacePos = ((glm::vec2(ndcSpaceCoord) + glm::vec2(1.0f)) / glm::vec2(2.0f));
 
-    return glm::vec2(sunWorldPos.x,sunWorldPos.y);
+    return windowSpacePos;
 }
 
 
