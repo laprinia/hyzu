@@ -71,11 +71,19 @@ class SampleWindow {
 private:
     static Camera *camera;
     GLFWwindow *window;
-    const bool hasGUI = true;
+    const bool hasGUI = false;
     unsigned int *fbID;
     unsigned int *depthID;
+    unsigned int *occID;
     unsigned int *bufferTexture;
     unsigned int *depthTexture;
+    unsigned int *occTexture;
+    //vol light
+    float density=1.0f;
+    float weight=0.01f;
+    float decay=1.0f;
+    float exposure=1.0f;
+    int samples=80;
     const unsigned int depth_width_height = 1024;
     float nearPlane = 68.0f, farPlane = 150.0f;
     float lightAngle = 45.0f;
@@ -92,8 +100,8 @@ private:
     static float cameraSpeed;
     static float deltaTime;
     static float lastFrame;
-    std::unordered_map<std::string, RenderableObject *> renderables;
-    std::unordered_map<std::string, Model *> models;
+    std::unordered_map<std::string, RenderableObject*> renderables;
+    std::unordered_map<std::string, Model*> models;
     std::unordered_map<std::string, GLuint> shaders;
     DirectionalLight directional;
     PointLight point,point2;
@@ -143,7 +151,12 @@ public:
 
     void GUIUpdate();
 
-    void RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass, glm::mat4 &lightMatrix);
+    void RenderScene(GLuint  shader,glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass, glm::mat4 &lightMatrix);
+
+    void RenderSun(GLuint shader, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
+                   glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix);
+
+    glm::vec2 GetSunScreenPosition(const glm::mat4& viewMatrix,const glm::mat4& projectionMatrix) ;
 };
 
 #endif //HYZU_SAMPLEWINDOW_H

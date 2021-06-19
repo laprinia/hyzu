@@ -104,6 +104,30 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
+    //occlusion buffer
+    unsigned int occ;
+    glGenFramebuffers(1, &occ);
+    glBindFramebuffer(GL_FRAMEBUFFER, occ);
+    occID = &occ;
+
+    unsigned int occMap;
+    glGenTextures(1, &occMap);
+    glBindTexture(GL_TEXTURE_2D, occMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, occMap, 0);
+    occTexture = &occMap;
+
+    unsigned int rbo2;
+    glGenRenderbuffers(1, &rbo2);
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo2);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo2);
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "Occlusion Framebuffer isn't complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
     while (!glfwWindowShouldClose(window)) {
 
         SampleWindow::Update();
@@ -165,7 +189,7 @@ void SampleWindow::Init() {
     spot2.specularColor = glm::vec3 (1.0f,0.388235f,0.60392f);
 }
 
-void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass,
+void SampleWindow::RenderScene(GLuint  shader, glm::mat4 &viewMatrix, glm::mat4 &projectionMatrix, bool isDepthPass,
                                glm::mat4 &lightMatrix) {
 
 
@@ -175,13 +199,13 @@ void SampleWindow::RenderScene(glm::mat4 &viewMatrix, glm::mat4 &projectionMatri
     model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
 
     SampleWindow::RenderModel("env", model, viewMatrix, projectionMatrix, lightMatrix,
-                              isDepthPass ? shaders["depth"] : shaders["env"]);
-    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
+                              isDepthPass ? shaders["depth"] : shader);
+    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
     SampleWindow::RenderModel("env2", model, viewMatrix, projectionMatrix, lightMatrix,
-                              isDepthPass ? shaders["depth"] : shaders["env"]);
-    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shaders["env"]);
+                              isDepthPass ? shaders["depth"] :shader);
+    SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
     glDisable(GL_BLEND);
 
 
@@ -193,12 +217,17 @@ void SampleWindow::Update() {
     OnInputUpdate();
     if (hasGUI) GUIUpdate();
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+//   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//
+//    //occlusion pass
+    glBindFramebuffer(GL_FRAMEBUFFER,*occID);
+    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glUseProgram(shaders["base"]);
 
-    //depth pass
-    glEnable(GL_DEPTH_TEST);
-//    glEnable(GL_CULL_FACE);
-//    glCullFace(GL_FRONT);
+//
+//    //light matrices
     glm::mat4 lightProjection = glm::perspective(glm::radians(lightAngle),
                                                  (GLfloat) depth_width_height / depth_width_height, nearPlane,
                                                  farPlane);
@@ -207,54 +236,111 @@ void SampleWindow::Update() {
                                       glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
-    glUseProgram(shaders["depth"]);
-    glViewport(0, 0, depth_width_height, depth_width_height);
-    glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glm::mat4 bogus = glm::mat4(0);
-    SampleWindow::RenderScene(bogus, bogus, true, lightSpaceMatrix);
-    glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
-
-    glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//    glCullFace(GL_BACK);
-
-    //normal pass
-    glViewport(0, 0, width, height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glUseProgram(shaders["env"]);
-
-    glEnable(GL_DEPTH_TEST);
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
                        camera->getCameraUp());
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
 
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, directional.position);
+    model = glm::scale(model, glm::vec3(10.0f));
+
+    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(1.0f,1.0f,1.0f)));
+    SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
+
+    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(0.0f,0.0f,0.0f)));
+    SampleWindow::RenderScene(shaders["base"],view, projection, false, lightSpaceMatrix);
+
+    //glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
+   // glViewport(0, 0, width, height);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    //depth pass
+    glEnable(GL_DEPTH_TEST);
+
+    glUseProgram(shaders["depth"]);
+    glViewport(0, 0, depth_width_height, depth_width_height);
+    glBindFramebuffer(GL_FRAMEBUFFER, *depthID);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glm::mat4 bogus = glm::mat4(0);
+    SampleWindow::RenderScene(shaders["env"],bogus, bogus, true, lightSpaceMatrix);
+    glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
+
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+//
+    //normal pass
+    glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //light
+    glUseProgram(shaders["base"]);
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, directional.position);
+    model = glm::scale(model, glm::vec3(10.0f));
+
+    glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(1.0f,1.0f,1.0f)));
+    SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
+
+    //scene
+    glUseProgram(shaders["env"]);
+
+    glEnable(GL_DEPTH_TEST);
+    view = glm::mat4(1.0f);
+    view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
+                       camera->getCameraUp());
+    projection = glm::mat4(1.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+
     glUniform1i(glGetUniformLocation(shaders["env"], "shadowMap"), 3);
     glActiveTexture(GL_TEXTURE0 + 3);
     glBindTexture(GL_TEXTURE_2D, *depthTexture);
-    SampleWindow::RenderScene(view, projection, false, lightSpaceMatrix);
 
-    //skybox
-    glDepthFunc(GL_LEQUAL);
-    glUseProgram(shaders["skybox"]);
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(400.0f));
+    SampleWindow::RenderScene(shaders["env"],view, projection, false, lightSpaceMatrix);
+//
+//    //skybox
+//    glDepthFunc(GL_LEQUAL);
+//    glUseProgram(shaders["skybox"]);
+//    model = glm::mat4(1.0f);
+//    model = glm::scale(model, glm::vec3(400.0f));
+//
+//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
+//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+//    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
+//
+//    glBindVertexArray(cubeVAO);
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+//    glDrawArrays(GL_TRIANGLES, 0, 6);
+//    glBindVertexArray(0);
+//    glDepthFunc(GL_LEQUAL);
 
-    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "view"), 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
+    //volumetric light
 
-    glBindVertexArray(cubeVAO);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindVertexArray(0);
-    glDepthFunc(GL_LESS);
-
-
+//    glViewport(0, 0, width, height);
+//   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    glEnable(GL_BLEND);
+//    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+//    glUseProgram(shaders["vol"]);
+//
+//    //TODO debug
+//
+//    glm::vec2 worldSunPos= GetSunScreenPosition(view,projection);
+//    glUniform2fv(glGetUniformLocation(shaders["vol"], "screenSpaceSunPosition"),1,glm::value_ptr(worldSunPos));
+//    glUniform1f(glGetUniformLocation(shaders["vol"], "density"), density);
+//    glUniform1f(glGetUniformLocation(shaders["vol"], "weight"), weight);
+//    glUniform1f(glGetUniformLocation(shaders["vol"], "decay"), decay);
+//    glUniform1f(glGetUniformLocation(shaders["vol"], "exposure"), exposure);
+//    glUniform1i(glGetUniformLocation(shaders["vol"], "samples"), samples);
+//
+//    glUniform1i(glGetUniformLocation(shaders["vol"], "occTexture"), 0);
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D, *occTexture);
+//    //run full screen
+//    glBindVertexArray(quadVAO);
+//    glDrawArrays(GL_TRIANGLES, 0, 6);
+//    glDisable(GL_BLEND);
     //post
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
@@ -370,6 +456,13 @@ void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
     glUniform1f(glGetUniformLocation(shaderProgram, "spot2.quadratic"), spot2.quadratic);
 
 }
+void SampleWindow::RenderSun(GLuint shader,glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
+                             glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix) {
+
+    glDisable(GL_DEPTH_TEST);
+    SampleWindow::RenderModel("bulb", modelMatrix, viewMatrix, projectionMatrix, lightMatrix,shader);
+    glEnable(GL_DEPTH_TEST);
+}
 
 void SampleWindow::RenderModel(const std::string &modelName, glm::mat4 &modelMatrix, glm::mat4 &viewMatrix,
                                glm::mat4 &projectionMatrix, glm::mat4 &lightMatrix, GLuint shaderProgram) {
@@ -466,6 +559,16 @@ void SampleWindow::CompileShaders() {
     shaderProgram = ShaderManager::LinkShaderProgram();
     shaders["lightdepth"] = shaderProgram;
     ShaderManager::CheckShaderLink(shaders["lightdepth"]);
+
+    ShaderManager::CompileShader(GL_VERTEX_SHADER, "../shaders/VolumetricVS.glsl");
+    ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+
+    ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "../shaders/VolumetricFS.glsl");
+    ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+
+    shaderProgram = ShaderManager::LinkShaderProgram();
+    shaders["vol"] = shaderProgram;
+    ShaderManager::CheckShaderLink(shaders["vol"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow *window, int key, int scancode, int action, int mode) {
@@ -660,3 +763,23 @@ void SampleWindow::InitCubeMap() {
     };
     cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
 }
+
+glm::vec2 SampleWindow::GetSunScreenPosition(const glm::mat4& viewMatrix,const glm::mat4& projectionMatrix)  {
+    glm::vec4 sunWorldPos=glm::vec4(directional.position, 1.0);
+    sunWorldPos= projectionMatrix * viewMatrix * sunWorldPos;
+
+    //perspective division
+    glm::mat4 scaleMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f/sunWorldPos[3]));
+
+    // scale (x,y) from range [-1,+1] to range [0,+1]
+    sunWorldPos= scaleMatrix * sunWorldPos;
+    sunWorldPos+=glm::vec4(1.0f, 1.0f, 0.0f, 0.0f);
+    scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.5f));
+    sunWorldPos= scaleMatrix * sunWorldPos;
+
+    return glm::vec2(sunWorldPos.x,sunWorldPos.y);
+}
+
+
+
