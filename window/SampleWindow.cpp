@@ -265,8 +265,9 @@ void SampleWindow::Update() {
     glClear(GL_DEPTH_BUFFER_BIT);
     glm::mat4 bogus = glm::mat4(0);
     SampleWindow::RenderScene(shaders["env"],bogus, bogus, true, lightSpaceMatrix);
-    glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
-
+    //RENDER TO DEF
+    //glBindFramebuffer(GL_FRAMEBUFFER, *fbID);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -318,37 +319,40 @@ void SampleWindow::Update() {
 
     //volumetric light
 
-//    glViewport(0, 0, width, height);
-//   // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-//    glUseProgram(shaders["vol"]);
-//
-//    //TODO debug
-//
-//    glm::vec2 worldSunPos= GetSunScreenPosition(view,projection);
-//    glUniform2fv(glGetUniformLocation(shaders["vol"], "screenSpaceSunPosition"),1,glm::value_ptr(worldSunPos));
-//    glUniform1f(glGetUniformLocation(shaders["vol"], "density"), density);
-//    glUniform1f(glGetUniformLocation(shaders["vol"], "weight"), weight);
-//    glUniform1f(glGetUniformLocation(shaders["vol"], "decay"), decay);
-//    glUniform1f(glGetUniformLocation(shaders["vol"], "exposure"), exposure);
-//    glUniform1i(glGetUniformLocation(shaders["vol"], "samples"), samples);
-//
-//    glUniform1i(glGetUniformLocation(shaders["vol"], "occTexture"), 0);
-//    glActiveTexture(GL_TEXTURE0);
-//    glBindTexture(GL_TEXTURE_2D, *occTexture);
-//    //run full screen
-//    glBindVertexArray(quadVAO);
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-//    glDisable(GL_BLEND);
-    //post
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glUseProgram(shaders["post"]);
-    SampleWindow::SendPostDataToShader(shaders["post"]);
+
+    //glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+
+    glUseProgram(shaders["vol"]);
+
+    //TODO debug
+
+    glm::vec2 worldSunPos= GetSunScreenPosition(view,projection);
+    glUniform2fv(glGetUniformLocation(shaders["vol"], "screenSpaceSunPosition"),1,glm::value_ptr(worldSunPos));
+    glUniform1f(glGetUniformLocation(shaders["vol"], "density"), density);
+    glUniform1f(glGetUniformLocation(shaders["vol"], "weight"), weight);
+    glUniform1f(glGetUniformLocation(shaders["vol"], "decay"), decay);
+    glUniform1f(glGetUniformLocation(shaders["vol"], "exposure"), exposure);
+    glUniform1i(glGetUniformLocation(shaders["vol"], "samples"), samples);
+
+    glUniform1i(glGetUniformLocation(shaders["vol"], "occTexture"), 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, *occTexture);
+    //run full screen
     glBindVertexArray(quadVAO);
-    glBindTexture(GL_TEXTURE_2D, *bufferTexture);
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDisable(GL_BLEND);
+    //post
+  //  glBindFramebuffer(GL_FRAMEBUFFER, 0);
+//    glDisable(GL_DEPTH_TEST);
+//
+//    glUseProgram(shaders["post"]);
+//    SampleWindow::SendPostDataToShader(shaders["post"]);
+//    glBindVertexArray(quadVAO);
+//    //TODO NEW TEXT BASED ON VOL SHADER AND RENDER IT
+//    glBindTexture(GL_TEXTURE_2D, *bufferTexture);
+//    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     if (hasGUI) ImGui::Render();
 }
