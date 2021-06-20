@@ -23,8 +23,8 @@
 #include <unordered_map>
 
 struct DirectionalLight {
-    glm::vec3 diffuseColor = glm::vec3(0.9960784f, 0.6196078f, 0.552941176f);
-    glm::vec3 specularColor = glm::vec3(1.0f, 0.4588235f, 0.8117647f);
+    glm::vec3 diffuseColor = glm::vec3(1.0f, 0.6196078f, 0.452941176f);
+    glm::vec3 specularColor = glm::vec3(1.0f, 0.5372549f, 0.8117647f);
     glm::vec3 position = glm::vec3(-76, 22, -113);
     glm::vec3 target = glm::vec3(0, 0, 0);
 
@@ -34,14 +34,7 @@ struct DirectionalLight {
 
     float lightExposure = 1.1f;
 };
-struct VolLight {
-    glm::vec3 position = glm::vec3(-76, 64, 24);
-    glm::vec3 GetRelativePosition(const glm::vec3& target) const {
-        return glm::vec3(target.x-50,target.y+60,target.z);
-    }
 
-    float lightExposure = 1.1f;
-};
 
 struct PointLight {
     glm::vec3 diffuseColor = glm::vec3(0.650980f, 0.1254902f, 0.8980392f);
@@ -86,12 +79,11 @@ private:
     unsigned int *bufferTexture;
     unsigned int *depthTexture;
     unsigned int *occTexture;
-    //vol light
-    float density=2.10f;
+    float density=1.20f;
     float weight=0.01f;
-    float decay=1.01f;
-    float exposure=0.8f;
-    int samples=200;
+    float decay=1.0f;
+    float exposure=1.4f;
+    int samples=270;
     const unsigned int depth_width_height = 1024;
     float nearPlane = 68.0f, farPlane = 150.0f;
     float lightAngle = 45.0f;
@@ -112,7 +104,6 @@ private:
     std::unordered_map<std::string, Model*> models;
     std::unordered_map<std::string, GLuint> shaders;
     DirectionalLight directional;
-    VolLight vol;
     PointLight point,point2;
     SpotLight spot, spot2;
 

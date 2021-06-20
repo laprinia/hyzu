@@ -5,7 +5,7 @@ uniform sampler2D texture1;
 uniform float lightExposure;
 uniform float time;
 
-float noiseStrength = 1.3;
+float noiseStrength = 1.0;
 
 
 float noise (vec2 point) {

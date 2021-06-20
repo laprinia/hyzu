@@ -169,7 +169,7 @@ void SampleWindow::Init() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2 * sizeof(float)));
 
-    camera = new Camera(glm::vec3(0.0f, 10.0f, 4.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera = new Camera(glm::vec3(12.0f, 6.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     Model *model1 = new Model("../resources/scenes/pool/pool4.obj");
     models["env"] = model1;
@@ -371,11 +371,11 @@ void SampleWindow::GUIUpdate() {
         ImGui::DragFloat("Light Angle", (float *) &lightAngle, 0.1f, 30.0f, 100.0f);
 
         ImGui::Text("Volumetric variables");
-        ImGui::DragFloat("Density", (float*)&density,0.10,0,2);
-        ImGui::DragFloat("Weight", (float*)&weight,0.10,0,2);
-        ImGui::DragFloat("Decay", (float*)&decay,0.10,0,2);
-        ImGui::DragFloat("Exposure", (float*)&exposure,0.10,0,2);
-        ImGui::DragFloat("Samples", (float*)&samples,0.10,100,300);
+        ImGui::DragFloat("Density", (float*)&density,0.10,0,4);
+        ImGui::DragFloat("Weight", (float*)&weight,0.10,0,4);
+        ImGui::DragFloat("Decay", (float*)&decay,0.10,0,4);
+        ImGui::DragFloat("Exposure", (float*)&exposure,0.10,0,4);
+        ImGui::DragInt("Samples", (int*) &samples,0.10,100,300);
 
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
                     ImGui::GetIO().Framerate);
