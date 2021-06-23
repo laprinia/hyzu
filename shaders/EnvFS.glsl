@@ -75,7 +75,7 @@ void main() {
     vec3 color=texture(texture_diffuse1, vertexData.textureCoord).rgb;
     vec3 ambient = 0.5 * color;
     //float shadow =ComputeShadow(vertexData.fragmentLightSpace);
-    float shadow =0;
+    float shadow=0.0;
     vec3 result = ambient * color;
     vec3 cViewPosition= normalize(vertexData.viewPosition - vertexData.fragmentPosition);
     result+= ComputeDirLight(directional, tangentNormal, vertexData.tangentViewPosition, vertexData.tangentFragmentPosition, shadow) * color;
@@ -84,6 +84,7 @@ void main() {
     result+= ComputePointLight(point2, normal, vertexData.fragmentPosition, cViewPosition) * color;
     result+= ComputeSpotLight(spot, normal, vertexData.fragmentPosition, cViewPosition);
     result+= ComputeSpotLight(spot2, normal, vertexData.fragmentPosition, cViewPosition);
+
     fragmentColor = vec4(result, 0.1);
 
 }

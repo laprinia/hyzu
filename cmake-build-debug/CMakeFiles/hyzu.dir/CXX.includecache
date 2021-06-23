@@ -1066,10 +1066,6 @@ intrin.h
 arm_neon.h
 -
 
-E:/Projects/hyzu/main.cpp
-window/SampleWindow.h
-E:/Projects/hyzu/window/SampleWindow.h
-
 E:/Projects/hyzu/render/Mesh.h
 RenderableObject.h
 E:/Projects/hyzu/render/RenderableObject.h

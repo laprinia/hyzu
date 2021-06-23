@@ -25,7 +25,7 @@
 struct DirectionalLight {
     glm::vec3 diffuseColor = glm::vec3(1.0f, 0.6196078f, 0.452941176f);
     glm::vec3 specularColor = glm::vec3(1.0f, 0.5372549f, 0.8117647f);
-    glm::vec3 position = glm::vec3(-76, 22, -113);
+    glm::vec3 position = glm::vec3(-48, 31, -83);
     glm::vec3 target = glm::vec3(0, 0, 0);
 
     glm::vec3 GetDirection() const {
@@ -72,7 +72,7 @@ class SampleWindow {
 private:
     static Camera *camera;
     GLFWwindow *window;
-    const bool hasGUI = true;
+    const bool hasGUI = false;
     unsigned int *fbID;
     unsigned int *depthID;
     unsigned int *occID;
@@ -82,11 +82,11 @@ private:
     float density=1.20f;
     float weight=0.01f;
     float decay=1.0f;
-    float exposure=1.4f;
+    float exposure=1.2f;
     int samples=270;
     const unsigned int depth_width_height = 1024;
-    float nearPlane = 68.0f, farPlane = 150.0f;
-    float lightAngle = 45.0f;
+    float nearPlane = 40.0f, farPlane = 800.0f;
+    float lightAngle = 35.9f;
     unsigned int quadVAO;
     unsigned int quadVBO;
     unsigned int cubeVAO;

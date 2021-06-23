@@ -1,6 +1,6 @@
 #version 460 core
 out vec4 fragmentColor;
-varying vec2 vUv;
+varying vec2 textCoordonate;
 uniform sampler2D occTexture;
 
 uniform vec2 screenSpaceSunPosition;
@@ -13,8 +13,8 @@ uniform int samples;
 uniform vec3 directionalColor;
 vec3 volumetricLight() {
     vec3 result=vec3(0.0, 0.0, 0.0);
-    vec2 deltaTextureCoord=vec2(vUv-screenSpaceSunPosition.xy);
-    vec2 textCoord=vUv.xy;
+    vec2 deltaTextureCoord=vec2(textCoordonate-screenSpaceSunPosition.xy);
+    vec2 textCoord=textCoordonate.xy;
     deltaTextureCoord*=(1.0/float (samples))* density;
     float illuminationDecay=1.0;
     for (int i=0; i < samples; i++){
@@ -29,6 +29,7 @@ vec3 volumetricLight() {
     result*=directionalColor;
     return result;
 }
+
 void main() {
 
     fragmentColor = vec4(volumetricLight(), 1.0);

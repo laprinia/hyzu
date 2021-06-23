@@ -2,12 +2,10 @@
 
 layout (location = 0) in vec2 position;
 layout (location = 1) in vec2 textureCoord;
-varying vec2 vUv;
-out vec2 outTextureCoord;
+varying vec2 textCoordonate;
 
 void main() {
-    outTextureCoord=textureCoord;
-    vUv = 0.5 * (position+1.0);
+    textCoordonate =  (position+1.0)/2;
     gl_Position = vec4(position.xy, 0.0, 1.0);
 
 }

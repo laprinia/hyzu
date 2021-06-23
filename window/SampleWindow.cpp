@@ -15,9 +15,6 @@ double SampleWindow::yaw = -90.0f;
 double SampleWindow::pitch = 0.0f;
 
 float SampleWindow::mouseSensitivity = 0.1f;
-
-bool show_test_window = true;
-bool show_another_window = false;
 ImVec4 clear_color = ImColor(114, 144, 154);
 
 SampleWindow::SampleWindow(int width, int height, const std::string &title) {
@@ -55,8 +52,6 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
 
     SampleWindow::CompileShaders();
     SampleWindow::Init();
-
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     unsigned int fb;
     glGenFramebuffers(1, &fb);
@@ -102,7 +97,6 @@ SampleWindow::SampleWindow(int width, int height, const std::string &title) {
     depthID = &depthFb;
     depthTexture = &depthMap;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 
     //occlusion buffer
     unsigned int occ;
@@ -169,7 +163,7 @@ void SampleWindow::Init() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *) (2 * sizeof(float)));
 
-    camera = new Camera(glm::vec3(12.0f, 6.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     Model *model1 = new Model("../resources/scenes/pool/pool4.obj");
     models["env"] = model1;
@@ -208,7 +202,6 @@ void SampleWindow::RenderScene(GLuint  shader, glm::mat4 &viewMatrix, glm::mat4 
     SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
     glDisable(GL_BLEND);
 
-
 }
 
 void SampleWindow::Update() {
@@ -218,14 +211,14 @@ void SampleWindow::Update() {
     if (hasGUI) GUIUpdate();
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    //occlusion pass
+
+    //occlusion pass
     glBindFramebuffer(GL_FRAMEBUFFER,*occID);
     glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(shaders["base"]);
 
-//
-//    //light matrices
+    // matrices
     glm::mat4 lightProjection = glm::perspective(glm::radians(lightAngle),
                                                  (GLfloat) depth_width_height / depth_width_height, nearPlane,
                                                  farPlane);
@@ -238,19 +231,20 @@ void SampleWindow::Update() {
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
                        camera->getCameraUp());
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 800.0f);
 
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, directional.position);
     model = glm::scale(model, glm::vec3(20.0f));
 
+    glm::mat4 empty=glm::mat4(0.0f);
     glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),1);
     glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(directional.diffuseColor));
-    SampleWindow::RenderSun(shaders["base"],model,view, projection, lightSpaceMatrix);
+    SampleWindow::RenderSun(shaders["base"],model,view, projection, empty);
 
     glUniform1i(glGetUniformLocation(shaders["base"],"isTransparent"),0);
     glUniform3fv(glGetUniformLocation(shaders["base"],"solidColor"),1,glm::value_ptr(glm::vec3(0.0f,0.0f,0.0f)));
-    SampleWindow::RenderScene(shaders["base"],view, projection, false, lightSpaceMatrix);
+    SampleWindow::RenderScene(shaders["base"],view, projection, false, empty);
 
 
     //depth pass
@@ -286,7 +280,7 @@ void SampleWindow::Update() {
     view = glm::lookAt(camera->getCameraPosition(), camera->getCameraPosition() + camera->getCameraFront(),
                        camera->getCameraUp());
     projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 800.0f);
 
     glUniform1i(glGetUniformLocation(shaders["env"], "shadowMap"), 3);
     glActiveTexture(GL_TEXTURE0 + 3);
@@ -331,8 +325,6 @@ void SampleWindow::Update() {
 
     glUseProgram(shaders["vol"]);
 
-    //TODO debug
-
     glm::vec2 worldSunPos= GetSunScreenPosition(view,projection);
     glUniform2fv(glGetUniformLocation(shaders["vol"], "screenSpaceSunPosition"),1,glm::value_ptr(worldSunPos));
     glUniform1f(glGetUniformLocation(shaders["vol"], "density"), density);
@@ -366,8 +358,8 @@ void SampleWindow::GUIUpdate() {
         ImGui::ColorEdit3("Specular Light Color", (float *) &directional.specularColor);
 
         ImGui::Text("Shadow variables");
-        ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 1.0f, 100.0f);
-        ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 1.0f, 300.0f);
+        ImGui::DragFloat("Z Near", (float *) &nearPlane, 0.10f, 70.0f, 100.0f);
+        ImGui::DragFloat("Z Far", (float *) &farPlane, 0.10f, 100.0f, 900.0f);
         ImGui::DragFloat("Light Angle", (float *) &lightAngle, 0.1f, 30.0f, 100.0f);
 
         ImGui::Text("Volumetric variables");
@@ -486,7 +478,7 @@ void SampleWindow::RenderMeshFromData(const std::string &meshName, glm::mat4 &mo
                        camera->getCameraUp());
 
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 300.0f);
+    projection = glm::perspective(glm::radians(camera->getFieldOfView()), (float) width / (float) height, 0.1f, 800.0f);
 
 
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE,
@@ -776,6 +768,3 @@ glm::vec2 SampleWindow::GetSunScreenPosition(const glm::mat4& viewMatrix,const g
 
     return windowSpacePos;
 }
-
-
-
