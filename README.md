@@ -58,3 +58,12 @@ One more thing I added was a Grain effect, again in my Post Processing shaders.
 ![framework video](/screenshots/8.png "Model w/ Grain")
 
 Now everything is set for some much needed Volumetric light & reflections/refractions.
+
+For Volumetric lighting, I used the occlusion texture & ray marching technique.
+
+![framework screenshot](/screenshots/9.png "Light rendered with the occlusion texture")
+![framework screenshot](/screenshots/10.png "Combined result")
+
+### 📷Video of the final result:
+
+![framework video](/screenshots/11.mp4 "Combined result video")
