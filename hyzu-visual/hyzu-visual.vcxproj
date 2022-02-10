@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{44455e45-b0c4-4d01-821b-bc13f8a00e72}</ProjectGuid>
+    <RootNamespace>hyzuvisual</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)hyzu-visual\includes\glfw\lib-vc2022;$(SolutionDir)hyzu-visual\includes\glew\lib\Release\x64;$(SolutionDir)hyzu-visual\includes\assimp\lib;$(SolutionDir)hyzu-visual\includes\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32s.lib;assimp.lib;SOIL.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)hyzu-visual\includes\glfw\lib-vc2022;$(SolutionDir)hyzu-visual\includes\glew\lib\Release\x64;$(SolutionDir)hyzu-visual\includes\assimp\lib;$(SolutionDir)hyzu-visual\includes\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32s.lib;assimp.lib;SOIL.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)hyzu-visual\includes\glfw\lib-vc2022;$(SolutionDir)hyzu-visual\includes\glew\lib\Release\x64;$(SolutionDir)hyzu-visual\includes\assimp\lib;$(SolutionDir)hyzu-visual\includes\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32s.lib;assimp.lib;SOIL.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)hyzu-visual\includes\glfw\lib-vc2022;$(SolutionDir)hyzu-visual\includes\glew\lib\Release\x64;$(SolutionDir)hyzu-visual\includes\assimp\lib;$(SolutionDir)hyzu-visual\includes\soil\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;opengl32.lib;glew32s.lib;assimp.lib;SOIL.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="camera\Camera.cpp" />
+    <ClCompile Include="includes\imgui\imgui.cpp" />
+    <ClCompile Include="includes\imgui\imgui_demo.cpp" />
+    <ClCompile Include="includes\imgui\imgui_draw.cpp" />
+    <ClCompile Include="includes\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="includes\imgui\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="includes\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="includes\imgui\imgui_tables.cpp" />
+    <ClCompile Include="includes\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="input\InputManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="render\Mesh.cpp" />
+    <ClCompile Include="render\Model.cpp" />
+    <ClCompile Include="render\RenderableWithVertexColor.cpp" />
+    <ClCompile Include="render\SimpleMesh.cpp" />
+    <ClCompile Include="shaders\ShaderManager.cpp" />
+    <ClCompile Include="window\VolumetricWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="camera\Camera.h" />
+    <ClInclude Include="includes\imgui\imconfig.h" />
+    <ClInclude Include="includes\imgui\imgui.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_opengl2.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="includes\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="includes\imgui\imgui_internal.h" />
+    <ClInclude Include="includes\imgui\imstb_rectpack.h" />
+    <ClInclude Include="includes\imgui\imstb_textedit.h" />
+    <ClInclude Include="includes\imgui\imstb_truetype.h" />
+    <ClInclude Include="input\InputManager.h" />
+    <ClInclude Include="render\Mesh.h" />
+    <ClInclude Include="render\Model.h" />
+    <ClInclude Include="render\RenderableObject.h" />
+    <ClInclude Include="render\RenderableWithVertexColor.h" />
+    <ClInclude Include="render\SimpleMesh.h" />
+    <ClInclude Include="shaders\ShaderManager.h" />
+    <ClInclude Include="window\VolumetricWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\scenes\pool\pool.mtl" />
+    <None Include="resources\scenes\pool\Pool2.fbx" />
+    <None Include="resources\scenes\pool\pool2.mtl" />
+    <None Include="resources\scenes\pool\pool3.mtl" />
+    <None Include="resources\scenes\pool\pool4.mtl" />
+    <None Include="shaders\BaseFS.glsl" />
+    <None Include="shaders\BaseVS.glsl" />
+    <None Include="shaders\DepthFS.glsl" />
+    <None Include="shaders\DepthVS.glsl" />
+    <None Include="shaders\EnvFS.glsl" />
+    <None Include="shaders\EnvVS.glsl" />
+    <None Include="shaders\LighDepthVS.glsl" />
+    <None Include="shaders\LightDepthFS.glsl" />
+    <None Include="shaders\PostFS.glsl" />
+    <None Include="shaders\PostVS.glsl" />
+    <None Include="shaders\SkyFS.glsl" />
+    <None Include="shaders\SkyVS.glsl" />
+    <None Include="shaders\VolumetricFS.glsl" />
+    <None Include="shaders\VolumetricVS.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\icon_dark.png" />
+    <Image Include="resources\scenes\pool\NormalMap.png" />
+    <Image Include="resources\scenes\pool\NormalMap2.jpg" />
+    <Image Include="resources\scenes\pool\Pool2.png" />
+    <Image Include="resources\scenes\pool\Pool3.png" />
+    <Image Include="resources\scenes\pool\Pool4.png" />
+    <Image Include="resources\skybox\+x.jpg" />
+    <Image Include="resources\skybox\+y.jpg" />
+    <Image Include="resources\skybox\+z.jpg" />
+    <Image Include="resources\skybox\-x.jpg" />
+    <Image Include="resources\skybox\-y.jpg" />
+    <Image Include="resources\skybox\-z.jpg" />
+    <Image Include="resources\skybox\back.jpg" />
+    <Image Include="resources\skybox\bottom.jpg" />
+    <Image Include="resources\skybox\front.jpg" />
+    <Image Include="resources\skybox\left.jpg" />
+    <Image Include="resources\skybox\oceanback.png" />
+    <Image Include="resources\skybox\oceanbottom.png" />
+    <Image Include="resources\skybox\oceanfront.png" />
+    <Image Include="resources\skybox\oceanleft.png" />
+    <Image Include="resources\skybox\oceanright.png" />
+    <Image Include="resources\skybox\oceanup.png" />
+    <Image Include="resources\skybox\pinkback.png" />
+    <Image Include="resources\skybox\pinkbottom.png" />
+    <Image Include="resources\skybox\pinkfront.png" />
+    <Image Include="resources\skybox\pinkleft.png" />
+    <Image Include="resources\skybox\pinkright.png" />
+    <Image Include="resources\skybox\pinkup.png" />
+    <Image Include="resources\skybox\right.jpg" />
+    <Image Include="resources\skybox\top.jpg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

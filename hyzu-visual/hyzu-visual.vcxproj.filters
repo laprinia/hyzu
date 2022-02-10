@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\window">
+      <UniqueIdentifier>{9ff9b813-4a29-4dbf-a3f9-40423e9314b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{4b0e8782-7fd7-449d-ad5b-5cb25ab9da8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{39042698-6fba-4988-9321-8937d832c623}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render">
+      <UniqueIdentifier>{e8534afa-7fbc-4239-8a47-4323e0c0fe77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{11467bad-31c4-4215-aa7d-2acfeac6f3bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources">
+      <UniqueIdentifier>{5930a6c9-4b4c-4cfa-8ddd-d3472e9c8ac1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources\scenes">
+      <UniqueIdentifier>{8bca4630-9140-4f85-aec5-e4cd9ca823ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources\scenes\pool">
+      <UniqueIdentifier>{0abfd2c1-8ca6-4e48-b94e-e4b76be404d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\resources\scenes\skybox">
+      <UniqueIdentifier>{d0d49366-e4b6-4eac-897a-ad6ed72306ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\imgui">
+      <UniqueIdentifier>{7a236db6-96b3-420c-a83f-a63137c00d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\includes">
+      <UniqueIdentifier>{0e2e45dc-c333-49aa-abe7-7c1d37b9962b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\includes\imgui">
+      <UniqueIdentifier>{c00bdb1c-09aa-4e07-9733-f3956ed6467b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="window\VolumetricWindow.cpp">
+      <Filter>Source Files\window</Filter>
+    </ClCompile>
+    <ClCompile Include="camera\Camera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="input\InputManager.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="render\Mesh.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\Model.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\RenderableWithVertexColor.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\SimpleMesh.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\ShaderManager.cpp">
+      <Filter>Source Files\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_demo.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_draw.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_impl_glfw.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_impl_opengl2.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_tables.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\includes\imgui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="window\VolumetricWindow.h">
+      <Filter>Source Files\window</Filter>
+    </ClInclude>
+    <ClInclude Include="camera\Camera.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="input\InputManager.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Mesh.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Model.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\RenderableObject.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\RenderableWithVertexColor.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\SimpleMesh.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\ShaderManager.h">
+      <Filter>Source Files\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imconfig.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui_impl_glfw.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui_impl_opengl2.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui_impl_opengl3.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imgui_internal.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imstb_rectpack.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imstb_textedit.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\imgui\imstb_truetype.h">
+      <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\BaseFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\BaseVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\DepthFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\DepthVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\EnvFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\LighDepthVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\LightDepthFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\PostFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\PostVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\SkyFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\SkyVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\VolumetricFS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\VolumetricVS.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="resources\scenes\pool\pool.mtl">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </None>
+    <None Include="resources\scenes\pool\Pool2.fbx">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </None>
+    <None Include="resources\scenes\pool\pool2.mtl">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </None>
+    <None Include="resources\scenes\pool\pool3.mtl">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </None>
+    <None Include="resources\scenes\pool\pool4.mtl">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </None>
+    <None Include="shaders\EnvVS.glsl">
+      <Filter>Source Files\includes</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\scenes\pool\NormalMap.png">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </Image>
+    <Image Include="resources\scenes\pool\NormalMap2.jpg">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </Image>
+    <Image Include="resources\scenes\pool\Pool2.png">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </Image>
+    <Image Include="resources\scenes\pool\Pool3.png">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </Image>
+    <Image Include="resources\scenes\pool\Pool4.png">
+      <Filter>Source Files\resources\scenes\pool</Filter>
+    </Image>
+    <Image Include="resources\skybox\+x.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\+y.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\+z.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\back.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\bottom.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\front.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\left.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanback.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanbottom.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanfront.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanleft.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanright.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\oceanup.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkback.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkbottom.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkfront.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkleft.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkright.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\pinkup.png">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\right.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\top.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\-x.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\-y.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\skybox\-z.jpg">
+      <Filter>Source Files\resources\scenes\skybox</Filter>
+    </Image>
+    <Image Include="resources\icon_dark.png">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

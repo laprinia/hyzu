@@ -1,4 +1,0 @@
-"C:\Program Files\JetBrains\CLion\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" E:\Projects\hyzu
--- Configuring done
--- Generating done
--- Build files have been written to: E:/Projects/hyzu/cmake-build-debug
