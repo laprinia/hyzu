@@ -33,7 +33,7 @@ struct DirectionalLight {
 		return -(glm::normalize(position - target));
 	}
 
-	float lightExposure = 0.5f;
+	float lightExposure = 1.0f;
 };
 
 
@@ -82,7 +82,7 @@ class VolumetricWindow {
 private:
 	static Camera* camera;
 	GLFWwindow* window;
-	const bool hasGUI = true;
+	const bool hasGUI = false;
 	unsigned int* fbID;
 	unsigned int* depthID;
 	unsigned int* occID;

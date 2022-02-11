@@ -102,6 +102,9 @@
     <ClCompile Include="includes\imgui\imgui_widgets.cpp">
       <Filter>Source Files\includes\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="window\SampleWindow.cpp">
+      <Filter>Source Files\window</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window\VolumetricWindow.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="includes\imgui\imstb_truetype.h">
       <Filter>Header Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="window\SampleWindow.h">
+      <Filter>Source Files\window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

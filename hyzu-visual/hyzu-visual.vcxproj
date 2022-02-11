@@ -167,6 +167,7 @@
     <ClCompile Include="render\RenderableWithVertexColor.cpp" />
     <ClCompile Include="render\SimpleMesh.cpp" />
     <ClCompile Include="shaders\ShaderManager.cpp" />
+    <ClCompile Include="window\SampleWindow.cpp" />
     <ClCompile Include="window\VolumetricWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +189,7 @@
     <ClInclude Include="render\RenderableWithVertexColor.h" />
     <ClInclude Include="render\SimpleMesh.h" />
     <ClInclude Include="shaders\ShaderManager.h" />
+    <ClInclude Include="window\SampleWindow.h" />
     <ClInclude Include="window\VolumetricWindow.h" />
   </ItemGroup>
   <ItemGroup>

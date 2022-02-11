@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a389d73c-2a41-463e-bf54-7ac4b198caec" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/hyzu-visual.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/hyzu-visual.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/hyzu-visual.vcxproj.filters" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/hyzu-visual.vcxproj.filters" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/boulder/C_color.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/boulder/N_bake.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/boulder/S_color.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/boulder/boulder.mtl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/cathedral/cathedral.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/resources/scenes/cathedral/cathedralob.mtl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/shaders/EnvFS.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/shaders/EnvFS.glsl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/window/VolumetricWindow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/window/VolumetricWindow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hyzu-visual/window/VolumetricWindow.h" beforeDir="false" afterPath="$PROJECT_DIR$/hyzu-visual/window/VolumetricWindow.h" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="24w3pc4fKwb1JNLBy5fUbOnxIZN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="cidr.known.project.marker" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a389d73c-2a41-463e-bf54-7ac4b198caec" name="Changes" comment="" />
+      <created>1644528007659</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1644528007659</updated>
+      <workItem from="1644528009469" duration="107000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

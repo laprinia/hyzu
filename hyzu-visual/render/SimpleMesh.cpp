@@ -26,13 +26,12 @@ void SimpleMesh::DefineMesh() {
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SVertex), (GLvoid *) 0);
 
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(SVertex), (GLvoid *) offsetof(SVertex, Normal));
-
-
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(SVertex), (GLvoid*)offsetof(SVertex, TextureCoord));
+    
     glBindVertexArray(0);
 }
 
-void SimpleMesh::Draw(GLuint shaderProgram) {
+void SimpleMesh::Draw() {
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);

@@ -1,8 +1,11 @@
 
-#include "window/VolumetricWindow.h"
+
 #include <iostream>
+#include "window/SampleWindow.h"
+
 int main() {
 
-    VolumetricWindow sampleWindow = VolumetricWindow(1900, 1000, "hyzu");
-    return 0;
+    //VolumetricWindow sampleWindow = VolumetricWindow(1900, 1000, "hyzu");
+	SampleWindow sampleWindow = SampleWindow(1900, 1000, "hyzu");
+	return 0;
 }

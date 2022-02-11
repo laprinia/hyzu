@@ -176,7 +176,7 @@ void VolumetricWindow::Init() {
 
 	camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-	Model* model1 = new Model("C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/scenes/pool/base.obj");
+	Model* model1 = new Model("C:/Users/Laprinia/Desktop/Motoare/hyzu/hyzu-visual/resources/scenes/room/4/bath.obj");
 	models["basescene"] = model1;
 	Model* model2 = new Model("C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/scenes/pool/water/poolwater.obj");
 	models["poolwater"] = model2;
@@ -206,12 +206,12 @@ void VolumetricWindow::RenderScene(GLuint  shader, glm::mat4& viewMatrix, glm::m
 	VolumetricWindow::RenderModel("basescene", model, viewMatrix, projectionMatrix, lightMatrix,
 		isDepthPass ? shaders["depth"] : shader);
 	VolumetricWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
-	glEnable(GL_BLEND);
+	/*glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
 	VolumetricWindow::RenderModel("poolwater", model, viewMatrix, projectionMatrix, lightMatrix,
 		isDepthPass ? shaders["depth"] : shader);
 	VolumetricWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND);*/
 
 }
 
@@ -331,7 +331,7 @@ void VolumetricWindow::Update() {
 
 	//volumetric light
 
-	glEnable(GL_BLEND);
+	/*glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
 	glUseProgram(shaders["vol"]);
@@ -348,12 +348,12 @@ void VolumetricWindow::Update() {
 
 	glUniform1i(glGetUniformLocation(shaders["vol"], "occTexture"), 0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, *occTexture);
+	glBindTexture(GL_TEXTURE_2D, *occTexture);*/
 
 	////run full screen
-	glBindVertexArray(quadVAO);
+	/*glBindVertexArray(quadVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glDisable(GL_BLEND);
+	glDisable(GL_BLEND);*/
 
 	if (hasGUI) {
 		ImGui::Render();

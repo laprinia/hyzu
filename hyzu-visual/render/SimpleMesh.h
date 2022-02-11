@@ -16,7 +16,7 @@
 
 struct SVertex {
     glm::vec3 Position;
-    glm::vec3 Normal;
+    glm::vec2 TextureCoord;
 };
 
 
@@ -32,7 +32,7 @@ public:
 
     SimpleMesh(const std::vector<SVertex> &vertices, const std::vector<GLuint> &indices);
 
-    void Draw(GLuint shaderProgram);
+    void Draw();
 
 };
 
