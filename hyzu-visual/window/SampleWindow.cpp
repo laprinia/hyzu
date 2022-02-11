@@ -31,11 +31,10 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 	}
 	glfwMakeContextCurrent(window);
 	GLFWimage icon;
-	icon.pixels = SOIL_load_image("../../resources/icon_dark.png", &icon.width, &icon.height, 0, SOIL_LOAD_RGBA);
+	icon.pixels = SOIL_load_image(".\\..\\hyzu-visual\\resources\\icon_dark.png", &icon.width, &icon.height, 0, SOIL_LOAD_RGBA);
 	glfwSetWindowIcon(window, 1, &icon);
 	SOIL_free_image_data(icon.pixels);
 	glewExperimental = GL_TRUE;
-	InputManager::GetInstance(window);
 	InputManager::GetInstance(window);
 	InputManager::SetFramebufferSizeCallback(window, OnFramebufferSizeChange);
 	InputManager::SetWindowKeyCallback(window, OnKeyPress);
@@ -127,12 +126,10 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 		glfwSwapBuffers(window);
 	}
 	if (hasGUI) {
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
+		GUIManager::DeleteContext();
 	}
-	glDeleteVertexArrays(1, &cubeVAO);
-	glDeleteBuffers(1, &cubeVBO);
+
+	//TODO delete vaos vbos
 
 	glfwTerminate();
 }
@@ -141,14 +138,7 @@ void SampleWindow::Init() {
 
 
 	if (hasGUI) {
-
-		IMGUI_CHECKVERSION();
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO();
-
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-		ImGui_ImplOpenGL3_Init("#version 460");
-		ImGui::StyleColorsDark();
+		GUIManager::CreateContext(window);
 	}
 
 	camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -162,20 +152,28 @@ void SampleWindow::Init() {
 			SVertex{glm::vec3(1.0f,-1.0f,0.0f),glm::vec2(1.0f,0.0f)}
 	};
 
-	std::vector<GLuint> screenQuadIndices={0, 1, 2, 
-		0, 2, 3};
+	std::vector<GLuint> screenQuadIndices = { 0, 1, 2,
+		0, 2, 3 };
 	SimpleMesh* simpleMesh = new SimpleMesh(screenQuadVertices, screenQuadIndices);
 	simpleMeshes["quad"] = simpleMesh;
-	
-	Model* model1 = new Model("C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/scenes/pool/base.obj");
+
+	Model* model1 = new Model(".\\..\\hyzu-visual\\resources/scenes/pool/base.obj");
 	models["basescene"] = model1;
-	Model* model2 = new Model("C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/scenes/pool/water/poolwater.obj");
+	Model* model2 = new Model(".\\..\\hyzu-visual\\resources/scenes/pool/water/poolwater.obj");
 	models["poolwater"] = model2;
 
-	Model* model3 = new Model("C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/scenes/pool/sphere.obj");
+	Model* model3 = new Model(".\\..\\hyzu-visual\\resources/scenes/pool/sphere.obj");
 	models["sphere"] = model3;
 
-	SampleWindow::InitCubeMap();
+	Skybox* skybox = new Skybox(".\\..\\hyzu-visual\\resources\\skybox\\pink");
+	skyboxes["pink"] = skybox;
+
+	Skybox* skybox2 = new Skybox(".\\..\\hyzu-visual\\resources\\skybox\\ocean");
+	skyboxes["ocean"] = skybox2;
+
+	Skybox* skybox3 = new Skybox(".\\..\\hyzu-visual\\resources\\skybox\\blue");
+	skyboxes["blue"] = skybox3;
+
 
 	//lights 
 	point2.position = glm::vec3(1.0f, 16.0f, 38.0f);
@@ -301,11 +299,7 @@ void SampleWindow::Update() {
 	glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-	glBindVertexArray(cubeVAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glBindVertexArray(0);
+	skyboxes["blue"]->Draw();
 	glDepthFunc(GL_LESS);
 
 
@@ -315,7 +309,7 @@ void SampleWindow::Update() {
 
 	glUseProgram(shaders["post"]);
 	SampleWindow::SendPostDataToShader(shaders["post"]);
-	
+
 	glBindTexture(GL_TEXTURE_2D, *bufferTexture);
 	simpleMeshes["quad"]->Draw();
 
@@ -346,9 +340,7 @@ void SampleWindow::Update() {
 	glDisable(GL_BLEND);
 
 	if (hasGUI) {
-		ImGui::Render();
-
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		GUIManager::DrawData();
 	}
 }
 
@@ -356,32 +348,7 @@ void SampleWindow::GUIUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
-	ImGui::Begin("Light Settings");
-	ImGui::Text("Exposure");
-	ImGui::DragFloat("Light Exposure", (float*)&directional.lightExposure, 0.10f, 0.1f, 5.0f);
-	ImGui::Text("Directional variables");
-	ImGui::DragFloat3("Light Position", (float*)&directional.position);
-	ImGui::DragFloat3("Light Target", (float*)&directional.target);
-	ImGui::ColorEdit3("Diffuse Light Color", (float*)&directional.diffuseColor);
-	ImGui::ColorEdit3("Specular Light Color", (float*)&directional.specularColor);
-
-	ImGui::Text("Shadow variables");
-	ImGui::DragFloat("Z Near", (float*)&nearPlane, 0.10f, 70.0f, 100.0f);
-	ImGui::DragFloat("Z Far", (float*)&farPlane, 0.10f, 100.0f, 900.0f);
-	ImGui::DragFloat("Light Angle", (float*)&lightAngle, 0.1f, 30.0f, 100.0f);
-
-	ImGui::Text("Volumetric variables");
-	ImGui::DragFloat("Density", (float*)&vol.density, 0.10, 0, 4);
-	ImGui::DragFloat("Weight", (float*)&vol.weight, 0.10, 0, 4);
-	ImGui::DragFloat("Decay", (float*)&vol.decay, 0.10, 0, 1);
-	ImGui::DragFloat("Exposure", (float*)&vol.exposure, 0.10, 0, 4);
-	ImGui::DragInt("Samples", (int*)&vol.samples, 0.10, 100, 300);
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-		ImGui::GetIO().Framerate);
-
-	ImGui::End();
+	GUIManager::DrawDirectionalWindow(directional, vol, nearPlane, farPlane, lightAngle);
 
 }
 
@@ -504,70 +471,70 @@ void SampleWindow::RenderMeshFromData(const std::string& meshName, glm::mat4& mo
 
 
 void SampleWindow::CompileShaders() {
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/BaseVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\BaseVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/BaseFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\BaseFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	GLuint shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["base"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["base"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/EnvVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\EnvVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/EnvFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\EnvFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["basescene"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["basescene"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/PostVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\PostVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/PostFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\PostFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["post"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["post"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/SkyVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\SkyVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/SkyFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\SkyFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["skybox"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["skybox"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/DepthVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\DepthVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/DepthFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\DepthFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["depth"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["depth"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/LighDepthVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\LighDepthVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/LightDepthFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\LightDepthFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
 	shaders["lightdepth"] = shaderProgram;
 	ShaderManager::CheckShaderLink(shaders["lightdepth"]);
 
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/VolumetricVS.glsl");
+	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\VolumetricVS.glsl");
 	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, "C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/shaders/VolumetricFS.glsl");
+	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\VolumetricFS.glsl");
 	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
 
 	shaderProgram = ShaderManager::LinkShaderProgram();
@@ -675,98 +642,6 @@ int SampleWindow::GetWindowHeight() {
 
 int SampleWindow::GetWindowWidth() {
 	return width;
-}
-
-unsigned int SampleWindow::LoadCubeMap(const std::vector<std::string>& faces) {
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-	int width, height, nrChannels;
-	for (unsigned int i = 0; i < faces.size(); i++) {
-		unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
-		if (data) {
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, GL_SRGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-			);
-			stbi_image_free(data);
-		}
-		else {
-			std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
-			stbi_image_free(data);
-		}
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	return textureID;
-}
-
-void SampleWindow::InitCubeMap() {
-	float cubeVertices[] = {
-
-			-1.0f, 1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, 1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f,
-
-			-1.0f, -1.0f, 1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f,
-			-1.0f, 1.0f, -1.0f,
-			-1.0f, 1.0f, 1.0f,
-			-1.0f, -1.0f, 1.0f,
-
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-
-			-1.0f, -1.0f, 1.0f,
-			-1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, -1.0f, 1.0f,
-			-1.0f, -1.0f, 1.0f,
-
-			-1.0f, 1.0f, -1.0f,
-			1.0f, 1.0f, -1.0f,
-			1.0f, 1.0f, 1.0f,
-			1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, 1.0f,
-			-1.0f, 1.0f, -1.0f,
-
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f, 1.0f,
-			1.0f, -1.0f, -1.0f,
-			1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f, 1.0f,
-			1.0f, -1.0f, 1.0f
-	};
-
-	glGenVertexArrays(1, &cubeVAO);
-	glGenBuffers(1, &cubeVBO);
-	glBindVertexArray(cubeVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), &cubeVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	std::vector<std::string> cubeMapFaces{
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkright.png",
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkleft.png",
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkup.png",
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkbottom.png",
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkfront.png",
-			"C:/Users/Laprinia/source/repos/hyzu-visual/hyzu-visual/resources/skybox/pinkback.png",
-	};
-	cubemapTexture = SampleWindow::LoadCubeMap(cubeMapFaces);
 }
 
 glm::vec2 SampleWindow::GetSunScreenPosition(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) {

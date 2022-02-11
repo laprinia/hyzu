@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="camera\Camera.cpp" />
+    <ClCompile Include="gui\GUIManager.cpp" />
     <ClCompile Include="includes\imgui\imgui.cpp" />
     <ClCompile Include="includes\imgui\imgui_demo.cpp" />
     <ClCompile Include="includes\imgui\imgui_draw.cpp" />
@@ -167,11 +168,12 @@
     <ClCompile Include="render\RenderableWithVertexColor.cpp" />
     <ClCompile Include="render\SimpleMesh.cpp" />
     <ClCompile Include="shaders\ShaderManager.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="window\SampleWindow.cpp" />
-    <ClCompile Include="window\VolumetricWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera\Camera.h" />
+    <ClInclude Include="gui\GUIManager.h" />
     <ClInclude Include="includes\imgui\imconfig.h" />
     <ClInclude Include="includes\imgui\imgui.h" />
     <ClInclude Include="includes\imgui\imgui_impl_glfw.h" />
@@ -183,14 +185,15 @@
     <ClInclude Include="includes\imgui\imstb_textedit.h" />
     <ClInclude Include="includes\imgui\imstb_truetype.h" />
     <ClInclude Include="input\InputManager.h" />
+    <ClInclude Include="lighting\LightSources.h" />
     <ClInclude Include="render\Mesh.h" />
     <ClInclude Include="render\Model.h" />
     <ClInclude Include="render\RenderableObject.h" />
     <ClInclude Include="render\RenderableWithVertexColor.h" />
     <ClInclude Include="render\SimpleMesh.h" />
     <ClInclude Include="shaders\ShaderManager.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="window\SampleWindow.h" />
-    <ClInclude Include="window\VolumetricWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\scenes\pool\pool.mtl" />

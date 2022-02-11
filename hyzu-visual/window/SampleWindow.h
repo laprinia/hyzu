@@ -11,6 +11,7 @@
 #include <gtc/type_ptr.hpp>
 #include "../input/InputManager.h"
 #include "../shaders/ShaderManager.h"
+#include "../gui/GUIManager.h"
 #include "../render/RenderableWithVertexColor.h"
 #include "../render/SimpleMesh.h"
 #include "../camera/Camera.h"
@@ -22,61 +23,7 @@
 #include "../includes/imgui/imgui_impl_glfw.h"
 #include <stb_image_aug.h>
 #include "../includes/imgui/imgui_impl_opengl3.h"
-
-struct DirectionalLight {
-	glm::vec3 diffuseColor = glm::vec3(1.0f, 0.6196078f, 0.452941176f);
-	glm::vec3 specularColor = glm::vec3(1.0f, 0.455f, 0.4863f);
-	glm::vec3 position = glm::vec3(-48, 31, -83);
-	glm::vec3 target = glm::vec3(0, 0, 0);
-
-	glm::vec3 GetDirection() const {
-		return -(glm::normalize(position - target));
-	}
-
-	float lightExposure = 0.5f;
-};
-
-
-struct PointLight {
-	glm::vec3 diffuseColor = glm::vec3(0.650980f, 0.1254902f, 0.8980392f);
-	glm::vec3 specularColor = glm::vec3(1.0f, 0.16470f, 0.4666667f);
-	glm::vec3 position = glm::vec3(1.0f, 16.0f, -38.0f);
-
-	float constant = 0.20f;
-	float linear = 0.030f;
-	float quadratic = 0.001f;
-};
-
-struct SpotLight {
-	glm::vec3 position = glm::vec3(23, 30, 41);
-	glm::vec3 target = glm::vec3(24, 14, 4);
-	glm::vec3 GetDirection() const {
-		return (glm::normalize(position - target));
-	}
-	float outterCutAngle = 14;
-	float GetOutterCut() {
-		return glm::cos(glm::radians(outterCutAngle));
-	}
-	float cutAngle = 13.5;
-	float GetCut() {
-		return glm::cos(glm::radians(12.5f));
-	}
-
-	glm::vec3 diffuseColor = glm::vec3(1.0f, 0.6196078f, 0.32941f);
-	glm::vec3 specularColor = glm::vec3(1.0f, 0.780392f, 0.643137f);
-
-	float constant = 0.20f;
-	float linear = 0.030f;
-	float quadratic = 0.001f;
-};
-
-struct VolLight {
-	float density = 1.20f;
-	float weight = 0.01f;
-	float decay = 1.0f;
-	float exposure = 0.75f;
-	int samples = 270;
-};
+#include "../Skybox.h"
 
 class SampleWindow {
 private:
@@ -93,9 +40,6 @@ private:
 	const unsigned int depth_width_height = 1024;
 	float nearPlane = 40.0f, farPlane = 800.0f;
 	float lightAngle = 35.9f;
-	unsigned int cubeVAO;
-	unsigned int cubeVBO;
-	unsigned int cubemapTexture;
 	int width, height;
 	static bool firstMouseMove;
 	static double lastMouseX, lastMouseY;
@@ -107,7 +51,9 @@ private:
 	std::unordered_map<std::string, RenderableObject*> renderables;
 	std::unordered_map<std::string, SimpleMesh*> simpleMeshes;
 	std::unordered_map<std::string, Model*> models;
+	std::unordered_map<std::string, Skybox*> skyboxes;
 	std::unordered_map<std::string, GLuint> shaders;
+
 	DirectionalLight directional;
 	PointLight point, point2;
 	SpotLight spot, spot2;
@@ -148,10 +94,6 @@ public:
 	void SendLightingDataToShader(GLuint shaderProgram);
 
 	void SendPostDataToShader(GLuint shaderProgram);
-
-	unsigned int LoadCubeMap(const std::vector<std::string>& faceLocations);
-
-	void InitCubeMap();
 
 	void OnInputUpdate();
 
