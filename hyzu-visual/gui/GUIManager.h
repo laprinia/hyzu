@@ -9,6 +9,8 @@
 #include "../includes/imgui/imgui.h"
 #include "../includes/imgui/imgui_impl_glfw.h"
 #include "../includes/imgui/imgui_impl_opengl3.h"
+#include <vector>
+#include <string>
 
 
 class GUIManager {
@@ -22,6 +24,8 @@ public:
 	static GUIManager& CreateContext(GLFWwindow* windowContext);
 	static void DeleteContext();
 	static void DrawData();
-	static void DrawDirectionalWindow(DirectionalLight directional, VolLight vol, float nearPlane, float farPlane, float lightAngle);
+	static void DrawDirectionalWindow(DirectionalLight* directional, VolLight* vol, float* nearPlane, float* farPlane, float* lightAngle);
+	static const int DrawSceneSelectionWindow(bool* hasBaseScene);
+	
 };
 #endif

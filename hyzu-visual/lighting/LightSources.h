@@ -1,6 +1,12 @@
+
 #include <glm.hpp>
 
-struct DirectionalLight {
+
+struct Light {
+
+};
+
+struct DirectionalLight : Light {
 	glm::vec3 diffuseColor = glm::vec3(0.4275f, 0.4157f, 0.82745f);
 	glm::vec3 specularColor = glm::vec3(0.8039f, 0.8078f, 1.0f);
 	glm::vec3 position = glm::vec3(-48, 31, -83);
@@ -14,7 +20,7 @@ struct DirectionalLight {
 };
 
 
-struct PointLight {
+struct PointLight : Light {
 	glm::vec3 diffuseColor = glm::vec3(0.650980f, 0.1254902f, 0.8980392f);
 	glm::vec3 specularColor = glm::vec3(1.0f, 0.16470f, 0.4666667f);
 	glm::vec3 position = glm::vec3(1.0f, 16.0f, -38.0f);
@@ -24,7 +30,7 @@ struct PointLight {
 	float quadratic = 0.001f;
 };
 
-struct SpotLight {
+struct SpotLight : Light {
 	glm::vec3 position = glm::vec3(23, 30, 41);
 	glm::vec3 target = glm::vec3(24, 14, 4);
 	glm::vec3 GetDirection() const {
@@ -47,7 +53,7 @@ struct SpotLight {
 	float quadratic = 0.001f;
 };
 
-struct VolLight {
+struct VolLight : Light {
 	float density = 1.20f;
 	float weight = 0.02f;
 	float decay = 1.0f;

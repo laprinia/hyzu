@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb;$(SolutionDir)hyzu-visual\includes\json\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb;$(SolutionDir)hyzu-visual\includes\json\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb;$(SolutionDir)hyzu-visual\includes\json\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)hyzu-visual\includes\glm\glm;$(SolutionDir)hyzu-visual\includes\glfw\include;$(SolutionDir)hyzu-visual\includes\glew\include;$(SolutionDir)hyzu-visual\includes\assimp\include;$(SolutionDir)hyzu-visual\includes\soil\include\SOIL;$(SolutionDir)hyzu-visual\includes\imgui\include;$(SolutionDir)hyzu-visual\includes\stb;$(SolutionDir)hyzu-visual\includes\json\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,11 +161,14 @@
     <ClCompile Include="includes\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="includes\imgui\imgui_tables.cpp" />
     <ClCompile Include="includes\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="includes\json\dist\jsoncpp.cpp" />
     <ClCompile Include="input\InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="render\ImportedModel.cpp" />
     <ClCompile Include="render\Mesh.cpp" />
     <ClCompile Include="render\Model.cpp" />
     <ClCompile Include="render\RenderableWithVertexColor.cpp" />
+    <ClCompile Include="render\Scene.cpp" />
     <ClCompile Include="render\SimpleMesh.cpp" />
     <ClCompile Include="shaders\ShaderManager.cpp" />
     <ClCompile Include="Skybox.cpp" />
@@ -174,6 +177,7 @@
   <ItemGroup>
     <ClInclude Include="camera\Camera.h" />
     <ClInclude Include="gui\GUIManager.h" />
+    <ClInclude Include="ImportedModel.h" />
     <ClInclude Include="includes\imgui\imconfig.h" />
     <ClInclude Include="includes\imgui\imgui.h" />
     <ClInclude Include="includes\imgui\imgui_impl_glfw.h" />
@@ -184,6 +188,8 @@
     <ClInclude Include="includes\imgui\imstb_rectpack.h" />
     <ClInclude Include="includes\imgui\imstb_textedit.h" />
     <ClInclude Include="includes\imgui\imstb_truetype.h" />
+    <ClInclude Include="includes\json\dist\json\json-forwards.h" />
+    <ClInclude Include="includes\json\dist\json\json.h" />
     <ClInclude Include="input\InputManager.h" />
     <ClInclude Include="lighting\LightSources.h" />
     <ClInclude Include="render\Mesh.h" />
@@ -191,11 +197,13 @@
     <ClInclude Include="render\RenderableObject.h" />
     <ClInclude Include="render\RenderableWithVertexColor.h" />
     <ClInclude Include="render\SimpleMesh.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="shaders\ShaderManager.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="window\SampleWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="files\scenes\Pool.json" />
     <None Include="resources\scenes\pool\pool.mtl" />
     <None Include="resources\scenes\pool\Pool2.fbx" />
     <None Include="resources\scenes\pool\pool2.mtl" />

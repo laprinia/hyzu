@@ -55,6 +55,12 @@
     <Filter Include="Source Files\lighting">
       <UniqueIdentifier>{31993a8a-4719-4500-86ad-a3007ce8f4a4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\files">
+      <UniqueIdentifier>{f2de793e-b528-4ec1-b6c4-1909378d4f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\files\scenes">
+      <UniqueIdentifier>{b892d4e6-eb25-4e39-ab92-9ba1ec232760}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -108,11 +114,20 @@
     <ClCompile Include="window\SampleWindow.cpp">
       <Filter>Source Files\window</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="gui\GUIManager.cpp">
       <Filter>Source Files\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\json\dist\jsoncpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="render\ImportedModel.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\Scene.cpp">
+      <Filter>Source Files\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -173,14 +188,26 @@
     <ClInclude Include="window\SampleWindow.h">
       <Filter>Source Files\window</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="gui\GUIManager.h">
       <Filter>Source Files\gui</Filter>
     </ClInclude>
     <ClInclude Include="lighting\LightSources.h">
       <Filter>Source Files\lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\json\dist\json\json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\json\dist\json\json-forwards.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImportedModel.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +267,9 @@
     </None>
     <None Include="shaders\EnvVS.glsl">
       <Filter>Source Files\includes</Filter>
+    </None>
+    <None Include="files\scenes\Pool.json">
+      <Filter>Source Files\files\scenes</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

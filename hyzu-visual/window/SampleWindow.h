@@ -24,12 +24,14 @@
 #include <stb_image_aug.h>
 #include "../includes/imgui/imgui_impl_opengl3.h"
 #include "../Skybox.h"
+#include "../Scene.h"
 
 class SampleWindow {
 private:
 	static Camera* camera;
 	GLFWwindow* window;
-	const bool hasGUI = true;
+	bool hasGUI = false;
+	bool isBaseScene = true;
 	unsigned int* fbID;
 	unsigned int* depthID;
 	unsigned int* occID;
@@ -52,14 +54,17 @@ private:
 	std::unordered_map<std::string, SimpleMesh*> simpleMeshes;
 	std::unordered_map<std::string, Model*> models;
 	std::unordered_map<std::string, Skybox*> skyboxes;
+	std::unordered_map<std::string, Scene*> loadedScenes;
 	std::unordered_map<std::string, GLuint> shaders;
+	int selectedScene = 0;
+	std::vector<std::string> scenesIDs = { "Pool","Bath" };
 
 	DirectionalLight directional;
 	PointLight point, point2;
 	SpotLight spot, spot2;
 	VolLight vol;
 
-	void CompileShaders();
+	void AddShaders();
 
 	static void OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mode);
 

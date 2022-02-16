@@ -3,7 +3,7 @@
 //
 
 #include "SampleWindow.h"
-
+#include "json.h"
 Camera* SampleWindow::camera = nullptr;
 float SampleWindow::cameraSpeed = 20.0f;
 float SampleWindow::deltaTime = 0.0f;
@@ -29,6 +29,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 		std::cout << "Failed to create the GLFW window" << std::endl;
 		glfwTerminate();
 	}
+
 	glfwMakeContextCurrent(window);
 	GLFWimage icon;
 	icon.pixels = SOIL_load_image(".\\..\\hyzu-visual\\resources\\icon_dark.png", &icon.width, &icon.height, 0, SOIL_LOAD_RGBA);
@@ -40,7 +41,6 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 	InputManager::SetWindowKeyCallback(window, OnKeyPress);
 	InputManager::SetWindowCursorPositionCallback(window, OnCursorPositionChange);
 	InputManager::SetWindowScrollCallback(window, OnScrollChange);
-	if (!hasGUI) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to initialize GLEW" << std::endl;
 	}
@@ -48,7 +48,7 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_DEPTH_TEST);
 
-	SampleWindow::CompileShaders();
+	SampleWindow::AddShaders();
 	SampleWindow::Init();
 
 	unsigned int fb;
@@ -125,10 +125,9 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 		SampleWindow::Update();
 		glfwSwapBuffers(window);
 	}
-	if (hasGUI) {
-		GUIManager::DeleteContext();
-	}
-
+	
+	GUIManager::DeleteContext();
+	
 	//TODO delete vaos vbos
 
 	glfwTerminate();
@@ -137,9 +136,8 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 void SampleWindow::Init() {
 
 
-	if (hasGUI) {
-		GUIManager::CreateContext(window);
-	}
+	GUIManager::CreateContext(window);
+	
 
 	camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -165,6 +163,9 @@ void SampleWindow::Init() {
 	Model* model3 = new Model(".\\..\\hyzu-visual\\resources/scenes/pool/sphere.obj");
 	models["sphere"] = model3;
 
+	Model* model4 = new Model(".\\..\\hyzu-visual\\resources/scenes/room/4/bath.obj");
+	models["bath"] = model4;
+
 	Skybox* skybox = new Skybox(".\\..\\hyzu-visual\\resources\\skybox\\pink");
 	skyboxes["pink"] = skybox;
 
@@ -182,34 +183,46 @@ void SampleWindow::Init() {
 	spot2.target = glm::vec3(-11, 2, 15);
 	spot2.diffuseColor = glm::vec3(1.0f, 0.2392f, 0.50588f);
 	spot2.specularColor = glm::vec3(1.0f, 0.388235f, 0.60392f);
+
+	//scenes
+
+	Scene* scene = new Scene(".\\..\\hyzu-visual\\files/scenes/Pool.json");
+	loadedScenes["Pool"] = scene;
+
+	Scene* scene2 = new Scene(".\\..\\hyzu-visual\\files/scenes/Bath.json");
+	loadedScenes["Bath"] = scene2;
 }
 
 void SampleWindow::RenderScene(GLuint  shader, glm::mat4& viewMatrix, glm::mat4& projectionMatrix, bool isDepthPass,
 	glm::mat4& lightMatrix) {
 
+	Scene* currentlySelected = loadedScenes[scenesIDs[selectedScene]];
+	for (ImportedModel* imported : currentlySelected->models) {
 
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::scale(model, glm::vec3(10.0f));
-	model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0, 1, 0));
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+		glm::mat4 model = glm::mat4(1.0f);
+		model = glm::scale(model, glm::vec3(imported->scale));
+		model = glm::rotate(model, glm::radians(imported->rotate),imported->rotateAxis);
+		model = glm::translate(model, imported->translate);
 
-	SampleWindow::RenderModel("basescene", model, viewMatrix, projectionMatrix, lightMatrix,
-		isDepthPass ? shaders["depth"] : shader);
-	SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
-	SampleWindow::RenderModel("poolwater", model, viewMatrix, projectionMatrix, lightMatrix,
-		isDepthPass ? shaders["depth"] : shader);
-	SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
-	glDisable(GL_BLEND);
+		SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
+		if(imported->hasBlend) { glEnable(GL_BLEND);
+		glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA); }
+		SampleWindow::RenderModel(imported->name, model, viewMatrix, projectionMatrix, lightMatrix,
+			isDepthPass ? shaders["depth"] : shader);
+		if(imported->hasBlend) glDisable(GL_BLEND);
+
+	}
 
 }
 
 void SampleWindow::Update() {
 
+
+	if (!hasGUI) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	glfwPollEvents();
 	OnInputUpdate();
-	if (hasGUI) GUIUpdate();
+	GUIUpdate();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -299,7 +312,8 @@ void SampleWindow::Update() {
 	glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(shaders["skybox"], "model"), 1, GL_FALSE, glm::value_ptr(model));
 
-	skyboxes["blue"]->Draw();
+	Scene* currentlySelected = loadedScenes[scenesIDs[selectedScene]];
+	skyboxes[currentlySelected->skybox]->Draw();
 	glDepthFunc(GL_LESS);
 
 
@@ -339,16 +353,20 @@ void SampleWindow::Update() {
 	simpleMeshes["quad"]->Draw();
 	glDisable(GL_BLEND);
 
-	if (hasGUI) {
-		GUIManager::DrawData();
-	}
+	
+	GUIManager::DrawData();
+	
 }
 
 void SampleWindow::GUIUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	GUIManager::DrawDirectionalWindow(directional, vol, nearPlane, farPlane, lightAngle);
+	if(hasGUI)
+	{ GUIManager::DrawDirectionalWindow(&directional, &vol, &nearPlane, &farPlane, &lightAngle);
+	selectedScene = GUIManager::DrawSceneSelectionWindow(&isBaseScene); }
+	
+	ImGui::EndFrame();
 
 }
 
@@ -470,76 +488,16 @@ void SampleWindow::RenderMeshFromData(const std::string& meshName, glm::mat4& mo
 }
 
 
-void SampleWindow::CompileShaders() {
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\BaseVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
+void SampleWindow::AddShaders() {
 
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\BaseFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
+	shaders["base"] = ShaderManager::AddShader("Base");
+	shaders["basescene"] = ShaderManager::AddShader("Env");
+	shaders["post"] = ShaderManager::AddShader("Post");
+	shaders["skybox"] = ShaderManager::AddShader("Sky");
+	shaders["depth"] = ShaderManager::AddShader("Depth");
+	shaders["lightdepth"] = ShaderManager::AddShader("LightDepth");
+	shaders["vol"] = ShaderManager::AddShader("Volumetric");
 
-	GLuint shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["base"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["base"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\EnvVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\EnvFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["basescene"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["basescene"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\PostVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\PostFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["post"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["post"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\SkyVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\SkyFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["skybox"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["skybox"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\DepthVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\DepthFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["depth"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["depth"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\LighDepthVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\LightDepthFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["lightdepth"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["lightdepth"]);
-
-	ShaderManager::CompileShader(GL_VERTEX_SHADER, ".\\..\\hyzu-visual\\shaders\\VolumetricVS.glsl");
-	ShaderManager::CheckShaderCompile(GL_VERTEX_SHADER);
-
-	ShaderManager::CompileShader(GL_FRAGMENT_SHADER, ".\\..\\hyzu-visual\\shaders\\VolumetricFS.glsl");
-	ShaderManager::CheckShaderCompile(GL_FRAGMENT_SHADER);
-
-	shaderProgram = ShaderManager::LinkShaderProgram();
-	shaders["vol"] = shaderProgram;
-	ShaderManager::CheckShaderLink(shaders["vol"]);
 }
 
 void SampleWindow::OnKeyPress(GLFWwindow* window, int key, int scancode, int action, int mode) {
@@ -610,6 +568,9 @@ void SampleWindow::OnInputUpdate() {
 	}
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 		camera->setCameraPosition(camera->getCameraPosition() - (actualSpeed * camera->getCameraUp()));
+	}
+	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+		hasGUI ^= true;
 	}
 
 }

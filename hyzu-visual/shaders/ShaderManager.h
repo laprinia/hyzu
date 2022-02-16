@@ -16,9 +16,7 @@
 
 class ShaderManager {
 private:
-
     static std::map<int, GLuint> shaders;
-
     static std::string ReadFromFile(const std::string &location);
 
     ShaderManager() = default;
@@ -27,6 +25,8 @@ public:
 
 
     static ShaderManager &GetInstance();
+    
+    static GLuint AddShader(const std::string& startName);
 
     static void CompileShader(int shaderType, const std::string &location);
 
@@ -35,6 +35,7 @@ public:
     static GLuint LinkShaderProgram();
 
     static void CheckShaderLink(GLuint shaderProgram);
+    
 
     ~ShaderManager();
 };

@@ -1,0 +1,15 @@
+{
+   "models":[
+      {
+         "id":"bath",
+         "scale":3,
+         "rotate":0,
+         "rotateAxis":"y",
+         "translateX":0,
+         "translateY":0,
+         "translateZ":0,
+         "blendFuc":0
+      }
+   ],
+   "skybox":"pink"
+}
