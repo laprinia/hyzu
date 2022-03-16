@@ -200,13 +200,13 @@
     <ClInclude Include="includes\json\dist\json\json-forwards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImportedModel.h">
-      <Filter>Source Files\render</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Source Files\render</Filter>
     </ClInclude>
     <ClInclude Include="render\Skybox.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\ImportedModel.h">
       <Filter>Source Files\render</Filter>
     </ClInclude>
   </ItemGroup>

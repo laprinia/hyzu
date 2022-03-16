@@ -1,7 +1,7 @@
 #include "ImportedModel.h"
 #include <iostream>
 
-ImportedModel::ImportedModel(const std::string& name, float scale, float rotate, glm::vec3 rotateAxis, glm::vec3 translate, float hasBlend, const std::vector<ImportedModel>& importedModels, bool isVisible)
+ImportedModel::ImportedModel(const std::string& name, float scale, float rotate, glm::vec3 rotateAxis, glm::vec3 translate, float hasBlend, std::vector<ImportedModel> importedModels, bool isVisible)
 {
 	this->name = name;
 	this->scale = scale;

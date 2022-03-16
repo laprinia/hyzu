@@ -177,7 +177,6 @@
   <ItemGroup>
     <ClInclude Include="camera\Camera.h" />
     <ClInclude Include="gui\GUIManager.h" />
-    <ClInclude Include="ImportedModel.h" />
     <ClInclude Include="includes\imgui\imconfig.h" />
     <ClInclude Include="includes\imgui\imgui.h" />
     <ClInclude Include="includes\imgui\imgui_impl_glfw.h" />
@@ -192,6 +191,7 @@
     <ClInclude Include="includes\json\dist\json\json.h" />
     <ClInclude Include="input\InputManager.h" />
     <ClInclude Include="lighting\LightSources.h" />
+    <ClInclude Include="render\ImportedModel.h" />
     <ClInclude Include="render\Mesh.h" />
     <ClInclude Include="render\Model.h" />
     <ClInclude Include="render\RenderableObject.h" />
