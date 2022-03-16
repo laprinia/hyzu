@@ -6,9 +6,57 @@
          "rotate":0,
          "rotateAxis":"y",
          "translateX":0,
-         "translateY":0,
-         "translateZ":0,
-         "blendFuc":0
+         "translateY":-5,
+         "translateZ":15,
+         "blendFuc":0,
+         "visible":1,
+         "models":[
+           {
+             "id":"soap",
+             "scale":3,
+             "rotate":-90,
+             "rotateAxis":"y",
+             "translateX":12,
+             "translateY":-4,
+             "translateZ":1,
+             "blendFuc":0,
+             "visible":1
+           },
+           {
+             "id":"soap",
+             "scale":3,
+             "rotate":-10,
+             "rotateAxis":"y",
+             "translateX":7,
+             "translateY":-4,
+             "translateZ":8,
+             "blendFuc":0,
+             "visible":1
+           },
+           {
+             "id":"soap",
+             "scale":3,
+             "rotate":-40,
+             "rotateAxis":"y",
+             "translateX":7,
+             "translateY":-4,
+             "translateZ":15,
+             "blendFuc":0,
+             "visible":1
+           },
+           {
+             "id":"soap",
+             "scale":3,
+             "rotate":-40,
+             "rotateAxis":"y",
+             "translateX":3,
+             "translateY":-1.7,
+             "translateZ":11,
+             "blendFuc":0,
+             "visible":1
+           }
+
+           ]
       }
    ],
    "skybox":"pink"

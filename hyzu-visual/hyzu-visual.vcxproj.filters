@@ -117,9 +117,6 @@
     <ClCompile Include="gui\GUIManager.cpp">
       <Filter>Source Files\gui</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="includes\json\dist\jsoncpp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="render\Scene.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="render\Skybox.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,9 +194,6 @@
     <ClInclude Include="lighting\LightSources.h">
       <Filter>Source Files\lighting</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Source Files\render</Filter>
-    </ClInclude>
     <ClInclude Include="includes\json\dist\json\json.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -207,6 +204,9 @@
       <Filter>Source Files\render</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
+      <Filter>Source Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="render\Skybox.h">
       <Filter>Source Files\render</Filter>
     </ClInclude>
   </ItemGroup>

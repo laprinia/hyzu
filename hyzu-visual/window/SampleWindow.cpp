@@ -4,6 +4,8 @@
 
 #include "SampleWindow.h"
 #include "json.h"
+
+bool SampleWindow::hasGUI = false;
 Camera* SampleWindow::camera = nullptr;
 float SampleWindow::cameraSpeed = 20.0f;
 float SampleWindow::deltaTime = 0.0f;
@@ -14,13 +16,16 @@ double SampleWindow::lastMouseY = 0.0f;
 double SampleWindow::yaw = -90.0f;
 double SampleWindow::pitch = 0.0f;
 float SampleWindow::mouseSensitivity = 0.1f;
+int SampleWindow::width = 0;
+int SampleWindow::height = 0;
+
 
 SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	//glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 	glfwWindowHint(GLFW_SAMPLES, 32);
 	this->width = width;
 	this->height = height;
@@ -125,9 +130,9 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 		SampleWindow::Update();
 		glfwSwapBuffers(window);
 	}
-	
+
 	GUIManager::DeleteContext();
-	
+
 	//TODO delete vaos vbos
 
 	glfwTerminate();
@@ -137,7 +142,7 @@ void SampleWindow::Init() {
 
 
 	GUIManager::CreateContext(window);
-	
+
 
 	camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -166,6 +171,10 @@ void SampleWindow::Init() {
 	Model* model4 = new Model(".\\..\\hyzu-visual\\resources/scenes/room/4/bath.obj");
 	models["bath"] = model4;
 
+	Model* model5 = new Model(".\\..\\hyzu-visual\\resources/scenes/soap/scene.gltf");
+	models["soap"] = model5;
+
+
 	Skybox* skybox = new Skybox(".\\..\\hyzu-visual\\resources\\skybox\\pink");
 	skyboxes["pink"] = skybox;
 
@@ -181,8 +190,6 @@ void SampleWindow::Init() {
 
 	spot2.position = glm::vec3(26, 30, -27);
 	spot2.target = glm::vec3(-11, 2, 15);
-	spot2.diffuseColor = glm::vec3(1.0f, 0.2392f, 0.50588f);
-	spot2.specularColor = glm::vec3(1.0f, 0.388235f, 0.60392f);
 
 	//scenes
 
@@ -197,19 +204,68 @@ void SampleWindow::RenderScene(GLuint  shader, glm::mat4& viewMatrix, glm::mat4&
 	glm::mat4& lightMatrix) {
 
 	Scene* currentlySelected = loadedScenes[scenesIDs[selectedScene]];
+
+	//render light locations
+	glm::mat4 model = glm::mat4(1.0f);
+
+	if (hasDebugLights) {
+		model = glm::translate(model, point.position);
+		model = glm::scale(model, glm::vec3(0.4f));
+		RenderModel("sphere", model, viewMatrix, projectionMatrix, lightMatrix, isDepthPass ? shaders["depth"] : shader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, point2.position);
+		model = glm::scale(model, glm::vec3(0.4f));
+		RenderModel("sphere", model, viewMatrix, projectionMatrix, lightMatrix, isDepthPass ? shaders["depth"] : shader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, spot.position);
+		model = glm::scale(model, glm::vec3(0.4f));
+		RenderModel("sphere", model, viewMatrix, projectionMatrix, lightMatrix, isDepthPass ? shaders["depth"] : shader);
+
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, spot2.position);
+		model = glm::scale(model, glm::vec3(0.4f));
+		RenderModel("sphere", model, viewMatrix, projectionMatrix, lightMatrix, isDepthPass ? shaders["depth"] : shader);
+
+	}
+
 	for (ImportedModel* imported : currentlySelected->models) {
 
-		glm::mat4 model = glm::mat4(1.0f);
-		model = glm::scale(model, glm::vec3(imported->scale));
-		model = glm::rotate(model, glm::radians(imported->rotate),imported->rotateAxis);
-		model = glm::translate(model, imported->translate);
+		if (imported->isVisible) {
+			model = glm::mat4(1.0f);
 
-		SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
-		if(imported->hasBlend) { glEnable(GL_BLEND);
-		glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA); }
-		SampleWindow::RenderModel(imported->name, model, viewMatrix, projectionMatrix, lightMatrix,
-			isDepthPass ? shaders["depth"] : shader);
-		if(imported->hasBlend) glDisable(GL_BLEND);
+			model = glm::scale(model, glm::vec3(imported->scale));
+			model = glm::rotate(model, glm::radians(imported->rotate), imported->rotateAxis);
+
+			model = glm::translate(model, imported->translate);
+
+			SampleWindow::SendLightingDataToShader(isDepthPass ? shaders["depth"] : shader);
+			if (imported->hasBlend) {
+				glEnable(GL_BLEND);
+				glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+			}
+			SampleWindow::RenderModel(imported->name, model, viewMatrix, projectionMatrix, lightMatrix,
+				isDepthPass ? shaders["depth"] : shader);
+			if (imported->hasBlend) glDisable(GL_BLEND);
+
+			for (ImportedModel sub : imported->models) {
+				if (sub.isVisible) {
+					glm::mat4 model = glm::mat4(1.0f);
+					model = glm::scale(model, glm::vec3(sub.scale));
+					model = glm::rotate(model, glm::radians(sub.rotate), sub.rotateAxis);
+					model = glm::translate(model, sub.translate);
+
+					if (sub.hasBlend) {
+						glEnable(GL_BLEND);
+						glBlendFunc(GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA);
+					}
+					SampleWindow::RenderModel(sub.name, model, viewMatrix, projectionMatrix, lightMatrix,
+						isDepthPass ? shaders["depth"] : shader);
+					if (sub.hasBlend) glDisable(GL_BLEND);
+				}
+			}
+		}
 
 	}
 
@@ -219,7 +275,10 @@ void SampleWindow::Update() {
 
 
 	if (!hasGUI) glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	else {
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+
 	glfwPollEvents();
 	OnInputUpdate();
 	GUIUpdate();
@@ -353,19 +412,24 @@ void SampleWindow::Update() {
 	simpleMeshes["quad"]->Draw();
 	glDisable(GL_BLEND);
 
-	
+
 	GUIManager::DrawData();
-	
+
 }
 
 void SampleWindow::GUIUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	if(hasGUI)
-	{ GUIManager::DrawDirectionalWindow(&directional, &vol, &nearPlane, &farPlane, &lightAngle);
-	selectedScene = GUIManager::DrawSceneSelectionWindow(&isBaseScene); }
-	
+	if (hasGUI)
+	{
+		GUIManager::DrawDirectionalWindow(&directional, &vol, &nearPlane, &farPlane, &lightAngle);
+		selectedScene = GUIManager::DrawSceneSelectionWindow(&hasDebugLights, &directional, &point, &point2, &spot, &spot2);
+		GUIManager::DrawSceneData(loadedScenes[scenesIDs[selectedScene]]);
+		GUIManager::DrawLightData(&point, &point2, &spot, &spot2);
+		GUIManager::DrawOccTexture(*occTexture);
+	}
+
 	ImGui::EndFrame();
 
 }
@@ -374,6 +438,11 @@ void SampleWindow::SendPostDataToShader(GLuint shaderProgram) {
 
 	glUniform1f(glGetUniformLocation(shaderProgram, "lightExposure"), directional.lightExposure);
 	glUniform1f(glGetUniformLocation(shaderProgram, "time"), glfwGetTime());
+}
+
+void SampleWindow::ChangeLightingData()
+{
+
 }
 
 void SampleWindow::SendLightingDataToShader(GLuint shaderProgram) {
@@ -505,38 +574,46 @@ void SampleWindow::OnKeyPress(GLFWwindow* window, int key, int scancode, int act
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+	if (key == GLFW_KEY_G && action == GLFW_PRESS) {
+		hasGUI ^= true;
+		if (hasGUI == false) {
 
+			glfwSetCursorPos(window, width / 2, height / 2);
+		}
+	}
 }
 
 void SampleWindow::OnCursorPositionChange(GLFWwindow* window, double xPosition, double yPosition) {
-	if (firstMouseMove) {
-		firstMouseMove = false;
+	if (!hasGUI) {
+		if (firstMouseMove) {
+			firstMouseMove = false;
+			lastMouseX = xPosition;
+			lastMouseY = yPosition;
+		}
+		float xOffset = xPosition - lastMouseX;
+		float yOffset = lastMouseY - yPosition;
 		lastMouseX = xPosition;
 		lastMouseY = yPosition;
+
+		yaw += mouseSensitivity * xOffset;
+		pitch += mouseSensitivity * yOffset;
+
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		glm::vec3 front;
+		front.x = glm::cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+		front.y = glm::sin(glm::radians(pitch));
+		front.z = glm::cos(glm::radians(pitch)) * glm::sin(glm::radians(yaw));
+
+		camera->setCameraFront(glm::normalize(front));
 	}
-	float xOffset = xPosition - lastMouseX;
-	float yOffset = lastMouseY - yPosition;
-	lastMouseX = xPosition;
-	lastMouseY = yPosition;
-
-	yaw += mouseSensitivity * xOffset;
-	pitch += mouseSensitivity * yOffset;
-
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	glm::vec3 front;
-	front.x = glm::cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	front.y = glm::sin(glm::radians(pitch));
-	front.z = glm::cos(glm::radians(pitch)) * glm::sin(glm::radians(yaw));
-
-	camera->setCameraFront(glm::normalize(front));
-
 }
 
 void SampleWindow::OnScrollChange(GLFWwindow* window, double xOffset, double yOffset) {
+
 	camera->setFieldOfView(camera->getFieldOfView() - yOffset);
 	float foV = camera->getFieldOfView();
 	if (foV < 1.0f) camera->setFieldOfView(1.0f);
@@ -569,15 +646,12 @@ void SampleWindow::OnInputUpdate() {
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 		camera->setCameraPosition(camera->getCameraPosition() - (actualSpeed * camera->getCameraUp()));
 	}
-	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		hasGUI ^= true;
-	}
 
 }
 
 void SampleWindow::OnFramebufferSizeChange(GLFWwindow* window, int width, int height) {
 
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 }
 
 

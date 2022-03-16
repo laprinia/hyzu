@@ -23,15 +23,15 @@
 #include "../includes/imgui/imgui_impl_glfw.h"
 #include <stb_image_aug.h>
 #include "../includes/imgui/imgui_impl_opengl3.h"
-#include "../Skybox.h"
+#include "../render/Skybox.h"
 #include "../Scene.h"
 
 class SampleWindow {
 private:
 	static Camera* camera;
 	GLFWwindow* window;
-	bool hasGUI = false;
-	bool isBaseScene = true;
+	static bool hasGUI;
+	bool hasDebugLights = false;
 	unsigned int* fbID;
 	unsigned int* depthID;
 	unsigned int* occID;
@@ -42,7 +42,7 @@ private:
 	const unsigned int depth_width_height = 1024;
 	float nearPlane = 40.0f, farPlane = 800.0f;
 	float lightAngle = 35.9f;
-	int width, height;
+	static int width, height;
 	static bool firstMouseMove;
 	static double lastMouseX, lastMouseY;
 	static double yaw, pitch;
@@ -97,6 +97,8 @@ public:
 
 
 	void SendLightingDataToShader(GLuint shaderProgram);
+
+	void ChangeLightingData();
 
 	void SendPostDataToShader(GLuint shaderProgram);
 

@@ -170,8 +170,8 @@
     <ClCompile Include="render\RenderableWithVertexColor.cpp" />
     <ClCompile Include="render\Scene.cpp" />
     <ClCompile Include="render\SimpleMesh.cpp" />
+    <ClCompile Include="render\Skybox.cpp" />
     <ClCompile Include="shaders\ShaderManager.cpp" />
-    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="window\SampleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -197,9 +197,9 @@
     <ClInclude Include="render\RenderableObject.h" />
     <ClInclude Include="render\RenderableWithVertexColor.h" />
     <ClInclude Include="render\SimpleMesh.h" />
+    <ClInclude Include="render\Skybox.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="shaders\ShaderManager.h" />
-    <ClInclude Include="Skybox.h" />
     <ClInclude Include="window\SampleWindow.h" />
   </ItemGroup>
   <ItemGroup>

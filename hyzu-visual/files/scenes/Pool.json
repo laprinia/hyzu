@@ -8,17 +8,21 @@
          "translateX":0,
          "translateY":0,
          "translateZ":0,
-         "blendFuc":0
-      },
-      {
-         "id":"poolwater",
-         "scale":10,
-         "rotate":-90,
-         "rotateAxis":"y",
-         "translateX":0,
-         "translateY":0,
-         "translateZ":0,
-         "blendFuc":1
+         "blendFuc":0,
+         "visible":1,
+         "models":[
+           {
+              "id":"poolwater",
+              "scale":10,
+              "rotate":-90,
+              "rotateAxis":"y",
+              "translateX":0,
+              "translateY":0,
+              "translateZ":0,
+              "blendFuc":1,
+              "visible":1
+           }
+         ]
       }
    ],
    "skybox":"blue"

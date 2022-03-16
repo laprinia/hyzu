@@ -42,7 +42,7 @@ struct SpotLight : Light {
 	}
 	float cutAngle = 13.5;
 	float GetCut() {
-		return glm::cos(glm::radians(12.5f));
+		return glm::cos(glm::radians(cutAngle));
 	}
 
 	glm::vec3 diffuseColor = glm::vec3(1.0f, 0.6196078f, 0.32941f);
