@@ -128,7 +128,6 @@ SampleWindow::SampleWindow(int width, int height, const std::string& title) {
 	while (!glfwWindowShouldClose(window)) {
 
 		SampleWindow::Update();
-		glfwSwapBuffers(window);
 	}
 
 	GUIManager::DeleteContext();
@@ -414,6 +413,7 @@ void SampleWindow::Update() {
 
 
 	GUIManager::DrawData();
+	glfwSwapBuffers(window);
 
 }
 
