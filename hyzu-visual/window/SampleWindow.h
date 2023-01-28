@@ -3,10 +3,10 @@
 #ifndef HYZU_SAMPWINDOW_H
 #define HYZU_SAMPWINDOW_H
 #define GLEW_STATIC
-
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
+#include "ext.hpp"
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 #include "../input/InputManager.h"
@@ -48,8 +48,11 @@ private:
 	static double yaw, pitch;
 	static float mouseSensitivity;
 	static float cameraSpeed;
-	static float deltaTime;
-	static float lastFrame;
+	static glm::vec3 orbitOrigin;
+	static float inputDeltaTime;
+	static float inputLastFrame;
+	static float updateDeltaTime;
+	static float updateLastFrame;
 	std::unordered_map<std::string, RenderableObject*> renderables;
 	std::unordered_map<std::string, SimpleMesh*> simpleMeshes;
 	std::unordered_map<std::string, Model*> models;
@@ -107,6 +110,8 @@ public:
 	void GUIUpdate();
 
 	void RenderScene(GLuint  shader, glm::mat4& viewMatrix, glm::mat4& projectionMatrix, bool isDepthPass, glm::mat4& lightMatrix);
+
+	auto RotateAround(float rad, const glm::vec3& point, const glm::vec3& axis);
 
 	void RenderSun(GLuint shader, glm::mat4& modelMatrix, glm::mat4& viewMatrix,
 		glm::mat4& projectionMatrix, glm::mat4& lightMatrix);

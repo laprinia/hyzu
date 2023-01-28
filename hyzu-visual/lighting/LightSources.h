@@ -9,14 +9,14 @@ struct Light {
 struct DirectionalLight : Light {
 	glm::vec3 diffuseColor = glm::vec3(0.4275f, 0.4157f, 0.82745f);
 	glm::vec3 specularColor = glm::vec3(0.8039f, 0.8078f, 1.0f);
-	glm::vec3 position = glm::vec3(-48, 31, -83);
+	glm::vec3 position = glm::vec3(-79, 47, -49);
 	glm::vec3 target = glm::vec3(0, 0, 0);
 
 	glm::vec3 GetDirection() const {
 		return -(glm::normalize(position - target));
 	}
 
-	float lightExposure = 0.3f;
+	float lightExposure = 0.2f;
 };
 
 
@@ -54,9 +54,9 @@ struct SpotLight : Light {
 };
 
 struct VolLight : Light {
-	float density = 1.20f;
+	float density = 0.9f;
 	float weight = 0.02f;
 	float decay = 1.0f;
-	float exposure = 0.45f;
-	int samples = 270;
+	float exposure = 0.4f;
+	int samples = 300;
 };

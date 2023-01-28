@@ -8,8 +8,11 @@
 bool SampleWindow::hasGUI = false;
 Camera* SampleWindow::camera = nullptr;
 float SampleWindow::cameraSpeed = 20.0f;
-float SampleWindow::deltaTime = 0.0f;
-float SampleWindow::lastFrame = 0.0f;
+float SampleWindow::inputDeltaTime = 0.0f;
+float SampleWindow::inputLastFrame = 0.0f;
+float SampleWindow::updateDeltaTime = 0.0f;
+float SampleWindow::updateLastFrame = 0.0f;
+glm::vec3 SampleWindow::orbitOrigin = glm::vec3(2.867020f, 11.502365f, 1.150090f);
 bool SampleWindow::firstMouseMove = true;
 double SampleWindow::lastMouseX = 0.0f;
 double SampleWindow::lastMouseY = 0.0f;
@@ -143,7 +146,7 @@ void SampleWindow::Init() {
 	GUIManager::CreateContext(window);
 
 
-	camera = new Camera(glm::vec3(0.0f, 5.0f, 44.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	camera = new Camera(glm::vec3(16.319027f, 9.407349f, 39.400589f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	//models 
 	std::vector<SVertex> screenQuadVertices = {
@@ -270,6 +273,13 @@ void SampleWindow::RenderScene(GLuint  shader, glm::mat4& viewMatrix, glm::mat4&
 
 }
 
+auto SampleWindow::RotateAround(float rad, const glm::vec3& point, const glm::vec3& axis) {
+	auto t1 = glm::translate(glm::mat4(1), -point);
+	auto r = glm::rotate(glm::mat4(1), rad, axis);
+	auto t2 = glm::translate(glm::mat4(1), point);
+	return t2 * r * t1;
+}
+
 void SampleWindow::Update() {
 
 
@@ -283,7 +293,6 @@ void SampleWindow::Update() {
 	GUIUpdate();
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	//occlusion pass
 	glBindFramebuffer(GL_FRAMEBUFFER, *occID);
 	glViewport(0, 0, width, height);
@@ -335,14 +344,23 @@ void SampleWindow::Update() {
 	glViewport(0, 0, width, height);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//light
+	//light + rotation
 	glUseProgram(shaders["base"]);
 	model = glm::mat4(1.0f);
-	model = glm::translate(model, directional.position);
-	model = glm::scale(model, glm::vec3(20.0f));
+	float updateCurrentTime = glfwGetTime();
+	updateDeltaTime = updateCurrentTime - updateLastFrame;
+	updateLastFrame = updateCurrentTime;
+	float actualSpeed = 0.03f * updateDeltaTime;
+	std::cout << glm::to_string(camera->getCameraPosition()) << std::endl;
+	auto modelResult = RotateAround(-actualSpeed, orbitOrigin, glm::vec3(0, 1, 0)) *
+		glm::translate(glm::mat4(1), directional.position) *
+		glm::scale(model, glm::vec3(20.0f));
+
+	glm::vec3 currentPosition = glm::vec3(modelResult[3][0], modelResult[3][1], modelResult[3][2]);
+	directional.position = currentPosition;
 	glUniform1i(glGetUniformLocation(shaders["base"], "isTransparent"), 1);
 	glUniform3fv(glGetUniformLocation(shaders["base"], "solidColor"), 1, glm::value_ptr(directional.diffuseColor));
-	SampleWindow::RenderSun(shaders["base"], model, view, projection, lightSpaceMatrix);
+	SampleWindow::RenderSun(shaders["base"], modelResult, view, projection, lightSpaceMatrix);
 
 	//scene
 	glUseProgram(shaders["basescene"]);
@@ -621,10 +639,10 @@ void SampleWindow::OnScrollChange(GLFWwindow* window, double xOffset, double yOf
 }
 
 void SampleWindow::OnInputUpdate() {
-	float currentTime = glfwGetTime();
-	deltaTime = currentTime - lastFrame;
-	lastFrame = currentTime;
-	float actualSpeed = cameraSpeed * deltaTime;
+	float inputCurrentTime = glfwGetTime();
+	inputDeltaTime = inputCurrentTime - inputLastFrame;
+	inputLastFrame = inputCurrentTime;
+	float actualSpeed = cameraSpeed * inputDeltaTime;
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		camera->setCameraPosition(camera->getCameraPosition() + (actualSpeed * camera->getCameraFront()));

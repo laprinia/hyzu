@@ -7,9 +7,7 @@ Scene::Scene(const std::string& path)
 	Json::Value root;
 	reader.parse(file, root);
 	skybox = root["skybox"].asString();
-	std::cout << "Loaded skybox with id: " << skybox << std::endl;
 	Json::Value array = root["models"];
-	std::cout << "arr size " << array.size();
 	for (Json::Value::ArrayIndex i = 0; i <array.size(); i++)
 	{
 
