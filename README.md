@@ -66,8 +66,8 @@ For Volumetric lighting, I used the occlusion texture & ray marching technique.
 
 ### 📷Video of the final result:
 
-![framework video](hyzu-visual/screenshots/11.gif "Combined result video")
 
-### New GUI with Scene Management:
 
-![framework screenshot](hyzu-visual/screenshots/12.png "GUI")
+https://user-images.githubusercontent.com/51471463/215287282-3d744b24-0ea3-48ac-afef-05270fb92715.mp4
+
+
