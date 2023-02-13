@@ -15,7 +15,7 @@ float noise (vec2 point) {
 }
 void main() {
 
-    const float gammaValue = 2.2;
+    const float gammaValue = 2.0;
     vec3 base = texture(texture1, outTextureCoord).rgb;
     vec3 result = vec3(1.0) - exp(-base * lightExposure);
     result = pow(result, vec3(1.0/gammaValue));

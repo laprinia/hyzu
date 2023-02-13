@@ -16,7 +16,7 @@ struct DirectionalLight : Light {
 		return -(glm::normalize(position - target));
 	}
 
-	float lightExposure = 0.2f;
+	float lightExposure = 0.10f;
 };
 
 
@@ -54,7 +54,7 @@ struct SpotLight : Light {
 };
 
 struct VolLight : Light {
-	float density = 0.9f;
+	float density = 1.0f;
 	float weight = 0.02f;
 	float decay = 1.0f;
 	float exposure = 0.4f;
